@@ -10,10 +10,22 @@ def get(url):
         return 'Error in URL Status Code'
 
 # Parsing html
-def get_news_headline(url):
-    parser = bs(get(url), 'html.parser')
-    print(parser.prettify())
+def get_news_headlines_from_finanzennet(url):
+    soup = bs(get(url), 'html.parser')
+
+    # Top Headlines on website
+    content = soup.find('span', attrs={"class": "teaser-headline"})
+    print(content.text)
+
+    # List Headlines on website
+    found_news = soup.find_all("a", attrs={"class": "teaser"})
+    for headline in found_news:
+        print(f"{headline.text}")
 
 
 if __name__ == '__main__':
-    get_news_headline('https://www.finanzen.net/news/adidas-news')
+    dax40_companies = ['adidas', 'sap', 'bmw']
+    for company in dax40_companies:
+        print(f"Now following company: {company}\n")
+        get_news_headlines_from_finanzennet(f'https://www.finanzen.net/news/{company}-news')
+        print('-------- END ---------.\n')
