@@ -4,7 +4,7 @@
 #Spark runterladen
 #PySpark-Mongodb connector jar package runterladen und in spark/jar ordner machen https://mvnrepository.com/artifact/org.mongodb.spark/mongo-spark-connector_2.12/3.0.1
 
-#In diesem Dokument: uri (Zeile und gegen eigene Austauschen
+#In diesem Dokument: uri (Zeile 28 und 29) gegen eigene Austauschen
 #File über Konsole laufen lassen: pfad zu spark ordner/bin/spark-submit --master "local[4]"  \
 #                    --conf "spark.mongodb.input.uri=mongodb://127.0.0.1/test.coll?readPreference=primaryPreferred" \
 #                    --conf "spark.mongodb.output.uri=mongodb://127.0.0.1/test.coll" \
