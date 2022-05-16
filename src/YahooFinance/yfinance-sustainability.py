@@ -10,7 +10,12 @@ companies = ['ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
              'shl', 'sy1', 'vow3', 'vna', 'zal']
 DAX40 = yf.Tickers(' '.join(companies))
 
-for company in companies:
-    print(f"Now company: {company}")
-    print(DAX40.tickers[str(company).upper()].sustainability.T['totalEsg'])
-    print("")
+if __name__ == '__main__':
+    for company in companies:
+        try:
+            print(f"Now company: {company}")
+            pp.pprint(DAX40.tickers[str(company).upper()].sustainability.T['totalEsg'])
+            print("")
+        except KeyError:
+            print("Error occured in fetching data from API. Continuing with next company.")
+            continue
