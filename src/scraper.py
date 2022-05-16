@@ -11,13 +11,16 @@ yfinance_symbols_dax_companies = ['ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bn
              'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
              'shl', 'sy1', 'vow3', 'vna', 'zal']
 
+test_symbols = ['ads', 'air', 'alv']
+
+
 # Crawling web page with given URL
 def get(url):
     res = requests.get(url)
     if res.status_code == 200:
         return res.text.strip()
     else:
-        return 'Error in URL Status Code'
+        return f'Error in URL Status Code: ERROR {res.status_code}'
 
 
 def initialize_yf_tickers(companies: list):
@@ -26,7 +29,7 @@ def initialize_yf_tickers(companies: list):
     return ticker
 
 
-def get_total_sustainability_score(companies: list):
+def get_total_ESG_score(companies: list):
     # Get ticker for multiple companies
     ticker = initialize_yf_tickers(companies)
 
@@ -42,6 +45,19 @@ def get_total_sustainability_score(companies: list):
             continue
 
     return total_esg_score
+
+
+def get_gross_profit_development(companies: list):
+    ticker = initialize_yf_tickers(companies)
+    total_profit_margins = {}
+    for company in companies:
+        try:
+            print(f"Now executing: {company}")
+            total_profit_margins[f'{company}'] = ticker.tickers[str(company).upper()].financials.T['Gross Profit']
+        except Exception as e:
+            total_profit_margins[f'{company}'] = 'NaN'
+            print(f'For company: {company} following error occured: {e}')
+    return total_profit_margins
 
 
 def get_news_headlines():
@@ -76,5 +92,8 @@ def get_news_headlines():
 
 if __name__ == '__main__':
     # Here, we will have to implement a scheduler to run this script
-    pp.pprint(get_news_headlines())
-    pp.pprint(get_total_sustainability_score(yfinance_symbols_dax_companies))
+    # pp.pprint(get_news_headlines())
+    # pp.pprint(get_total_ESG_score(yfinance_symbols_dax_companies))
+    # pp.pprint(get_total_ESG())
+    pp.pprint(get_gross_profit_development(yfinance_symbols_dax_companies))
+    # pass
