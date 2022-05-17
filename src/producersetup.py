@@ -4,7 +4,7 @@ from confluent_kafka import Producer
 
 
 load_dotenv()
-p = Producer({
+producer = Producer({
     'bootstrap.servers': os.getenv("BOOTSTRAP.SERVERS"),
     'security.protocol': os.getenv("SECURITY.PROTOCOL"),
     'sasl.mechanisms': os.getenv("SASL.MECHANISMS"),
@@ -12,7 +12,7 @@ p = Producer({
     'sasl.password': os.getenv("SASL.PASSWORD")
 })
 
-topic = 'hdm_messages'
+topic = 'bdma'
 
 def acked(err, msg):
     global delivered_records

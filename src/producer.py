@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup as bs
 import yfinance as yf
 import pprint as pp
+import json
+from producersetup import producer, topic, acked, delivery_report
 
 # Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
 yfinance_symbols_dax_companies = ['ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
@@ -88,12 +90,8 @@ def get_news_headlines():
         # print(content.text)
         """
 
-        return all_news
+    return all_news
 
 if __name__ == '__main__':
-    # Here, we will have to implement a scheduler to run this script
-    # pp.pprint(get_news_headlines())
-    # pp.pprint(get_total_ESG_score(yfinance_symbols_dax_companies))
-    # pp.pprint(get_total_ESG())
-    pp.pprint(get_gross_profit_development(yfinance_symbols_dax_companies))
-    # pass
+    producer.produce(topic, json.dumps(get_news_headlines()), callback=delivery_report)
+    producer.flush()
