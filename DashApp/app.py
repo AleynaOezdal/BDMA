@@ -16,29 +16,6 @@ font = {
     'helvetica' : 'Arial, Helvetica, sans-serif'
 }
 
-#figure for widget
-# see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame({
-    'x': [1,2,1,2],
-    'y': [1,2,3,4],
-    'customdata': [1,2,3,4],
-    'fruit': ['apple', 'apple', 'orange', 'orange']
-})
-
-fig = px.scatter(df, x='x', y='y', color='fruit', custom_data=['customdata'])
-
-#widget one graph
-fig.update_layout(
-    font_family=font['helvetica'],
-    height = 80,
-    showlegend=False,
-    margin_l = 0,
-    margin_r = 0,
-    margin_t = 0,
-    margin_b = 0,
-    paper_bgcolor = colors['background']
-)
-
 df2 = pd.read_csv(
     'https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
 

@@ -1,5 +1,6 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
+from datetime import date
 
 colors = {
     'background': '#F6F6F6'
@@ -18,7 +19,10 @@ sidebar = html.Div(id = 'navigation',children=[
             html.Div(dcc.Input(id='input-box1', placeholder='Select DAX-Company', type='text')),
             #absatz
             html.Br(),
-            html.Div(dcc.Input(id='input-box2', placeholder='Select Time', type='text')),
+            dcc.DatePickerSingle(
+                date=date(2022, 5, 17),
+                display_format='DD MM YY'
+            ),
             html.Br(),
             html.Button('Submit', id='button-example-1'),
             html.Div(id='output-container-button',
