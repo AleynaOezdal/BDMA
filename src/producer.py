@@ -93,5 +93,6 @@ def get_news_headlines():
     return all_news
 
 if __name__ == '__main__':
+    # Next steps: Every headline as single message to KAFKA
     producer.produce(topic, json.dumps(get_news_headlines()), callback=delivery_report)
     producer.flush()
