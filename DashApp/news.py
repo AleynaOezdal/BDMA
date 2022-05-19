@@ -1,4 +1,6 @@
 from dash import html
+from retrieve_sample_data import get_stocks_data, get_news_data, get_kpi_data
+
 
 colors = {
     'background': '#F6F6F6'

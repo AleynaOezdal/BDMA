@@ -1,6 +1,7 @@
 from dash import dcc, html
 import plotly.express as px
 import pandas as pd
+from retrieve_sample_data import get_stocks_data, get_news_data, get_kpi_data
 
 colors = {
     'background': '#F6F6F6'
