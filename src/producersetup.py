@@ -12,7 +12,7 @@ p = Producer({
     'sasl.password': os.getenv("SASL.PASSWORD")
 })
 
-topic = 'hdm_messages'
+topic = 'wkns_and_isins'
 
 def acked(err, msg):
     global delivered_records
