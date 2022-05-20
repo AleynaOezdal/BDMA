@@ -37,7 +37,7 @@ def get_WKN_and_ISIN(companies: list = ['adidas', 'volkswagen']):
             all_wkns_and_isins[f'{company}'] = "NaN"
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
-    return True
+    return all_wkns_and_isins
 
 if __name__ == '__main__':
     print(get_WKN_and_ISIN(all_companies))
