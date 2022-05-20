@@ -105,11 +105,10 @@ def render_page_content(pathname):
         ]
     )
 
-
 @app.callback(
     Output('output-container-button', 'children'),
     Input('button-example-1', 'n_clicks'),
-    State('input-box1', 'value'))
+    State('demo-dropdown', 'value'))
 
 def update_output(n_clicks, value):
     return ''.format(
@@ -118,4 +117,4 @@ def update_output(n_clicks, value):
     )
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True),
