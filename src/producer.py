@@ -3,15 +3,27 @@ from bs4 import BeautifulSoup as bs
 import yfinance as yf
 import pprint as pp
 import json
-from producersetup import producer, topic, acked, delivery_report
+from producersetup import p, topic, acked, delivery_report
 
 # Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
-yfinance_symbols_dax_companies = ['ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
-             'con', '1cov', 'dtg', 'dher', 'dbk', 'db1', 'dpw',
-             'dte', 'eoan', 'fre', 'fme', 'hnr1', 'hei', 'hfg',
-             'hen3', 'ifx', 'lin', 'mbg', 'mrk', 'mtx', 'muv2',
-             'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
-             'shl', 'sy1', 'vow3', 'vna', 'zal']
+yfinance_symbols_dax_companies = [
+     'ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
+     'con', '1cov', 'dtg', 'dher', 'dbk', 'db1', 'dpw',
+     'dte', 'eoan', 'fre', 'fme', 'hnr1', 'hei', 'hfg',
+     'hen3', 'ifx', 'lin', 'mbg', 'mrk', 'mtx', 'muv2',
+     'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
+     'shl', 'sy1', 'vow3', 'vna', 'zal'
+]
+
+all_companies = [
+    'adidas', 'airbus', 'allianz', 'basf', 'bayer', 'bmw', 'brenntag',
+    'continental', 'covestro', 'daimler_truck', 'delivery_hero', 'deutsche_bank',
+    'deutsche_boerse', 'deutsche_post', 'deutsche_telekom', 'eon', 'fresenius',
+    'fresenius_medical_care', 'hannover_rueck', 'heidelbergcement', 'hellofresh',
+    'henkel_vz', 'infineon', 'linde', 'mercedes-benz', 'porsche', 'puma', 'qiagen',
+    'rwe', 'sap', 'sartorius_vz', 'siemens', 'siemens_healthineers', 'symrise',
+    'volkswagen', 'vonovia', 'zalando'
+]
 
 test_symbols = ['ads', 'air', 'alv']
 
@@ -62,12 +74,11 @@ def get_gross_profit_development(companies: list):
     return total_profit_margins
 
 
-def get_news_headlines():
-    dax40_companies = ['adidas', 'bmw']
+def produce_news_headlines(companies: list=all_companies):
     # All news to be stored in a dictionary
     all_news = {}
 
-    for company in dax40_companies:
+    for company in companies:
         # Scrape finanzen.net for each company on news section
         base_url = f'https://www.finanzen.net/news/{company}-news'
         soup = bs(get(base_url), 'html.parser')
@@ -82,17 +93,14 @@ def get_news_headlines():
         for headline in found_news:
             all_news[f"{company}_{count}"] = headline.text
             count += 1
+            post = {f"{company}_{count}": headline.text}
+            p.produce(topic, json.dumps(post), callback=delivery_report)
+            p.flush()
         # print(f"+++ Finished Company: {company} +++\n")
 
-        """
-        # Top Headlines on website - status: tbd
-        content = soup.find('span', attrs={"class": "teaser-headline"})
-        # print(content.text)
-        """
-
-    return all_news
+    return print("DONE. Produced all headlines to Kafka.")
 
 if __name__ == '__main__':
     # Next steps: Every headline as single message to KAFKA
-    producer.produce(topic, json.dumps(get_news_headlines()), callback=delivery_report)
-    producer.flush()
+    # WARN: Only start if kafka cluster is set up!
+    produce_news_headlines()
