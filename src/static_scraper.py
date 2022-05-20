@@ -4,7 +4,7 @@ Here we will extract data from the internet which won't change in June 2022
 
 
 from bs4 import BeautifulSoup as bs
-from scraper import yfinance_symbols_dax_companies, initialize_yf_tickers, get
+from producer import yfinance_symbols_dax_companies, initialize_yf_tickers, get
 # from producersetup import p, topic, delivery_report
 # import json
 
