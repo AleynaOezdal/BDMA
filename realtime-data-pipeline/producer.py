@@ -15,6 +15,13 @@ import os
 # Scraper
 # =============================================================================
 
+# Crawling web page with given URL
+def get(url):
+    res = requests.get(url)
+    if res.status_code == 200:
+        return res.text.strip()
+    else:
+        return f'Error in URL Status Code: ERROR {res.status_code}'
 
 def get_stock_price(symbol):
     url = f"https://www.finanzen.net/aktien/{symbol}-aktie"
