@@ -7,3 +7,5 @@ config={'api_key':"0MCP1QDS7AXSPLUU",
         # to transmit second data
         'topic_name2':"stock_streaming2",
         'key_space':'stocks'}
+
+timeZone='US/Eastern'
