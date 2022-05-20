@@ -1,0 +1,5 @@
+kafka-python
+pyspark
+findspark
+beautifulsoup4
+yfinance
