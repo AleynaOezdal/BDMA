@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import yfinance as yf
-from producerconfig import p, topic, acked, delivery_report
+from producerconfig import p, topic, delivery_report
 # from static_scraper import all_companies
 
 # Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
