@@ -1,10 +1,8 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import yfinance as yf
-import pprint as pp
-import json
-from sparktest import p, topic, acked, delivery_report
-#from static_scraper import all_companies
+from producerconfig import p, topic, acked, delivery_report
+# from static_scraper import all_companies
 
 # Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
 yfinance_symbols_dax_companies = [
@@ -15,6 +13,7 @@ yfinance_symbols_dax_companies = [
      'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
      'shl', 'sy1', 'vow3', 'vna', 'zal'
 ]
+
 all_companies = [
     'adidas', 'airbus', 'allianz', 'basf', 'bayer', 'bmw', 'brenntag',
     'continental', 'covestro', 'daimler_truck', 'delivery_hero', 'deutsche_bank',
@@ -24,6 +23,7 @@ all_companies = [
     'rwe', 'sap', 'sartorius_vz', 'siemens', 'siemens_healthineers', 'symrise',
     'volkswagen', 'vonovia', 'zalando'
 ]
+
 test_symbols = ['ads', 'air', 'alv']
 
 
@@ -91,11 +91,11 @@ def produce_news_headlines(companies: list=all_companies):
         # Iterate over every headline and store it in the all_news dict with corresponding enumeration
         for headline in found_news:
             all_news[f"{company}_{count}"] = headline.text
-            count += 1
             p.send(topic, key=f"{company}_{count}", value=headline.text)
+            count += 1
             p.flush()
-        # print(f"+++ Finished Company: {company} +++\n")
 
+        # print(f"+++ Finished Company: {company} +++\n")
     return print("DONE. Produced all headlines to Kafka.")
 
 if __name__ == '__main__':
