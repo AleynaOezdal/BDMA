@@ -4,7 +4,9 @@ Here we will extract data from the internet which won't change in June 2022
 
 
 from bs4 import BeautifulSoup as bs
-from producer import yfinance_symbols_dax_companies, initialize_yf_tickers, get
+# from producer import initialize_yf_tickers, get
+import yfinance
+import requests
 # from producersetup import p, topic, delivery_report
 # import json
 
@@ -18,6 +20,27 @@ all_companies = [
     'rwe', 'sap', 'sartorius_vz', 'siemens', 'siemens_healthineers', 'symrise',
     'volkswagen', 'vonovia', 'zalando'
 ]
+
+yfinance_symbols_dax_companies = [
+     'ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
+     'con', '1cov', 'dtg', 'dher', 'dbk', 'db1', 'dpw',
+     'dte', 'eoan', 'fre', 'fme', 'hnr1', 'hei', 'hfg',
+     'hen3', 'ifx', 'lin', 'mbg', 'mrk', 'mtx', 'muv2',
+     'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
+     'shl', 'sy1', 'vow3', 'vna', 'zal'
+]
+
+yahoo_finance_header = {
+    "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
+}
+
+# Crawling web page with given URL
+def get(url):
+    res = requests.get(url)
+    if res.status_code == 200:
+        return res.text.strip()
+    else:
+        return f'Error in URL Status Code: ERROR {res.status_code}'
 
 
 def get_WKN_and_ISIN(companies: list = ['adidas', 'volkswagen']):
@@ -39,5 +62,15 @@ def get_WKN_and_ISIN(companies: list = ['adidas', 'volkswagen']):
 
     return all_wkns_and_isins
 
+def get_EBITDA(companies: list = yfinance_symbols_dax_companies):
+    for company in companies:
+        print(f"{company.upper() + '.DE'}: 1")
+        url = f"https://de.finance.yahoo.com/quote/{company.upper()+'.DE'}/key-statistics?p={company.upper()+'.DE'}"
+        soup = bs(get(url), header=yahoo_finance_header, parser='html.parser')
+        ebitda = soup.find("td", attrs={'class':'Pos(st) Start(0) Bgc($lv2BgColor) fi-row:h_Bgc($hoverBgColor) Pend(10px)'})
+        # p.send(topic, key=f"{company}", value=ebitda.findChild('span').text)
+        print(f"{company.upper()+'.DE'}: 1")
+
 if __name__ == '__main__':
-    print(get_WKN_and_ISIN(all_companies))
+    #print(get_WKN_and_ISIN(all_companies))
+    get_EBITDA()
