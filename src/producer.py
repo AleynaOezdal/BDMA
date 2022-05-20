@@ -4,6 +4,7 @@ import yfinance as yf
 import pprint as pp
 import json
 from producersetup import p, topic, acked, delivery_report
+from static_scraper import all_companies
 
 # Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
 yfinance_symbols_dax_companies = [
@@ -13,16 +14,6 @@ yfinance_symbols_dax_companies = [
      'hen3', 'ifx', 'lin', 'mbg', 'mrk', 'mtx', 'muv2',
      'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
      'shl', 'sy1', 'vow3', 'vna', 'zal'
-]
-
-all_companies = [
-    'adidas', 'airbus', 'allianz', 'basf', 'bayer', 'bmw', 'brenntag',
-    'continental', 'covestro', 'daimler_truck', 'delivery_hero', 'deutsche_bank',
-    'deutsche_boerse', 'deutsche_post', 'deutsche_telekom', 'eon', 'fresenius',
-    'fresenius_medical_care', 'hannover_rueck', 'heidelbergcement', 'hellofresh',
-    'henkel_vz', 'infineon', 'linde', 'mercedes-benz', 'porsche', 'puma', 'qiagen',
-    'rwe', 'sap', 'sartorius_vz', 'siemens', 'siemens_healthineers', 'symrise',
-    'volkswagen', 'vonovia', 'zalando'
 ]
 
 test_symbols = ['ads', 'air', 'alv']
