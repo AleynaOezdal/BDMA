@@ -3,7 +3,7 @@ from kafka.errors import KafkaError
 import os
 import json
 
-p = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+p = KafkaProducer(bootstrap_servers=['localhost:9092'], key_serializer=str.encode, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
 # produce keyed messages to enable hashed partitioning
 #producer.send('scripttest', key=b'foo', value=b'bar')

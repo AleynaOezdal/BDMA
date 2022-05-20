@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs
 import yfinance as yf
 import pprint as pp
 import json
-from producerconfig import p, topic, acked, delivery_report
+from sparktest import p, topic, acked, delivery_report
 #from static_scraper import all_companies
 
 # Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
@@ -92,9 +92,7 @@ def produce_news_headlines(companies: list=all_companies):
         for headline in found_news:
             all_news[f"{company}_{count}"] = headline.text
             count += 1
-            post = {f"{company}_{count}": headline.text}
-            p.send(topic, json.dumps(post))
-            #p.send(topic, key=f"{company}_{count}", value=headline.text)
+            p.send(topic, key=f"{company}_{count}", value=headline.text)
             p.flush()
         # print(f"+++ Finished Company: {company} +++\n")
 
