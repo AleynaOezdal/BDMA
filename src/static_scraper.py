@@ -1,49 +1,13 @@
 """
 Here we will extract data from the internet which won't change in June 2022
 """
-
-
+import time
 from bs4 import BeautifulSoup as bs
-# from producer import initialize_yf_tickers, get
-import yfinance
-import requests
-# from producersetup import p, topic, delivery_report
-# import json
+import yfinance as yf
+from producersetup import get, yfinance_symbols_dax_companies, topic, delivery_report, all_companies
 
 
-all_companies = [
-    'adidas', 'airbus', 'allianz', 'basf', 'bayer', 'bmw', 'brenntag',
-    'continental', 'covestro', 'daimler_truck', 'delivery_hero', 'deutsche_bank',
-    'deutsche_boerse', 'deutsche_post', 'deutsche_telekom', 'eon', 'fresenius',
-    'fresenius_medical_care', 'hannover_rueck', 'heidelbergcement', 'hellofresh',
-    'henkel_vz', 'infineon', 'linde', 'mercedes-benz', 'porsche', 'puma', 'qiagen',
-    'rwe', 'sap', 'sartorius_vz', 'siemens', 'siemens_healthineers', 'symrise',
-    'volkswagen', 'vonovia', 'zalando'
-]
-
-yfinance_symbols_dax_companies = [
-     'ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
-     'con', '1cov', 'dtg', 'dher', 'dbk', 'db1', 'dpw',
-     'dte', 'eoan', 'fre', 'fme', 'hnr1', 'hei', 'hfg',
-     'hen3', 'ifx', 'lin', 'mbg', 'mrk', 'mtx', 'muv2',
-     'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
-     'shl', 'sy1', 'vow3', 'vna', 'zal'
-]
-
-yahoo_finance_header = {
-    "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
-}
-
-# Crawling web page with given URL
-def get(url):
-    res = requests.get(url)
-    if res.status_code == 200:
-        return res.text.strip()
-    else:
-        return f'Error in URL Status Code: ERROR {res.status_code}'
-
-
-def get_WKN_and_ISIN(companies: list = ['adidas', 'volkswagen']):
+def get_WKN_and_ISIN(companies: list = all_companies):
     all_wkns_and_isins = dict()
     # Scrape finanzen.net for each company for WKN/ ISN
     for company in companies:
@@ -62,15 +26,56 @@ def get_WKN_and_ISIN(companies: list = ['adidas', 'volkswagen']):
 
     return all_wkns_and_isins
 
-def get_EBITDA(companies: list = yfinance_symbols_dax_companies):
+
+def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
+    # Iterate over every company and extract ESG Score
     for company in companies:
-        print(f"{company.upper() + '.DE'}: 1")
-        url = f"https://de.finance.yahoo.com/quote/{company.upper()+'.DE'}/key-statistics?p={company.upper()+'.DE'}"
-        soup = bs(get(url), header=yahoo_finance_header, parser='html.parser')
-        ebitda = soup.find("td", attrs={'class':'Pos(st) Start(0) Bgc($lv2BgColor) fi-row:h_Bgc($hoverBgColor) Pend(10px)'})
-        # p.send(topic, key=f"{company}", value=ebitda.findChild('span').text)
-        print(f"{company.upper()+'.DE'}: 1")
+        try:
+            suffix = '.DE'
+            company_ticker = yf.Ticker(f'{company.upper()+suffix}')
+            # To create the value in a suitable way, we have to transpose the sustainability data frame
+            # in order to extract the Total ESG Score.
+            record_value = company_ticker.sustainability.T['totalEsg'].to_dict()
+            post = {f'{company}': record_value}
+            print(post)
+        except AttributeError:
+            record_value = 'NaN'
+            post = {f'{company}': record_value}
+            print(f"Error occured in fetching data from API for {company}. Continuing with next company.\n")
+            print(post)
+            continue
+    return "Done. Produced all ESGs to Kafka."
+
+
+financial_KPIs = ['Gross Profit', 'Ebit', 'Total Revenue', 'Net Income', 'Total Operating Expenses']
+
+def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies):
+    # Iterate over every company and extract gross profit development
+    for company in companies:
+        time.sleep(12)
+        try:
+            suffix = '.DE'
+            company_ticker = yf.Ticker(f'{company.upper()+suffix}')
+            # To create the value in a suitable way, we have to transpose the kpi data frame
+            # in order to extract the kpi and its value over the years (since 2019).
+            record_value = company_ticker.financials.T[kpi].to_dict()
+            post = {f'{company}': record_value}
+            print(post)
+        except AttributeError:
+            record_value = 'NaN'
+            post = {f'{company}': record_value}
+            print(f"Error occured in fetching data from API for {company}. Continuing with next company.\n")
+            print(post)
+            continue
+    return "Done. Produced Gross Profit for all DAX40 companies to Kafka."
+
 
 if __name__ == '__main__':
-    #print(get_WKN_and_ISIN(all_companies))
-    get_EBITDA()
+    # Test if all KPIs are extractable
+    # print(get_WKN_and_ISIN())
+    # get_ESG_score()
+    for kpi in financial_KPIs:
+        print(f"Now extracting {kpi}. Wait ...")
+        time.sleep(30)
+        print(f"Listing now all DAX40 companies with all {kpi.upper()} values.\n")
+        get_financial_KPI(kpi)

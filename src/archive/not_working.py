@@ -18,3 +18,11 @@ def get_total_ESG():
             count += 1
     return all_ratings
 """
+
+"""for company in companies:
+    url = f"https://de.finance.yahoo.com/quote/{company.upper()+'.DE'}/key-statistics?p={company.upper()+'.DE'}"
+    soup = bs(get(url, yahoo_finance=True), 'html.parser')
+    ebitda = soup.find_all("td", attrs={'class':'Fw(500) Ta(end) Pstart(10px) Miw(60px)'})
+    # p.send(topic, key=f"{company}", value=ebitda.findChild('span').text) #
+    # ebitda = soup.select("[class~=Fw(500) Ta(end) Pstart(10px) Miw(60px)]")
+    print(f"{company.upper()+'.DE'}: {ebitda}")"""

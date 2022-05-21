@@ -1,68 +1,6 @@
-import requests
 from bs4 import BeautifulSoup as bs
-import yfinance as yf
-import pprint as pp
 import json
-from producersetup import p, topic, acked, delivery_report
-from static_scraper import all_companies
-
-# Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
-yfinance_symbols_dax_companies = [
-     'ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
-     'con', '1cov', 'dtg', 'dher', 'dbk', 'db1', 'dpw',
-     'dte', 'eoan', 'fre', 'fme', 'hnr1', 'hei', 'hfg',
-     'hen3', 'ifx', 'lin', 'mbg', 'mrk', 'mtx', 'muv2',
-     'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
-     'shl', 'sy1', 'vow3', 'vna', 'zal'
-]
-
-test_symbols = ['ads', 'air', 'alv']
-
-
-# Crawling web page with given URL
-def get(url):
-    res = requests.get(url)
-    if res.status_code == 200:
-        return res.text.strip()
-    else:
-        return f'Error in URL Status Code: ERROR {res.status_code}'
-
-
-def initialize_yf_tickers(companies: list):
-    # Initialize yahooFinance Ticker for multiple companies and return it
-    ticker = yf.Tickers(' '.join(companies))
-    return ticker
-
-
-def get_total_ESG_score(companies: list):
-    # Get ticker for multiple companies
-    ticker = initialize_yf_tickers(companies)
-
-    # Iterate over every company and extract Total Sustainability Score
-    total_esg_score = {}
-    for company in companies:
-        try:
-            total_esg_score[f'{company}'] = ticker.tickers[str(company).upper()].sustainability.T['totalEsg']
-            print("Producing record: {}\t{}".format(company, total_esg_score[f'{company}']))
-        except AttributeError:
-            total_esg_score[f'{company}'] = 'NaN'
-            print(f"Error occured in fetching data from API for {company}. Continuing with next company.\n")
-            continue
-
-    return total_esg_score
-
-
-def get_gross_profit_development(companies: list):
-    ticker = initialize_yf_tickers(companies)
-    total_profit_margins = {}
-    for company in companies:
-        try:
-            print(f"Now executing: {company}")
-            total_profit_margins[f'{company}'] = ticker.tickers[str(company).upper()].financials.T['Gross Profit']
-        except Exception as e:
-            total_profit_margins[f'{company}'] = 'NaN'
-            print(f'For company: {company} following error occured: {e}')
-    return total_profit_margins
+from producersetup import initialize_yf_tickers, all_companies, topic, delivery_report, get
 
 
 def produce_news_headlines(companies: list=all_companies):
@@ -85,8 +23,8 @@ def produce_news_headlines(companies: list=all_companies):
             all_news[f"{company}_{count}"] = headline.text
             count += 1
             post = {f"{company}_{count}": headline.text}
-            p.produce(topic, json.dumps(post), callback=delivery_report)
-            p.flush()
+            #p.produce(topic, json.dumps(post), callback=delivery_report)
+            #p.flush()
         # print(f"+++ Finished Company: {company} +++\n")
 
     return print("DONE. Produced all headlines to Kafka.")
