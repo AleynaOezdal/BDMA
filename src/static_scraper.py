@@ -5,7 +5,7 @@ import time
 import json
 from bs4 import BeautifulSoup as bs
 import yfinance as yf
-from producersetup import p, get, yfinance_symbols_dax_companies, topic, delivery_report, all_companies
+from producersetup import p, get, yfinance_symbols_dax_companies, delivery_report, all_companies
 
 
 def get_WKN_and_ISIN(companies: list = all_companies):
@@ -54,6 +54,22 @@ financial_KPIs = ['Gross Profit', 'Ebit', 'Total Revenue', 'Net Income', 'Total 
 def convert_timestamps_keys_to_str(d: dict):
     return {str(k): v for k, v in d.items()}
 
+
+def get_kpi_topic(kpi: str):
+    splitted_kpi = kpi.split(" ")
+
+    if len(splitted_kpi) == 3:
+        topic = splitted_kpi[0] + '_' + splitted_kpi[1] + '_' + splitted_kpi[2]
+
+    elif len(splitted_kpi) == 2:
+        topic = splitted_kpi[0] + '_' + splitted_kpi[1]
+
+    else:
+        topic = splitted_kpi[0]
+
+    return topic
+
+
 def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies, yearly_basis=True):
     # Iterate over every company and extract gross profit development
     for company in companies:
@@ -75,7 +91,8 @@ def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
         record_value = convert_timestamps_keys_to_str(record_value)
-        p.produce(str(kpi), json.dumps({str(company): record_value}), callback=delivery_report)
+
+        p.produce(get_kpi_topic(kpi), json.dumps({str(company): record_value}), callback=delivery_report)
         p.flush()
 
     return f"Done. Produced {kpi.upper()} for all DAX40 companies to Kafka."
