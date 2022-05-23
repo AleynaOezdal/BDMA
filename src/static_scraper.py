@@ -66,7 +66,7 @@ def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies
     # Iterate over every company and extract gross profit development
     for company in companies:
         # Due to some performance issues
-        time.sleep(5)
+        time.sleep(15)
         try:
             # The Suffix is required for finance.yahoo.com, otherwise it won't recognize the symbol
             suffix = '.DE'
@@ -89,7 +89,7 @@ def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies
         p.produce(get_kpi_topic(kpi), json.dumps({str(company): record_value}), callback=delivery_report)
         p.flush()
 
-    return f"Done. Produced {kpi.upper()} for all DAX40 companies to Kafka."
+    return f"Done. Produced {financial_KPIs} for all DAX40 companies to Kafka."
 
 
 if __name__ == '__main__':
@@ -109,5 +109,5 @@ if __name__ == '__main__':
         print(f"Now extracting {kpi}. Wait ...")
         print(f"Listing now all DAX40 companies with all {kpi.upper()} values.\n")
         get_financial_KPI(kpi=kpi, yearly_basis=True)
-        print("Done. Waiting for 60 seconds.")
-        time.sleep(60)
+        print("Done. Waiting for 120 seconds.")
+        time.sleep(120)

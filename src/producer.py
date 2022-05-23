@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup as bs
 import json
-from producersetup import initialize_yf_tickers, all_companies, topic, delivery_report, get
+from producersetup import initialize_yf_tickers, all_companies, delivery_report, get
 
 
 def produce_news_headlines(companies: list=all_companies):
