@@ -56,18 +56,7 @@ def convert_timestamps_keys_to_str(d: dict):
 
 
 def get_kpi_topic(kpi: str):
-    splitted_kpi = kpi.split(" ")
-
-    if len(splitted_kpi) == 3:
-        topic = splitted_kpi[0] + '_' + splitted_kpi[1] + '_' + splitted_kpi[2]
-
-    elif len(splitted_kpi) == 2:
-        topic = splitted_kpi[0] + '_' + splitted_kpi[1]
-
-    else:
-        topic = splitted_kpi[0]
-
-    return topic
+    return kpi.replace(" ", "_")
 
 
 def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies, yearly_basis=True):
