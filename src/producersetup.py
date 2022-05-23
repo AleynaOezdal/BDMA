@@ -7,15 +7,15 @@ import requests
 
 load_dotenv()
 
-# p = Producer({
-#     'bootstrap.servers': os.getenv("BOOTSTRAP.SERVERS"),
-#     'security.protocol': os.getenv("SECURITY.PROTOCOL"),
-#     'sasl.mechanisms': os.getenv("SASL.MECHANISMS"),
-#     'sasl.username': os.getenv("SASL.USERNAME"),
-#     'sasl.password': os.getenv("SASL.PASSWORD")
-# })
+p = Producer({
+    'bootstrap.servers': os.getenv("BOOTSTRAP.SERVERS"),
+    'security.protocol': os.getenv("SECURITY.PROTOCOL"),
+    'sasl.mechanisms': os.getenv("SASL.MECHANISMS"),
+    'sasl.username': os.getenv("SASL.USERNAME"),
+    'sasl.password': os.getenv("SASL.PASSWORD")
+})
 
-topic = 'headlines'
+topic = 'static_data'
 
 def delivery_report(err, msg):
     """ Called once for each message produced to indicate delivery result.
