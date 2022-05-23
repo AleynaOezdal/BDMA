@@ -43,6 +43,7 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
 
         p.produce(topic, json.dumps({str(company): record_value}), callback=delivery_report)
         p.flush()
+        time.sleep(5)
 
     return "Done. Produced all ESGs to Kafka."
 
@@ -96,5 +97,6 @@ if __name__ == '__main__':
     for kpi in financial_KPIs:
         print(f"Now extracting {kpi}. Wait ...")
         print(f"Listing now all DAX40 companies with all {kpi.upper()} values.\n")
+        get_financial_KPI(kpi=kpi, yearly_basis=True)
         print("Done. Waiting for 60 seconds.")
         time.sleep(60)
