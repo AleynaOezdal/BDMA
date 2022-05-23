@@ -51,11 +51,14 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
 # Instead of implementing five individual functions with the same structure, we only pass the KPI as an argument.
 financial_KPIs = ['Gross Profit', 'Ebit', 'Total Revenue', 'Net Income', 'Total Operating Expenses']
 
+# Convert dictionary keys from given data type to string
 def convert_timestamps_keys_to_str(d: dict):
     return {str(k): v for k, v in d.items()}
 
 
 def get_kpi_topic(kpi: str):
+    # Because Confluent Kafka doesn't allow blank spaces within a topic name,
+    # we replace the blank space in the kpi's name with an underscore.
     return kpi.replace(" ", "_")
 
 
@@ -79,6 +82,8 @@ def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies
             record_value = 'NaN'
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
+        # Because yfinance returns a DataFrame with timestamps as keys, we have to convert them into a string
+        # since Timestamps won't work as json key
         record_value = convert_timestamps_keys_to_str(record_value)
 
         p.produce(get_kpi_topic(kpi), json.dumps({str(company): record_value}), callback=delivery_report)
