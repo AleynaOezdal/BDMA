@@ -15,7 +15,6 @@ p = Producer({
     'sasl.password': os.getenv("SASL.PASSWORD")
 })
 
-topic = 'static_data'
 
 def delivery_report(err, msg):
     """ Called once for each message produced to indicate delivery result.
