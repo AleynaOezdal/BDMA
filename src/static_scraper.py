@@ -22,7 +22,7 @@ def get_WKN_and_ISIN(companies: list = all_companies):
 
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
         # print({company: identification_number})
-        p.produce(topic, json.dumps({str(company): identification_numbers}), callback=delivery_report)
+        p.produce('wkns_and_isins', json.dumps({str(company): identification_numbers}), callback=delivery_report)
         p.flush()
     return "Done. Produced all WKNs and ISINs to Kafka."
 
@@ -41,7 +41,7 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
             record_value = 'NaN'
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
-        p.produce(topic, json.dumps({str(company): record_value}), callback=delivery_report)
+        p.produce('esg', json.dumps({str(company): record_value}), callback=delivery_report)
         p.flush()
         time.sleep(5)
 
@@ -75,7 +75,7 @@ def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
         record_value = convert_timestamps_keys_to_str(record_value)
-        p.produce(topic, json.dumps({str(company): record_value}), callback=delivery_report)
+        p.produce(str(kpi), json.dumps({str(company): record_value}), callback=delivery_report)
         p.flush()
 
     return f"Done. Produced {kpi.upper()} for all DAX40 companies to Kafka."
