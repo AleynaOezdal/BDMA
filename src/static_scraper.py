@@ -38,15 +38,16 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
             record_value = company_ticker.sustainability.T['totalEsg'].to_dict()
             post = {f'{company}': record_value}
             print(post)
-        except AttributeError:
+        except Exception as e:
             record_value = 'NaN'
             post = {f'{company}': record_value}
-            print(f"Error occured in fetching data from API for {company}. Continuing with next company.\n")
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
             print(post)
             continue
     return "Done. Produced all ESGs to Kafka."
 
-
+# We can extract every KPI for each DAX40 company by changing the argument of the get_financial_KPI function.
+# Instead of implementing five individual functions with the same structure, we only pass the KPI as an argument.
 financial_KPIs = ['Gross Profit', 'Ebit', 'Total Revenue', 'Net Income', 'Total Operating Expenses']
 
 def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies):
@@ -54,6 +55,7 @@ def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies
     for company in companies:
         time.sleep(12)
         try:
+            # The Suffix is required for finance.yahoo.com, otherwise it won't recognize the symbol
             suffix = '.DE'
             company_ticker = yf.Ticker(f'{company.upper()+suffix}')
             # To create the value in a suitable way, we have to transpose the kpi data frame
@@ -61,13 +63,13 @@ def get_financial_KPI(kpi: str, companies: list = yfinance_symbols_dax_companies
             record_value = company_ticker.financials.T[kpi].to_dict()
             post = {f'{company}': record_value}
             print(post)
-        except AttributeError:
+        except Exception as e:
             record_value = 'NaN'
             post = {f'{company}': record_value}
-            print(f"Error occured in fetching data from API for {company}. Continuing with next company.\n")
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
             print(post)
             continue
-    return "Done. Produced Gross Profit for all DAX40 companies to Kafka."
+    return f"Done. Produced {kpi.upper()} for all DAX40 companies to Kafka."
 
 
 if __name__ == '__main__':
