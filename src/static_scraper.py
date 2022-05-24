@@ -5,28 +5,7 @@ import time
 import json
 from bs4 import BeautifulSoup as bs
 import yfinance as yf
-from producersetup import p, get, yfinance_symbols_dax_companies, delivery_report, all_companies
-
-def get_holder(companies): #benötigt andere Yahoo liste
-    for company in companies:
-        holders = dict()
-        try:
-            base_url = f"https://de.finance.yahoo.com/quote/{company}/holders?p={company}"
-            soup = bs(get(base_url, True), 'html.parser')
-
-            found_holder = soup.find("div", {"class": "W(100%) Mb(20px)"})
-
-            for row in found_holder.findAll('tr'):
-                aux = row.findAll('td')
-                holders[aux[1].string] = aux[0].string
-        except Exception as e:
-            holders = 'NaN'
-            print(f"FAILED. For {company} the following error occured: {type(e)}")
-        # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
-        p.produce('holder', json.dumps({str(company): holders}), callback=delivery_report)
-        p.flush()
-    return "Done. Produced all Holder to Kafka."
+from producersetup import p, get, yfinance_symbols_dax_companies, delivery_report, all_companies, initialize_yf_tickers
 
 
 def get_WKN_and_ISIN(companies: list = all_companies):
@@ -42,28 +21,51 @@ def get_WKN_and_ISIN(companies: list = all_companies):
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
         p.produce('wkns_and_isins', json.dumps({str(company): identification_numbers}), callback=delivery_report)
         p.flush()
     return "Done. Produced all WKNs and ISINs to Kafka."
 
-#funktioniert noch nicht ganz
+
+def get_holders(companies: list = yfinance_symbols_dax_companies):
+    for company in companies:
+        holders = dict()
+        try:
+            suffix = '.DE'
+            base_url = f"https://de.finance.yahoo.com/quote/{company.upper()+suffix}/holders?p={company.upper()+suffix}"
+            soup = bs(get(base_url, yahoo_finance=True), 'html.parser')
+
+            found_holders = soup.find("div", {"class": "W(100%) Mb(20px)"})
+            for row in found_holders.findAll('tr'):
+                holder = row.findAll('td')
+                holders[holder[1].string] = holder[0].string
+
+        except Exception as e:
+            holders = 'NaN'
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
+
+        # Store company as key and major holders of the company as value in a dict and transform it into JSON
+        p.produce('holder', json.dumps({str(company): holders}), callback=delivery_report)
+        p.flush()
+    return "Done. Produced all Holder to Kafka."
+
+
+# TBD
 def get_history_stock_price(companies: list = yfinance_symbols_dax_companies):
+
     # Get ticker for multiple companies
     ticker = initialize_yf_tickers(companies)
-
-    # Iterate over every company and extract Total Sustainability Score
     history_stock_price = dict()
 
     for company in companies:
         try:
-            history_stock_price[f'{company}'] = ticker.history(period='max')
+            history_stock_price[f'{company}'] = ticker.Ticker.history(period='max')
             print("Producing record: {}\t{}".format(company, history_stock_price[f'{company}']))
         except Exception as e:
             record_value = 'NaN'
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
     return history_stock_price
+
 
 def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
     # Iterate over every company and extract ESG Score

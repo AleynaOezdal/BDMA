@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup as bs
 import json
-from producersetup import initialize_yf_tickers, all_companies, delivery_report, get
+from producersetup import all_companies, delivery_report, get, p
 
 
-def get_stock_price(companies: list=all_companies):
+def get_stock_price(companies: list = all_companies):
 
     for company in companies:
         comp_stock_prices = dict()
@@ -26,28 +26,27 @@ def get_stock_price(companies: list=all_companies):
             comp_stock_prices[f"{company}"] = stock_price
 
         except Exception as e:
-            comp_stock_prices = 'NaN'
+            comp_stock_prices[f"{company}"] = 'NaN'
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
-        # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
+        # Store company as key and stock price as value in a dict and transform it into JSON
         p.produce('stock_price', json.dumps({str(company): comp_stock_prices}), callback=delivery_report)
         p.flush()
+
     return "Done. Produced all Stock Prices to Kafka."
 
-def get_news(companies: list=all_companies):
+
+def get_news(companies: list = all_companies):
 
     for company in companies:
-        news = dict()
+
         try:
             base_url = f"https://www.finanzen.net/aktien/{company}-aktie"
             soup = bs(get(base_url), 'html.parser')
-
             found_news = soup.find("div", {"class": "col-sm-8 col-xs-12"}).find_all("div", {"class": "newsTeaser clearfix"})
-
             count = 0
-
             for headline in found_news:
+                news = dict()
                 headline_news = {
                     "headline": headline.find("div", {"class": "newsTeaserText"}).find("a").text,
                     "timestamp": headline.find("div", {"class": "pull-left"}).text,
@@ -55,21 +54,23 @@ def get_news(companies: list=all_companies):
                                  headline.find("div", {"class": "newsTeaserText"}).a["href"],
 
                 }
+                # Generate unique key with company and iterating count
+                # Store headline as value for specific key
                 news[f"{company}_{count}"] = headline_news
                 count += 1
-                post = {f"{company}_{count}": headline_news}
-                news.update(post)
+                # Store company as key and headline as value in a dict and transform it into JSON
+                p.produce('news', json.dumps({str(company): news}), callback=delivery_report)
+                p.flush()
 
         except Exception as e:
-            news = 'NaN'
+            # Because there a lots of news for each DAX company, we don't produce a failed news item to Kafka
             print(f"FAILED. For {company} the following error occured: {type(e)}")
-        # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
-        p.produce('news', json.dumps({str(company): news}), callback=delivery_report)
-        p.flush()
+            continue
+
     return "Done. Produced all News to Kafka."
 
-def get_worker_review(companies): #Liste für Companies erstellen
+
+def get_worker_review(companies: list = all_companies):
 
     for company in companies:
         all_reviews = dict()
@@ -115,15 +116,13 @@ def get_worker_review(companies): #Liste für Companies erstellen
         except Exception as e:
             all_reviews[f'{company}'] = "NaN"
             print(f"FAILED. For {company} the following error occured: {type(e)}")
-        # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
+
+        # Store company as key and Reviews as value in a dict and transform it into JSON
         p.produce('Reviews', json.dumps({str(company): all_reviews}), callback=delivery_report)
         p.flush()
     return "Done. Produced all Reviews to Kafka."
 
 def get_world_news():
-    news = dict()
-
     try:
         base_url = "https://www.boerse.de/unternehmensnachrichten/welt/"
         soup = bs(get(base_url), 'html.parser')
@@ -133,7 +132,8 @@ def get_world_news():
         count = 0
 
         for headline in found_news:
-            if headline.find("div", {"class": "col-xs-9 col-md-10"}) == E0fError:
+            news = dict()
+            if headline.find("div", {"class": "col-xs-9 col-md-10"}) == EOFError:
                 continue
             else:
                 headline_news = {
@@ -141,21 +141,19 @@ def get_world_news():
                     "timestamp": headline.find("div", {"class": "col-xs-3 col-md-2"}).text.replace("  ", "").replace("\n", ""),
                     "more_info": headline.find("div", {"class": "col-xs-9 col-md-10"}).a["href"],
                  }
+                # Store as key and news as value in a dict
                 news[f"Welt-News_{count}"] = headline_news
                 count += 1
-                post = {f"Welt-News_{count}": headline_news}
-                news.update(post)
+                # Transform dict into JSON and produce it to Kafka
+                p.produce('world_news', json.dumps(news), callback=delivery_report)
+                p.flush()
 
     except Exception as e:
-        news = 'NaN'
+        # Since general news are existing in high quantity, we won't produce here anything to Kafka.
         print(f"FAILED. For Welt-News the following error occured: {type(e)}")
-        # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
-    p.produce('world_news', json.dumps({"world_news": news}), callback=delivery_report)
-    p.flush()
-
 
     return "Done. Produced all World-news to Kafka."
+
 
 def get_community(companies, number): #Liste für companies und number erstellen
 
@@ -184,16 +182,17 @@ def get_community(companies, number): #Liste für companies und number erstellen
             community = 'NaN'
             print(f"FAILED. For {company} the following error occured: {type(e)}")
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
+
         p.produce('Community_news', json.dumps({str(company): community}), callback=delivery_report)
         p.flush()
     return "Done. Produced all Community_news to Kafka."
 
-def get_customer_experience(companies): #Liste für Companies erstellen
 
+def get_customer_experience(companies):
     for company in companies:
         customer_exp = dict()
         try:
+            # TBD: URLs
             base_url = f"https://de.trustpilot.com/review/{company}"
             soup = bs(get(base_url), 'html.parser')
 
@@ -206,7 +205,7 @@ def get_customer_experience(companies): #Liste für Companies erstellen
                     "title": experience.find("a").text,
                     "review": experience.find("div", {"class": "styles_reviewContent__0Q2Tg"}).contents[-1].text,
                     "time": experience.find("div", {"class": "typography_typography__QgicV typography_bodysmall__irytL typography_color-gray-6__TogX2 typography_weight-regular__TWEnf typography_fontstyle-normal__kHyN3 styles_datesWrapper__RCEKH"}).text,
-                    "more info": url + experience.a["href"]
+                    "more info": base_url + experience.a["href"]
                 }
                 customer_exp[f"{company}_{count}"] = cus_exp
                 count += 1
@@ -216,41 +215,14 @@ def get_customer_experience(companies): #Liste für Companies erstellen
             customer_exp = 'NaN'
             print(f"FAILED. For {company} the following error occured: {type(e)}")
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        # print({company: identification_number})
+
         p.produce('Customer_experience', json.dumps({str(company): customer_exp}), callback=delivery_report)
         p.flush()
     return "Done. Produced all Customer_experience to Kafka."
-
-
-def produce_news_headlines(companies: list=all_companies):
-    # All news to be stored in a dictionary
-    all_news = {}
-
-    for company in companies:
-        # Scrape finanzen.net for each company on news section
-        base_url = f'https://www.finanzen.net/news/{company}-news'
-        soup = bs(get(base_url), 'html.parser')
-
-        # Store headlines for every company in a dictionary
-        found_news = soup.find_all("a", attrs={"class": "teaser"})
-
-        # Declare a counter to enumerate headlines for each company
-        count = 0
-
-        # Iterate over every headline and store it in the all_news dict with corresponding enumeration
-        for headline in found_news:
-            all_news[f"{company}_{count}"] = headline.text
-            count += 1
-            post = {f"{company}_{count}": headline.text}
-            #p.produce(topic, json.dumps(post), callback=delivery_report)
-            #p.flush()
-        # print(f"+++ Finished Company: {company} +++\n")
-
-    return print("DONE. Produced all headlines to Kafka.")
 
 
 
 if __name__ == '__main__':
     # Next steps: Every headline as single message to KAFKA
     # WARN: Only start if kafka cluster is set up!
-    produce_news_headlines()
+    pass
