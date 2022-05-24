@@ -7,54 +7,159 @@ import requests
 
 load_dotenv()
 
-p = Producer({
-    'bootstrap.servers': os.getenv("BOOTSTRAP.SERVERS"),
-    'security.protocol': os.getenv("SECURITY.PROTOCOL"),
-    'sasl.mechanisms': os.getenv("SASL.MECHANISMS"),
-    'sasl.username': os.getenv("SASL.USERNAME"),
-    'sasl.password': os.getenv("SASL.PASSWORD")
-})
+p = Producer(
+    {
+        "bootstrap.servers": os.getenv("BOOTSTRAP.SERVERS"),
+        "security.protocol": os.getenv("SECURITY.PROTOCOL"),
+        "sasl.mechanisms": os.getenv("SASL.MECHANISMS"),
+        "sasl.username": os.getenv("SASL.USERNAME"),
+        "sasl.password": os.getenv("SASL.PASSWORD"),
+    }
+)
 
 
 def delivery_report(err, msg):
-    """ Called once for each message produced to indicate delivery result.
-        Triggered by poll() or flush(). """
+    """Called once for each message produced to indicate delivery result.
+    Triggered by poll() or flush()."""
     if err is not None:
-        print('Message delivery failed: {}'.format(err))
+        print("Message delivery failed: {}".format(err))
     else:
-        print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
+        print("Message delivered to {} [{}]".format(msg.topic(), msg.partition()))
 
     return "DONE."
 
 
 all_companies = [
-    'adidas', 'airbus', 'allianz', 'basf', 'bayer', 'bmw', 'brenntag',
-    'continental', 'covestro', 'daimler_truck', 'delivery_hero', 'deutsche_bank',
-    'deutsche_boerse', 'deutsche_post', 'deutsche_telekom', 'eon', 'fresenius',
-    'fresenius_medical_care', 'hannover_rueck', 'heidelbergcement', 'hellofresh',
-    'henkel_vz', 'infineon', 'linde', 'mercedes-benz', 'porsche', 'puma', 'qiagen',
-    'rwe', 'sap', 'sartorius_vz', 'siemens', 'siemens_healthineers', 'symrise',
-    'volkswagen', 'vonovia', 'zalando'
+    "adidas",
+    "airbus",
+    "allianz",
+    "basf",
+    "bayer",
+    "bmw",
+    "brenntag",
+    "continental",
+    "covestro",
+    "daimler_truck",
+    "delivery_hero",
+    "deutsche_bank",
+    "deutsche_boerse",
+    "deutsche_post",
+    "deutsche_telekom",
+    "eon",
+    "fresenius",
+    "fresenius_medical_care",
+    "hannover_rueck",
+    "heidelbergcement",
+    "hellofresh",
+    "henkel_vz",
+    "infineon",
+    "linde",
+    "mercedes-benz",
+    "porsche",
+    "puma",
+    "qiagen",
+    "rwe",
+    "sap",
+    "sartorius_vz",
+    "siemens",
+    "siemens_healthineers",
+    "symrise",
+    "volkswagen",
+    "vonovia",
+    "zalando",
 ]
+
+companies_url = [
+    "adidas",
+    "airbus",
+    "allianz",
+    "basf",
+    "bayer",
+    "bmw",
+    "brenntag",
+    "continental",
+    "covestro",
+    "daimler-truck",
+    "deliveryhero",
+    "deutsche-bank",
+    "deutsche-boerse",
+    "deutschepost",
+    "telekom",
+    "eon",
+    "fresenius",
+    "freseniusmedicalcare",
+    "hannover-rueck",
+    "heidelbergcement",
+    "hellofresh",
+    "henkel",
+    "infineon",
+    "linde-gas",
+    "mercedes-benz",
+    "porsche",
+    "puma",
+    "qiagen",
+    "rwe",
+    "sap",
+    "sartorius",
+    "siemens",
+    "siemens-healthineers",
+    "symrise",
+    "volkswagen",
+    "vonovia",
+    "zalando",
+]
+
 
 # Source for DAX Symbols: https://de.wikipedia.org/wiki/DAX#Zusammensetzung
 yfinance_symbols_dax_companies = [
-     'ads', 'air', 'alv', 'bas', 'bayn', 'bmw', 'bnr',
-     'con', '1cov', 'dtg', 'dher', 'dbk', 'db1', 'dpw',
-     'dte', 'eoan', 'fre', 'fme', 'hnr1', 'hei', 'hfg',
-     'hen3', 'ifx', 'lin', 'mbg', 'mrk', 'mtx', 'muv2',
-     'pah3', 'pum', 'qia', 'rwe', 'sap', 'srt3', 'sie',
-     'shl', 'sy1', 'vow3', 'vna', 'zal'
+    "ads",
+    "air",
+    "alv",
+    "bas",
+    "bayn",
+    "bmw",
+    "bnr",
+    "con",
+    "1cov",
+    "dtg",
+    "dher",
+    "dbk",
+    "db1",
+    "dpw",
+    "dte",
+    "eoan",
+    "fre",
+    "fme",
+    "hnr1",
+    "hei",
+    "hfg",
+    "hen3",
+    "ifx",
+    "lin",
+    "mbg",
+    "mrk",
+    "mtx",
+    "muv2",
+    "pah3",
+    "pum",
+    "qia",
+    "rwe",
+    "sap",
+    "srt3",
+    "sie",
+    "shl",
+    "sy1",
+    "vow3",
+    "vna",
+    "zal",
 ]
 
-test_symbols = [
-    'ads', 'air', 'alv'
-]
+test_symbols = ["ads", "air", "alv"]
 
 
 def initialize_yf_tickers(companies: list):
     # Initialize yahooFinance Ticker for multiple companies and return it
-    ticker = yf.Tickers(' '.join(companies))
+    ticker = yf.Tickers(" ".join(companies))
     return ticker
 
 
@@ -71,5 +176,4 @@ def get(url, yahoo_finance=False):
     if res.status_code == 200:
         return res.text.strip()
     else:
-        return f'Error in URL Status Code: ERROR {res.status_code}'
-
+        raise BaseException
