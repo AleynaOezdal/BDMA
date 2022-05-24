@@ -4,6 +4,7 @@ import plotly.express as px
 import pandas as pd
 from zmq import EMSGSIZE
 from retrieve_sample_data import get_stocks_data, get_news_data, get_kpi_data
+from sidebar import data_kpi
 
 colors = {
     'background': '#F6F6F6'
@@ -56,7 +57,7 @@ def get_value_without_kpi(value):
             })
         return content
     else:
-        content  = html.H3(id = 'content-header', children=[value], style={
+        content  = html.H3(id = 'content-header', children=['Select a navigation point'], style={
                 'font-family': font['helvetica'],
                 'font-weight': 'bold', 
                 'margin': '1%'
@@ -64,9 +65,7 @@ def get_value_without_kpi(value):
         return content
 
 def get_kpi_content_value(value):
-    if value == 'None':
-        return ''
-    else:
+    if value in data_kpi:
         #big letter 
         name = value.title()
 
@@ -238,3 +237,10 @@ def get_kpi_content_value(value):
                     ], style={'width': '100%', 'display': 'inline-block', 'vertical-align': 'middle','font-family': font['helvetica']})
         
         return content
+    else:
+        content_header_kpi  = html.H3(id = 'content-header', children=['Select a Company'], style={
+                                'font-family': font['helvetica'],
+                                'font-weight': 'bold', 
+                                'margin': '1%'
+                            })
+        return content_header_kpi
