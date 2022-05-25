@@ -1,0 +1,9 @@
+#1: _id & timestamp in jeder Scraper (dazu entscheiden ob news etc. alle in ein dict oder einzeln an Kafka -> frage bzgl. auslesen (REGEX?))
+#2: Fehlende Scraper hinzu: DAX, Dividende
+#3: Neuen Kafka Cluster in europe-west1 BELGIUM
+#4: X topics erstellen (X = Anzahl Scraper)
+#5: 3 Databases in MongoDB Cluster erstellen mit den jeweiligen Collections (nach Dashboard)
+#6: X Connectors erstellen (X = Anzahl Collections)
+#7: Funktionen für Datenbank auslesen schreiben (analog get_WKNs_and_ISINs) -> hier abwarten Frontend-Team-Rückmeldung
+#8: ggf. Twitter API
+#9: tbd
