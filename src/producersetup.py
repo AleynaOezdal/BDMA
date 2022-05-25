@@ -9,11 +9,11 @@ load_dotenv()
 
 p = Producer(
     {
-        "bootstrap.servers": os.getenv("BOOTSTRAP.SERVERS"),
-        "security.protocol": os.getenv("SECURITY.PROTOCOL"),
-        "sasl.mechanisms": os.getenv("SASL.MECHANISMS"),
-        "sasl.username": os.getenv("SASL.USERNAME"),
-        "sasl.password": os.getenv("SASL.PASSWORD"),
+        "bootstrap.servers": os.getenv("BOOTSTRAP.SERVERS.TEST"),
+        "security.protocol": os.getenv("SECURITY.PROTOCOL.TEST"),
+        "sasl.mechanisms": os.getenv("SASL.MECHANISMS.TEST"),
+        "sasl.username": os.getenv("SASL.USERNAME.TEST"),
+        "sasl.password": os.getenv("SASL.PASSWORD.TEST"),
     }
 )
 

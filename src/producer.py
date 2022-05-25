@@ -84,10 +84,11 @@ def get_news(companies: list = all_companies):
                 news[f"{company}_{count}"] = headline_news
                 count += 1
                 # Store company as key and headline as value in a dict and transform it into JSON
-                p.produce(
-                    "news", json.dumps({str(company): news}), callback=delivery_report
-                )
-                p.flush()
+                # p.produce(
+                #    "news", json.dumps({str(company): news}), callback=delivery_report
+                # )
+                # p.flush()
+                print(news)
 
         except Exception as e:
             # Because there a lots of news for each DAX company, we don't produce a failed news item to Kafka
@@ -133,8 +134,9 @@ def get_worker_review(companies: list = all_companies):
                 count += 1
                 post = {f"{company}_{count}": positive}
 
-                p.produce("Reviews", json.dumps(post), callback=delivery_report)
-                p.flush()
+                # p.produce("Reviews", json.dumps(post), callback=delivery_report)
+                # p.flush()
+                print(post)
 
             for review in kununu_negative:
                 negative = {
@@ -148,8 +150,9 @@ def get_worker_review(companies: list = all_companies):
                 count += 1
                 post = {f"{company}_{count}": negative}
 
-                p.produce("Reviews", json.dumps(post), callback=delivery_report)
-                p.flush()
+                # p.produce("Reviews", json.dumps(post), callback=delivery_report)
+                # p.flush()
+                print(post)
 
             for review in kununu_suggestions:
                 suggestions = {
@@ -163,8 +166,9 @@ def get_worker_review(companies: list = all_companies):
                 count += 1
                 post = {f"{company}_{count}": suggestions}
 
-                p.produce("Reviews", json.dumps(post), callback=delivery_report)
-                p.flush()
+                # p.produce("Reviews", json.dumps(post), callback=delivery_report)
+                # p.flush()
+                print(post)
 
         except Exception as e:
             print(f"FAILED. For {company} the following error occured: {type(e)}")
@@ -359,8 +363,10 @@ if __name__ == "__main__":
     # WARN: Only start if kafka cluster is set up!
     # get_stock_price()
     # get_news()
-    # get_worker_review()
+    # key: company
+    # value: dict --> value['headline'] => NLP
+    get_worker_review()
     # get_world_news()
     # get_community()
     # get_customer_experience()
-    pass
+    # pass

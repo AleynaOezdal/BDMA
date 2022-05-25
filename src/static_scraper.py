@@ -16,7 +16,7 @@ from producersetup import (
 
 
 def get_WKN_and_ISIN(companies: list = all_companies):
-    # Scrape finanzen.net for each company for WKN/ ISN
+    # Scrape finanzen.net for each company for WKN/ ISIN
     for company in companies:
         try:
             base_url = f"https://www.finanzen.net/aktien/{company}-aktie"
@@ -31,8 +31,9 @@ def get_WKN_and_ISIN(companies: list = all_companies):
 
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
         p.produce(
-            "wkns_and_isins",
-            json.dumps({str(company): identification_numbers}),
+            "identification",
+            key=company,
+            value=identification_numbers,
             callback=delivery_report,
         )
         p.flush()
@@ -103,7 +104,10 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
         p.produce(
-            "esg", json.dumps({str(company): record_value}), callback=delivery_report
+            "esg_score",
+            key=json.dumps(company),
+            value=json.dumps(record_value),
+            callback=delivery_report,
         )
         p.flush()
         time.sleep(5)
@@ -172,20 +176,20 @@ if __name__ == "__main__":
     # Test if all KPIs are extractable
     print("Now: WKNs and ISINs for all DAX Companies ...")
     get_WKN_and_ISIN()
-    print("Done. Waiting for 5 seconds.")
-    time.sleep(5)
+    # print("Done. Waiting for 5 seconds.")
+    # time.sleep(5)
 
-    print("Now: ESG Score for all DAX Companies ...")
-    get_ESG_score()
-    print("Done. Waiting for 5 seconds.")
-    time.sleep(5)
+    # print("Now: ESG Score for all DAX Companies ...")
+    # get_ESG_score()
+    # print("Done. Waiting for 5 seconds.")
+    # time.sleep(5)
 
-    print("Now: All finance KPIs for all DAX Companies ...")
-    for kpi in financial_KPIs:
-        print(f"Now extracting {kpi}. Wait ...")
-        print(f"Listing now all DAX40 companies with all {kpi.upper()} values.\n")
-        get_financial_KPI(kpi=kpi, yearly_basis=True)
-        print("Done. Waiting for 120 seconds.")
-        time.sleep(120)
-    get_holders()
-    # get_history_stock_price()
+    # print("Now: All finance KPIs for all DAX Companies ...")
+    # for kpi in financial_KPIs:
+    #     print(f"Now extracting {kpi}. Wait ...")
+    #     print(f"Listing now all DAX40 companies with all {kpi.upper()} values.\n")
+    #     get_financial_KPI(kpi=kpi, yearly_basis=True)
+    #     print("Done. Waiting for 120 seconds.")
+    #     time.sleep(120)
+    # get_holders()
+    # # get_history_stock_price()
