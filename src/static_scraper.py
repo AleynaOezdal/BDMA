@@ -32,7 +32,7 @@ def get_WKN_and_ISIN(companies: list = all_companies):
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
         p.produce(
             "wkns_and_isins",
-            json.dumps({str(company): identification_numbers}),
+            json.dumps({"_id": company, "wkns_and_isins": identification_numbers}),
             callback=delivery_report,
         )
         p.flush()
@@ -58,7 +58,9 @@ def get_holders(companies: list = yfinance_symbols_dax_companies):
 
         # Store company as key and major holders of the company as value in a dict and transform it into JSON
         p.produce(
-            "holder", json.dumps({str(company): holders}), callback=delivery_report
+            "holder",
+            json.dumps({"_id": company, "holders": holders}),
+            callback=delivery_report,
         )
         p.flush()
     return "Done. Produced all holders to Kafka."
@@ -68,22 +70,28 @@ def get_holders(companies: list = yfinance_symbols_dax_companies):
 def get_history_stock_price(companies: list = yfinance_symbols_dax_companies):
     for company in companies:
         try:
-            # suffix = '.DE'
-            ticker = yf.download(
-                f"{company.upper()+'.DE'}",
+            suffix = ".DE"
+            record_value = yf.download(
+                f"{company.upper()+suffix}",
                 start="2022-05-01",
                 end="2022-05-21",
                 interval="1d",
                 group_by="ticker",
-            )
-            record_value = ticker
-            # history_stock_price[f'{company}'] = ticker.history(period='max')
-            # print("Producing record: {}\t{}".format(company, record_value))
+            ).to_json()
+
         except Exception as e:
             record_value = "NaN"
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
-        print({str(company): record_value})
+        # Store company as key and stock history as value in a dict and transform it into JSON
+        # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
+        # Steps: res = json.loads(value), then result = pd.json_normalize(res)
+        p.produce(
+            "holder",
+            json.dumps({"_id": company, "history_stock_price": record_value}),
+            callback=delivery_report,
+        )
+        p.flush()
 
     return "Done. Produced all stock data to Kafka."
 
@@ -103,7 +111,9 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
         p.produce(
-            "esg", json.dumps({str(company): record_value}), callback=delivery_report
+            "esg",
+            json.dumps({"_id": company, "esg_score": record_value}),
+            callback=delivery_report,
         )
         p.flush()
         time.sleep(5)
@@ -160,7 +170,7 @@ def get_financial_KPI(
 
         p.produce(
             get_kpi_topic(kpi),
-            json.dumps({str(company): record_value}),
+            json.dumps({"_id": company, f"{kpi}": record_value}),
             callback=delivery_report,
         )
         p.flush()
