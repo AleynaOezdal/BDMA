@@ -50,7 +50,7 @@ def get_stock_price(companies: list = all_companies):
 
         # Store company as key and stock price as value in a dict and transform it into JSON
         p.produce(
-            "stock_price",
+            "current_stock_price",
             json.dumps(
                 {
                     "_id": company,
@@ -90,7 +90,7 @@ def get_news(companies: list = all_companies):
                 # Store headline as value for specific key
                 # Store company as key and headline as value in a dict and transform it into JSON
                 p.produce(
-                    "news",
+                    "company_news",
                     json.dumps(
                         {
                             "_id": f"{company}_{count}",

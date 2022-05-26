@@ -66,7 +66,7 @@ def get_holders(companies: list = yfinance_symbols_dax_companies):
 
         # Store company as key and major holders of the company as value in a dict and transform it into JSON
         p.produce(
-            "holder",
+            "holders",
             json.dumps(
                 {"_id": company, "holders": holders, "time": str(dt.datetime.now())}
             ),
@@ -97,7 +97,7 @@ def get_history_stock_price(companies: list = yfinance_symbols_dax_companies):
         # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
         # Steps: res = json.loads(value), then result = pd.json_normalize(res)
         p.produce(
-            "holder",
+            "history_stock_price",
             json.dumps(
                 {
                     "_id": company,
@@ -138,7 +138,7 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
             callback=delivery_report,
         )
         p.flush()
-        time.sleep(5)
+        time.sleep(7)
 
     return "Done. Produced all ESGs to Kafka."
 
@@ -207,7 +207,7 @@ def get_DAX_history_stock_price_til_today(
 ):
     dax_stock_data = yf.download("^GDAXI", end=end, *args)
     p.produce(
-        "dividends",
+        "dax_history_til_date",
         json.dumps(
             {
                 "_id": "DAX40",
@@ -263,3 +263,4 @@ if __name__ == "__main__":
     get_holders()
     get_dividends()
     get_DAX_history_stock_price_til_today()
+    # get_history_stock_price()
