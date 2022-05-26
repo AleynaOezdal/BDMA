@@ -1,4 +1,4 @@
-#1: _id & timestamp in jeder Scraper (dazu entscheiden ob news etc. alle in ein dict oder einzeln an Kafka -> frage bzgl. auslesen (REGEX?))
+[DONE] #1: _id & timestamp in jeder Scraper (dazu entscheiden ob news etc. alle in ein dict oder einzeln an Kafka -> frage bzgl. auslesen (REGEX?)) 
 #2: Fehlende Scraper hinzu: DAX, Dividende
 #3: Neuen Kafka Cluster in europe-west1 BELGIUM
 #4: X topics erstellen (X = Anzahl Scraper)

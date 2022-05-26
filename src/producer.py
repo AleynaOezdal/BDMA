@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import json
 from producersetup import all_companies, delivery_report, get, p, companies_url
+import datetime as dt
 
 
 def get_stock_price(companies: list = all_companies):
@@ -50,7 +51,13 @@ def get_stock_price(companies: list = all_companies):
         # Store company as key and stock price as value in a dict and transform it into JSON
         p.produce(
             "stock_price",
-            json.dumps({"_id": company, "stock_price": comp_stock_prices}),
+            json.dumps(
+                {
+                    "_id": company,
+                    "stock_price": comp_stock_prices,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
             callback=delivery_report,
         )
         p.flush()
@@ -84,7 +91,13 @@ def get_news(companies: list = all_companies):
                 # Store company as key and headline as value in a dict and transform it into JSON
                 p.produce(
                     "news",
-                    json.dumps({"_id": f"{company}_{count}", "news": headline_news}),
+                    json.dumps(
+                        {
+                            "_id": f"{company}_{count}",
+                            "news": headline_news,
+                            "time": str(dt.datetime.now()),
+                        }
+                    ),
                     callback=delivery_report,
                 )
                 p.flush()
@@ -100,7 +113,6 @@ def get_news(companies: list = all_companies):
 def get_worker_review(companies: list = all_companies):
 
     for company in companies:
-        all_reviews = dict()
         try:
             base_url = f"https://www.kununu.com/de/{company}"
             soup = bs(get(base_url), "html.parser")
@@ -129,7 +141,11 @@ def get_worker_review(companies: list = all_companies):
                         "href"
                     ],
                 }
-                post = {"_id": f"{company}_{count}", "positive_reviews": positive}
+                post = {
+                    "_id": f"{company}_{count}",
+                    "positive_reviews": positive,
+                    "time": str(dt.datetime.now()),
+                }
                 count += 1
 
                 p.produce("Reviews", json.dumps(post), callback=delivery_report)
@@ -143,7 +159,11 @@ def get_worker_review(companies: list = all_companies):
                         "href"
                     ],
                 }
-                post = {"_id": f"{company}_{count}", "negative_reviews": negative}
+                post = {
+                    "_id": f"{company}_{count}",
+                    "negative_reviews": negative,
+                    "time": str(dt.datetime.now()),
+                }
                 count += 1
 
                 p.produce("Reviews", json.dumps(post), callback=delivery_report)
@@ -157,7 +177,11 @@ def get_worker_review(companies: list = all_companies):
                         "href"
                     ],
                 }
-                post = {"_id": f"{company}_{count}", "suggestions": suggestions}
+                post = {
+                    "_id": f"{company}_{count}",
+                    "suggestions": suggestions,
+                    "time": str(dt.datetime.now()),
+                }
                 count += 1
 
                 p.produce("Reviews", json.dumps(post), callback=delivery_report)
@@ -207,7 +231,11 @@ def get_world_news():
                     p.produce(
                         "world_news",
                         json.dumps(
-                            {"_id": f"Welt-News_{count}", "headline": headline_news}
+                            {
+                                "_id": f"Welt-News_{count}",
+                                "headline": headline_news,
+                                "time": str(dt.datetime.now()),
+                            }
                         ),
                         callback=delivery_report,
                     )
@@ -264,7 +292,11 @@ def get_community(companies: list = all_companies):
                 p.produce(
                     "Community_news",
                     json.dumps(
-                        {"_id": f"{company}_{count}", "community_news": communities}
+                        {
+                            "_id": f"{company}_{count}",
+                            "community_news": communities,
+                            "time": str(dt.datetime.now()),
+                        }
                     ),
                     callback=delivery_report,
                 )
@@ -336,7 +368,13 @@ def get_customer_experience(companies: list = companies_url):
                 count += 1
                 p.produce(
                     "Customer_experience",
-                    json.dumps({"_id": f"{company}_{count}", "customer_exp": cus_exp}),
+                    json.dumps(
+                        {
+                            "_id": f"{company}_{count}",
+                            "customer_exp": cus_exp,
+                            "time": str(dt.datetime.now()),
+                        }
+                    ),
                     callback=delivery_report,
                 )
                 p.flush()
@@ -344,7 +382,12 @@ def get_customer_experience(companies: list = companies_url):
         except BaseException as e:
             p.produce(
                 "Customer_experience",
-                json.dumps({str(company): "No reviews available"}),
+                json.dumps(
+                    {
+                        str(company): "No reviews available",
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
                 callback=delivery_report,
             )
             p.flush()
@@ -362,4 +405,4 @@ if __name__ == "__main__":
     # get_world_news()
     # get_community()
     # get_customer_experience()
-    pass
+    print(str(dt.datetime.now()))

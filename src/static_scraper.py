@@ -2,6 +2,7 @@
 Here we will extract data from the internet which won't change in June 2022
 """
 import time
+import datetime as dt
 import json
 from bs4 import BeautifulSoup as bs
 import yfinance as yf
@@ -32,7 +33,13 @@ def get_WKN_and_ISIN(companies: list = all_companies):
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
         p.produce(
             "wkns_and_isins",
-            json.dumps({"_id": company, "wkns_and_isins": identification_numbers}),
+            json.dumps(
+                {
+                    "_id": company,
+                    "wkns_and_isins": identification_numbers,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
             callback=delivery_report,
         )
         p.flush()
@@ -59,7 +66,9 @@ def get_holders(companies: list = yfinance_symbols_dax_companies):
         # Store company as key and major holders of the company as value in a dict and transform it into JSON
         p.produce(
             "holder",
-            json.dumps({"_id": company, "holders": holders}),
+            json.dumps(
+                {"_id": company, "holders": holders, "time": str(dt.datetime.now())}
+            ),
             callback=delivery_report,
         )
         p.flush()
@@ -88,7 +97,13 @@ def get_history_stock_price(companies: list = yfinance_symbols_dax_companies):
         # Steps: res = json.loads(value), then result = pd.json_normalize(res)
         p.produce(
             "holder",
-            json.dumps({"_id": company, "history_stock_price": record_value}),
+            json.dumps(
+                {
+                    "_id": company,
+                    "history_stock_price": record_value,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
             callback=delivery_report,
         )
         p.flush()
@@ -112,7 +127,13 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
 
         p.produce(
             "esg",
-            json.dumps({"_id": company, "esg_score": record_value}),
+            json.dumps(
+                {
+                    "_id": company,
+                    "esg_score": record_value,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
             callback=delivery_report,
         )
         p.flush()
@@ -170,7 +191,9 @@ def get_financial_KPI(
 
         p.produce(
             get_kpi_topic(kpi),
-            json.dumps({"_id": company, f"{kpi}": record_value}),
+            json.dumps(
+                {"_id": company, f"{kpi}": record_value, "time": str(dt.datetime.now())}
+            ),
             callback=delivery_report,
         )
         p.flush()
