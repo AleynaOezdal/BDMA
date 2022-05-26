@@ -50,7 +50,7 @@ def get_stock_price(companies: list = all_companies):
         # Store company as key and stock price as value in a dict and transform it into JSON
         p.produce(
             "stock_price",
-            json.dumps({str(company): comp_stock_prices}),
+            json.dumps({"_id": company, "stock_price": comp_stock_prices}),
             callback=delivery_report,
         )
         p.flush()
@@ -70,7 +70,6 @@ def get_news(companies: list = all_companies):
             )
             count = 0
             for headline in found_news:
-                news = dict()
                 headline_news = {
                     "headline": headline.find("div", {"class": "newsTeaserText"})
                     .find("a")
@@ -79,13 +78,14 @@ def get_news(companies: list = all_companies):
                     "more_info": "https://www.finanzen.net/nachricht/aktien/"
                     + headline.find("div", {"class": "newsTeaserText"}).a["href"],
                 }
+                count += 1
                 # Generate unique key with company and iterating count
                 # Store headline as value for specific key
-                news[f"{company}_{count}"] = headline_news
-                count += 1
                 # Store company as key and headline as value in a dict and transform it into JSON
                 p.produce(
-                    "news", json.dumps({str(company): news}), callback=delivery_report
+                    "news",
+                    json.dumps({"_id": f"{company}_{count}", "news": headline_news}),
+                    callback=delivery_report,
                 )
                 p.flush()
 
@@ -129,9 +129,8 @@ def get_worker_review(companies: list = all_companies):
                         "href"
                     ],
                 }
-                all_reviews[f"{company}_{count}"] = positive
+                post = {"_id": f"{company}_{count}", "positive_reviews": positive}
                 count += 1
-                post = {f"{company}_{count}": positive}
 
                 p.produce("Reviews", json.dumps(post), callback=delivery_report)
                 p.flush()
@@ -144,9 +143,8 @@ def get_worker_review(companies: list = all_companies):
                         "href"
                     ],
                 }
-                all_reviews[f"{company}_{count}"] = negative
+                post = {"_id": f"{company}_{count}", "negative_reviews": negative}
                 count += 1
-                post = {f"{company}_{count}": negative}
 
                 p.produce("Reviews", json.dumps(post), callback=delivery_report)
                 p.flush()
@@ -159,9 +157,8 @@ def get_worker_review(companies: list = all_companies):
                         "href"
                     ],
                 }
-                all_reviews[f"{company}_{count}"] = suggestions
+                post = {"_id": f"{company}_{count}", "suggestions": suggestions}
                 count += 1
-                post = {f"{company}_{count}": suggestions}
 
                 p.produce("Reviews", json.dumps(post), callback=delivery_report)
                 p.flush()
@@ -184,7 +181,6 @@ def get_world_news():
         count = 0
 
         for headline in found_news:
-            news = dict()
             try:
                 if headline.find("div", {"class": "col-xs-9 col-md-10"}) == EOFError:
                     continue
@@ -205,11 +201,16 @@ def get_world_news():
                             "div", {"class": "col-xs-9 col-md-10"}
                         ).a["href"],
                     }
-                    # Store as key and news as value in a dict
-                    news[f"Welt-News_{count}"] = headline_news
                     count += 1
+                    # Store as key and news as value in a dict
                     # Transform dict into JSON and produce it to Kafka
-                    p.produce("world_news", json.dumps(news), callback=delivery_report)
+                    p.produce(
+                        "world_news",
+                        json.dumps(
+                            {"_id": f"Welt-News_{count}", "headline": headline_news}
+                        ),
+                        callback=delivery_report,
+                    )
                     p.flush()
             except Exception as e:
                 # Since general news are existing in high quantity, we won't produce here anything to Kafka.
@@ -236,7 +237,6 @@ def get_community(companies: list = all_companies):
             ).find_all("div", {"class": "row g-3 mt-0 userPosting"})
 
             for chat in found_community:
-                community = dict()
                 communities = {
                     "message": chat.find(
                         "div", {"class": "text-info text-break overflow-auto pe-3"}
@@ -259,12 +259,13 @@ def get_community(companies: list = all_companies):
                     .replace("\t", ""),
                     "more info": base_url,
                 }
-                community[f"{company}_{count}"] = communities
                 count += 1
 
                 p.produce(
                     "Community_news",
-                    json.dumps({str(company): community}),
+                    json.dumps(
+                        {"_id": f"{company}_{count}", "community_news": communities}
+                    ),
                     callback=delivery_report,
                 )
                 p.flush()
@@ -316,7 +317,7 @@ def get_customer_experience(companies: list = companies_url):
             ).find_all("section", {"class": "styles_reviewContentwrapper__zH_9M"})
 
             for experience in found_cus_exp:
-                customer_exp = dict()
+
                 cus_exp = {
                     "title": experience.find("a").text,
                     "review": experience.find(
@@ -332,12 +333,10 @@ def get_customer_experience(companies: list = companies_url):
                     ).text,
                     "more info": base_url + experience.a["href"],
                 }
-                customer_exp[f"{company}_{count}"] = cus_exp
                 count += 1
-
                 p.produce(
                     "Customer_experience",
-                    json.dumps({str(company): customer_exp}),
+                    json.dumps({"_id": f"{company}_{count}", "customer_exp": cus_exp}),
                     callback=delivery_report,
                 )
                 p.flush()
