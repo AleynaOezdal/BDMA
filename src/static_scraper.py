@@ -2,6 +2,7 @@
 Here we will extract data from the internet which won't change in June 2022
 """
 import time
+import datetime as dt
 import json
 from bs4 import BeautifulSoup as bs
 import yfinance as yf
@@ -32,10 +33,17 @@ def get_WKN_and_ISIN(companies: list = all_companies):
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
         p.produce(
             "wkns_and_isins",
-            json.dumps({str(company): identification_numbers}),
+            json.dumps(
+                {
+                    "_id": company,
+                    "wkns_and_isins": identification_numbers,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
             callback=delivery_report,
         )
         p.flush()
+
     return "Done. Produced all WKNs and ISINs to Kafka."
 
 
@@ -58,7 +66,11 @@ def get_holders(companies: list = yfinance_symbols_dax_companies):
 
         # Store company as key and major holders of the company as value in a dict and transform it into JSON
         p.produce(
-            "holder", json.dumps({str(company): holders}), callback=delivery_report
+            "holder",
+            json.dumps(
+                {"_id": company, "holders": holders, "time": str(dt.datetime.now())}
+            ),
+            callback=delivery_report,
         )
         p.flush()
     return "Done. Produced all holders to Kafka."
@@ -68,22 +80,34 @@ def get_holders(companies: list = yfinance_symbols_dax_companies):
 def get_history_stock_price(companies: list = yfinance_symbols_dax_companies):
     for company in companies:
         try:
-            # suffix = '.DE'
-            ticker = yf.download(
-                f"{company.upper()+'.DE'}",
+            suffix = ".DE"
+            record_value = yf.download(
+                f"{company.upper()+suffix}",
                 start="2022-05-01",
                 end="2022-05-21",
                 interval="1d",
                 group_by="ticker",
-            )
-            record_value = ticker
-            # history_stock_price[f'{company}'] = ticker.history(period='max')
-            # print("Producing record: {}\t{}".format(company, record_value))
+            ).to_json()
+
         except Exception as e:
             record_value = "NaN"
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
-        print({str(company): record_value})
+        # Store company as key and stock history as value in a dict and transform it into JSON
+        # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
+        # Steps: res = json.loads(value), then result = pd.json_normalize(res)
+        p.produce(
+            "holder",
+            json.dumps(
+                {
+                    "_id": company,
+                    "history_stock_price": record_value,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
+        )
+        p.flush()
 
     return "Done. Produced all stock data to Kafka."
 
@@ -103,7 +127,15 @@ def get_ESG_score(companies: list = yfinance_symbols_dax_companies):
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
         p.produce(
-            "esg", json.dumps({str(company): record_value}), callback=delivery_report
+            "esg",
+            json.dumps(
+                {
+                    "_id": company,
+                    "esg_score": record_value,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
         )
         p.flush()
         time.sleep(5)
@@ -160,7 +192,9 @@ def get_financial_KPI(
 
         p.produce(
             get_kpi_topic(kpi),
-            json.dumps({str(company): record_value}),
+            json.dumps(
+                {"_id": company, f"{kpi}": record_value, "time": str(dt.datetime.now())}
+            ),
             callback=delivery_report,
         )
         p.flush()
@@ -168,9 +202,48 @@ def get_financial_KPI(
     return f"Done. Produced {financial_KPIs} for all DAX40 companies to Kafka."
 
 
+def get_DAX_history_stock_price_til_today(
+    end=str(dt.datetime.today()).split(" ")[0], *args
+):
+    dax_stock_data = yf.download("^GDAXI", end=end, *args)
+    p.produce(
+        "dividends",
+        json.dumps(
+            {
+                "_id": "DAX40",
+                "stock_history_til_date": dax_stock_data,
+                "time": str(dt.datetime.now()),
+            }
+        ),
+        callback=delivery_report,
+    )
+    p.flush()
+    return "DONE. DAX Stock Evolution is produced successfully."
+
+
+def get_dividends(companies: list = yfinance_symbols_dax_companies):
+    for company in companies:
+        suffix = ".DE"
+        record_value = yf.Ticker(company.upper() + suffix).dividends.to_json()
+        p.produce(
+            "dividends",
+            json.dumps(
+                {
+                    "_id": company,
+                    "dividends": record_value,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
+        )
+        p.flush()
+    return "DONE."
+
+
 if __name__ == "__main__":
     # Test if all KPIs are extractable
     print("Now: WKNs and ISINs for all DAX Companies ...")
+    time.sleep(5)
     get_WKN_and_ISIN()
     print("Done. Waiting for 5 seconds.")
     time.sleep(5)
@@ -188,4 +261,5 @@ if __name__ == "__main__":
         print("Done. Waiting for 120 seconds.")
         time.sleep(120)
     get_holders()
-    # get_history_stock_price()
+    get_dividends()
+    get_DAX_history_stock_price_til_today()
