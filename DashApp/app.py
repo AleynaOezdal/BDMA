@@ -23,7 +23,7 @@ df2 = pd.read_csv(
 #header
 header = html.Div(id = 'Header', children= [
     html.H1(children='Dashboard', style={
-        'font-family': font['helvetica'],
+        #'font-family': font['helvetica'],
         'font-weight': 'bold'
     }
     ),

@@ -1,0 +1,20 @@
+/* Table of contents ––––––––––––––––––––––––––––––––––––––––––––––––––
+- Base Styles
+ - Typography
+ - Links
+ - Buttons
+ - Forms
+ - Lists
+ - Code
+ - Tables
+ - Spacing
+ - Utilities
+ - Clearing
+ - Media Queries
+ - Custom App CSS */
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
