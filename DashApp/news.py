@@ -52,18 +52,6 @@ widget_two_news = html.Div(id = 'widget-two', children =[
                     })   
                 ], style=style_widget_news)
 
-#widget-three-news
-widget_three_news = html.Div(id = 'widget-three', children =[
-                     html.Div(children=[
-                        html.P(children = 'TWEETS', style={'font-size': '100%'}),
-                        html.P(children='twitter api', style={'font-size': '80%'}),
-                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
-                    ], style={
-                            'width': '50%', 
-                            'margin': '5%'
-                        }) 
-                ], style=style_widget_news)
-
 #widget-four-news
 widget_four_news = html.Div(id = 'widget-four', children =[
                     html.Div(children=[

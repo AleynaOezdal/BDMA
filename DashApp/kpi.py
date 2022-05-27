@@ -122,7 +122,7 @@ def get_kpi_content_value(value):
         #widget-four-kpi
         widget_four_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'ESG Risk Score'),
+                                html.P(id='kpi_widget_header', children = 'Net income'),
                                 html.P(id='kpi_widget_key', children=esg),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ])])
@@ -162,7 +162,7 @@ def get_kpi_content_value(value):
         #widget-six-kpi
         widget_six_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'Controversy Level'),
+                                html.P(id='kpi_widget_header', children = 'Total operating expenses'),
                                 html.P(id='kpi_widget_key', children=level),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ]) 
