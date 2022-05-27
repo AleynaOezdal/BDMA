@@ -5,3 +5,8 @@ DashApp/.DS_Store
 DashApp/__pycache__/sidebar.cpython-38.pyc
 DashApp/__pycache__/news.cpython-38.pyc
 DashApp/__pycache__/kpi.cpython-38.pyc
+*.pyc
+DashApp/__pycache__/sidebar.cpython-38.pyc
+DashApp/__pycache__/kpi.cpython-38.pyc
+*.pyc
+*.pyc

@@ -70,7 +70,7 @@ app.layout = html.Div( children=[
         dcc.Location(id='url'),
         sb.sidebar,
         content
-    ], style = {'padding': '1%'}),   
+    ], style = {'padding': '1%', 'display': 'flex'}),   
 ])
 
 @app.callback(

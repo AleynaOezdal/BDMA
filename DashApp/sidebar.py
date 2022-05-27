@@ -14,10 +14,10 @@ font = {
 }
 
 #get all dax companys
-data_kpi = []
-for entry in get_kpi_data():
-    if 'level' in entry:
-        data_kpi.append(entry['_id'])
+data_kpi = ['adidas', 'deutsche post']
+# for entry in get_kpi_data():
+#     if 'level' in entry:
+#         data_kpi.append(entry['_id'])
 
 data_kpi.sort()
 
@@ -56,4 +56,4 @@ sidebar = html.Div(id = 'navigation',children=[
                 'Every new day begins with possibilities.'
                 ),
             ], style={'font-family': font['monaco'], 'text-align':'center'})           
-        ], style = {'width': '20%','height':'200%' ,'display': 'inline-block', 'vertical-align': 'middle', 'background': colors['background'], 'top': 0, 'left': 0, 'bottom': 0, 'padding': '1%'})
+        ], style = {'width': '20%','height':'200%', 'vertical-align': 'middle', 'align-items': 'stretch', 'background': colors['background'], 'top': 0, 'left': 0, 'bottom': 0, 'padding': '1%'})

@@ -234,7 +234,7 @@ def get_kpi_content_value(value):
                             widget_five_kpi,
                             widget_six_kpi,
                         ])
-                    ], style={'width': '100%', 'display': 'inline-block', 'vertical-align': 'middle','font-family': font['helvetica']})
+                    ], style={'width': '100%', 'vertical-align': 'middle','font-family': font['helvetica']})
         
         return content
     else:
