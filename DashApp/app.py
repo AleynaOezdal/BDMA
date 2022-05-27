@@ -83,6 +83,7 @@ def render_page_content(pathname, n_clicks, value):
                     html.Div(id = 'widget', children = [ 
                         news.widget_one_news,
                         news.widget_two_news,
+                        news.widget_three_news,
                         news.widget_four_news,
                         news.widget_five_news,
                         news.widget_six_news,

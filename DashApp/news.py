@@ -52,11 +52,22 @@ widget_two_news = html.Div(id = 'widget-two', children =[
                     })   
                 ], style=style_widget_news)
 
+widget_three_news = html.Div(id = 'widget-three', children =[
+                    html.Div(children=[
+                        html.P(children = 'ALLE WELT NEWS', style={'font-size': '100%'}),
+                        html.P(children='finanzen.net oder boerse.de', style={'font-size': '80%'}),
+                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
+                    ], style={
+                        'width': '50%',
+                        'margin': '5%'
+                    })
+                ], style=style_widget_news)
+
 #widget-four-news
 widget_four_news = html.Div(id = 'widget-four', children =[
                     html.Div(children=[
-                        html.P(children = 'BRANCHENNEWS', style={'font-size': '100%'}),
-                        html.P(children='finanzen.net oder boerse.de', style={'font-size': '80%'}),
+                        html.P(children = 'BÖRSENNEWS-FORUM', style={'font-size': '100%'}),
+                        html.P(children='boersennews.de/{ISIN}', style={'font-size': '80%'}),
                         html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
                     ], style={
                         'width': '50%', 
@@ -67,7 +78,7 @@ widget_four_news = html.Div(id = 'widget-four', children =[
 #widget-five-news
 widget_five_news = html.Div(id = 'widget-five', children =[
                     html.Div(children=[
-                        html.P(children = 'GLOBALE NEWS', style={'font-size': '100%'}),
+                        html.P(children = 'DAX NEWS', style={'font-size': '100%'}),
                         html.P(children='finanzen.net', style={'font-size': '80%'}),
                         html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
                     ], style={
@@ -80,7 +91,7 @@ widget_five_news = html.Div(id = 'widget-five', children =[
 widget_six_news = html.Div(id = 'widget-six', children =[
                     html.Div(children=[
                         html.P(children = 'KUNDEN', style={'font-size': '100%'}),
-                        html.P(children='tbd', style={'font-size': '80%'}),
+                        html.P(children='Trustpilot oder Google Reviews', style={'font-size': '80%'}),
                         html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
                     ], style={
                         'width': '50%', 
