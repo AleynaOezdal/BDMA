@@ -4,6 +4,6 @@
 [DONE] #4: X topics erstellen (X = Anzahl Scraper)
 [DONE] #5: 3 Databases in MongoDB Cluster erstellen ohne Collections (nach Dashboard)
 [DONE] #6: 3 Connectors erstellen (X = Anzahl Databases), je Dashboard y topics in eine db leiten (connector erstellt collections nach topic automatisch)
-[PARTIALLY DONE] #6.1: Scraper ausführen
-#7: Funktionen für Datenbank auslesen schreiben (analog get_WKNs_and_ISINs) -> hier abwarten Frontend-Team-Rückmeldung
+[DONE] #6.1: Scraper ausführen
+[PARTIALLY DONE // ONLY FOR KPIs (1/3)] #7: Funktionen für Datenbank auslesen schreiben (analog get_WKNs_and_ISINs) -> hier abwarten Frontend-Team-Rückmeldung
 #8 und weitere: tbd
