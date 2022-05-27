@@ -5,6 +5,7 @@ import time
 import datetime as dt
 import json
 from bs4 import BeautifulSoup as bs
+from click import pass_obj
 import yfinance as yf
 from producersetup import (
     p,
@@ -205,19 +206,23 @@ def get_financial_KPI(
 def get_DAX_history_stock_price_til_today(
     end=str(dt.datetime.today()).split(" ")[0], *args
 ):
-    dax_stock_data = yf.download("^GDAXI", end=end, *args)
-    p.produce(
-        "dax_history_til_date",
-        json.dumps(
-            {
-                "_id": "DAX40",
-                "stock_history_til_date": dax_stock_data,
-                "time": str(dt.datetime.now()),
-            }
-        ),
-        callback=delivery_report,
-    )
-    p.flush()
+    dax_stock_data = yf.download("^GDAXI", start="2015-01-01", end=end, *args)
+    for stock_day in range(len(dax_stock_data)):
+        p.produce(
+            "dax_history_stock_data",
+            json.dumps(
+                {
+                    "_id": f"DAX40_{stock_day}",
+                    "stock_history_til_date": dax_stock_data.iloc[stock_day].to_json(),
+                    "stock_date": str(dax_stock_data.iloc[stock_day].name).split(" ")[
+                        0
+                    ],
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
+        )
+        p.flush()
     return "DONE. DAX Stock Evolution is produced successfully."
 
 
@@ -237,6 +242,7 @@ def get_dividends(companies: list = yfinance_symbols_dax_companies):
             callback=delivery_report,
         )
         p.flush()
+        time.sleep(5)
     return "DONE."
 
 
@@ -263,4 +269,4 @@ if __name__ == "__main__":
     get_holders()
     get_dividends()
     get_DAX_history_stock_price_til_today()
-    # get_history_stock_price()
+    # tbd: get_history_stock_price()

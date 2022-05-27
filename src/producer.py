@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup as bs
 import json
 from producersetup import all_companies, delivery_report, get, p, companies_url
 import datetime as dt
+import time
 
 
 def get_stock_price(companies: list = all_companies):
@@ -187,7 +188,7 @@ def get_worker_review(companies: list = all_companies):
                 p.produce("Reviews", json.dumps(post), callback=delivery_report)
                 p.flush()
 
-        except Exception as e:
+        except BaseException as e:
             print(f"FAILED. For {company} the following error occured: {type(e)}")
             continue
 
@@ -400,9 +401,27 @@ if __name__ == "__main__":
     # Next steps: Every headline as single message to KAFKA
     # WARN: Only start if kafka cluster is set up!
     # get_stock_price()
-    # get_news()
-    # get_worker_review()
-    # get_world_news()
-    # get_community()
-    # get_customer_experience()
-    print(str(dt.datetime.now()))
+    print("Now: News for all DAX Companies ...")
+    get_news()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: Employees' Reviews for all DAX Companies ...")
+    get_worker_review()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: Global News for all DAX Companies ...")
+    get_world_news()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: Community Chats for all DAX Companies ...")
+    get_community()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: Customer Experiences from Trustpilot for all DAX Companies ...")
+    get_customer_experience()
+    print("Completed.")
+    # pass
