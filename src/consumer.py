@@ -22,10 +22,9 @@ def create_consumers_for_topics(topics: list):
             }
         )
 
-        c.subscribe([f'{get_kpi_topic(topic)}'])
+        c.subscribe([f"{get_kpi_topic(topic)}"])
 
-        i = 0
-        while i < 39:
+        while True:
             msg = c.poll(1.0)
 
             if msg is None:
@@ -35,8 +34,7 @@ def create_consumers_for_topics(topics: list):
                 continue
 
             # Do something with message
-            all_messages_for_topic.append(msg.value().decode('utf-8'))
-            i += 1
+            all_messages_for_topic.append(msg.value().decode("utf-8"))
 
         c.close()
 

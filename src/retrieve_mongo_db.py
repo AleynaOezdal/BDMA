@@ -2,6 +2,8 @@ import pymongo
 import os
 from dotenv import load_dotenv
 import certifi
+from producersetup import all_companies
+import pprint as pp
 
 load_dotenv()
 
@@ -14,18 +16,15 @@ databases = ["kpis", "news", "stocks"]
 
 # Set up
 db_id = client["identification"]["wkns_and_isins"]
-# identification_collection = db_id["wkns_and_isins"]
 
 
 def get_wkns_and_isins():
-    all_json = list()
-    for data in db_id.find():
-        for k, v in data.items():
-            print(f"Key: {k}\n Value: {v}")
-            print("")
-    return all_json
+    all_ids = dict()
+    for company in all_companies:
+        all_ids[company] = db_id.find_one({"_id": company})["wkns_and_isins"]
+    return all_ids
 
 
 if __name__ == "__main__":
     # test if you get the data
-    print(get_wkns_and_isins())
+    pp.pprint(get_wkns_and_isins())

@@ -31,9 +31,8 @@ def get_WKN_and_ISIN(companies: list = all_companies):
 
         # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
         p.produce(
-            "identification",
-            key=company,
-            value=identification_numbers,
+            "ids",
+            json.dumps({"_id": company, "wkns_and_isins": identification_numbers}),
             callback=delivery_report,
         )
         p.flush()
