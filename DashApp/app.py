@@ -22,55 +22,30 @@ df2 = pd.read_csv(
 
 #header
 header = html.Div(id = 'Header', children= [
-    html.H1(children='Dashboard', style={
-        #'font-family': font['helvetica'],
-        'font-weight': 'bold'
-    }
-    ),
-    html.Div(children='Good morning, Mr. CEO.', style={
-        'font-family': font['helvetica']
-    }),
-    html.Div(children='Team Dashboard wishes you a sucessful day with right decisions!', style={
-        'font-family': font['helvetica']
-        
-    })], style = {'padding': '1%'})
+    html.H1(children='Dashboard'),
+    html.Div(children='Good morning, Mr. CEO.'),
+    html.Div(children='Team Dashboard wishes you a sucessful day with right decisions!')])
 
 #content
-content = html.Div(id = 'page_content', children=[], style={'width': '75%', 'display': 'inline-block', 'vertical-align': 'middle','font-family': font['helvetica']})
+content = html.Div(id = 'page_content', children=[])
 
 #▼
-
-#kpi content 
-def kpi_content_get():
-    kpi_content = html.Div(id = 'content', children=[
-                    kpi.content_header_kpi,
-                    html.Div(id = 'widget', children = [ 
-                        kpi.widget_one_kpi,
-                        kpi.widget_two_kpi,
-                        kpi.widget_three_kpi,
-                        kpi.widget_four_kpi,
-                        kpi.widget_five_kpi,
-                        kpi.widget_six_kpi,
-                    ])
-                ], style={'width': '100%', 'display': 'inline-block', 'vertical-align': 'middle','font-family': font['helvetica']})
-    return kpi_content
 
 #overview
 def overview(value):
     overview_content = html.Div(id = 'content', children=[
                             kpi.get_value_without_kpi(value),
-                            html.Div(id = 'widget', children = [])
-                        ], style={'width': '100%', 'display': 'inline-block', 'vertical-align': 'middle','font-family': font['helvetica']})
+                            html.Div(id = 'widget', children = [])])
     return overview_content
 
 # app layout
 app.layout = html.Div( children=[
     header,
-    html.Div(id = 'Side',children= [
+    html.Div(id = 'side',children= [
         dcc.Location(id='url'),
         sb.sidebar,
         content
-    ], style = {'padding': '1%', 'display': 'flex'}),   
+    ]),   
 ])
 
 @app.callback(

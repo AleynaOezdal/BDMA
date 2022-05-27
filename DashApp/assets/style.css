@@ -18,3 +18,78 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+#Header {
+    padding: 1%;
+}
+
+#Header h1 {
+    font-weight: bold;
+}
+
+#side {
+    padding: 1%;
+    display: flex;
+}
+
+#navigation {
+    width: 20%;
+    height: 200%;
+    vertical-align: middle;
+    align-items: stretch;
+    background-color: #F6F6F6;
+    padding: 1%;
+    top: 0%;
+    bottom: 0%;
+    left: 0%;
+}
+
+#quote_sidebar {
+    font-family: Monaco, sans-serif;
+    text-align: center;
+}
+
+#page_content{
+    width: 75%;
+    vertical-align: middle;
+}
+
+#content {
+    width: 100%;
+    vertical-align: middle;
+}
+
+#content-header {
+    font-weight: bold;
+    margin: 1%;
+}
+
+/* KPI widget */
+
+#kpi_widget {
+    width: 48%;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #F6F6F6;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
+}
+
+#kpi_widget_text{
+    width: 40%;
+    margin: 5%;
+    display: inline-block;
+}
+
+#kpi_widget_header{
+    font-size: 80%;
+}
+
+#kpi_widget_key {
+    font-size: 200%;
+    font-weight: bold;
+}
+
+#kpi_widget_pos{
+    color: lightgreen;
+    font-size: 80%;
+}

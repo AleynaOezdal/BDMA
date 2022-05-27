@@ -4,15 +4,6 @@ import dash_bootstrap_components as dbc
 from datetime import date
 from retrieve_sample_data import get_kpi_data
 
-colors = {
-    'background': '#F6F6F6'
-}
-
-font = {
-    'helvetica' : 'Arial, Helvetica, sans-serif',
-    'monaco' : 'Monaco, sans-serif'
-}
-
 #get all dax companys
 data_kpi = ['adidas', 'deutsche post']
 # for entry in get_kpi_data():
@@ -48,12 +39,12 @@ sidebar = html.Div(id = 'navigation',children=[
                 vertical=True,
                 pills=True,
             ),
-            html.Div(children=[
+            html.Div(id = 'quote_sidebar',children=[
                 html.H5(
                     'Quote of the Day:'
                 ),
                 html.P(
                 'Every new day begins with possibilities.'
                 ),
-            ], style={'font-family': font['monaco'], 'text-align':'center'})           
-        ], style = {'width': '20%','height':'200%', 'vertical-align': 'middle', 'align-items': 'stretch', 'background': colors['background'], 'top': 0, 'left': 0, 'bottom': 0, 'padding': '1%'})
+            ])           
+        ])
