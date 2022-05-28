@@ -63,6 +63,7 @@ body {
     background-color: #E5E5E5;
     color: black;
     border-radius: 0;
+    text-align: center;
 }
 
 #navigation_point_one.active, #navigation_point_two.active, #navigation_point_three.active{
