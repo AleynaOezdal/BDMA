@@ -31,7 +31,6 @@ db_reviews = client["Company-Experience"]["reviews"]
 db_customer_experience = client["Company-Experience"]["customer_experience"]
 db_community_news = client["Company-Experience"]["community_news"]
 
-
 def get_wkns_and_isins(company: str):
     return db_wkns_and_isins.find_one({"_id": company})["wkns_and_isins"]
 

@@ -5,6 +5,8 @@ import pandas as pd
 from zmq import EMSGSIZE
 from retrieve_sample_data import get_stocks_data, get_news_data, get_kpi_data
 from sidebar import data_kpi
+from retrieve_mongo_db import *
+from company_dic import *
 
 #figure for widget
 # see https://plotly.com/python/px-arguments/ for more options
@@ -39,26 +41,21 @@ def get_kpi_content_value(value):
     if value in data_kpi:
         #big letter 
         name = value.title()
+        wkns_and_isins = get_wkns_and_isins(value)
 
         #content-header-kpi
-        content_header_kpi  = html.H3(id = 'content-header', children=['Key Performance Indicators for '+ name])
+        content_header_kpi  = html.H3(id = 'content-header', children=['Key Performance Indicators for '+ name+' '+wkns_and_isins])
 
         #get wiget data free cashflow
-        free_cf = 0
-
-        for entry in get_kpi_data():
-            if value == entry['_id']:
-                if 'free_cf' in entry:
-                    free_cf = entry['free_cf']
-                else:
-                    pass
-            else:
-                pass
+        if get_esg_score(company_dict[value]) != 0:
+             esg = get_esg_score(company_dict[value])
+        else:
+            esg = 0
         
         widget_one_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Free Cashflow in MEUR'),
-                                html.P(id='kpi_widget_key', children= free_cf),
+                                html.P(id='kpi_widget_key', children= esg),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ]),
                             html.Div(id = 'graph-one', children= [
@@ -68,36 +65,24 @@ def get_kpi_content_value(value):
                         ])
 
         #get wiget data ebitda
-        ebitda = 0
-
-        for entry in get_kpi_data():
-            if value == entry['_id']:
-                if 'ebitda' in entry:
-                    ebitda = entry['ebitda']
-                else:
-                    pass
-            else:
-                pass
+        if get_ebit(company_dict[value])['Ebit'][0] != 0:
+             ebit = get_ebit(company_dict[value])['Ebit'][0]
+        else:
+            ebit = 0
         
         #widget-two-kpi
         widget_two_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'EBITDA in MEUR'),
-                                html.P(id='kpi_widget_key', children=ebitda),
+                                html.P(id='kpi_widget_header', children = 'EBIT in MEUR'),
+                                html.P(id='kpi_widget_key', children=ebit),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ])])
         
         #get widget data gross profit
-        gross_profit = 0
-
-        for entry in get_kpi_data():
-            if value == entry['_id']:
-                if 'gross_profit' in entry:
-                    gross_profit = entry['gross_profit']
-                else:
-                    pass
-            else:
-                pass
+        if get_gross_profit(company_dict[value])['Gross Profit'][0] != 0:
+             gross_profit = get_gross_profit(company_dict[value])['Gross Profit'][0]
+        else:
+            gross_profit = 0
 
         #widget-three-kpi
         widget_three_kpi = html.Div(id = 'kpi_widget', children =[
@@ -108,36 +93,24 @@ def get_kpi_content_value(value):
                             ])])
         
         #get wiget data level
-        esg = 0
-
-        for entry in get_kpi_data():
-            if value == entry['_id']:
-                if 'esg' in entry:
-                    esg = entry['esg']
-                else:
-                    pass
-            else:
-                pass
+        if get_net_income(company_dict[value])['Net Income'][0] != 0:
+             income = get_net_income(company_dict[value])['Net Income'][0]
+        else:
+            income = 0
 
         #widget-four-kpi
         widget_four_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Net income'),
-                                html.P(id='kpi_widget_key', children=esg),
+                                html.P(id='kpi_widget_key', children=income),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ])])
 
         #get widget data revenue
-        revenue = 0
-
-        for entry in get_kpi_data():
-            if value == entry['_id']:
-                if 'revenue' in entry:
-                    revenue = entry['revenue']
-                else:
-                    pass
-            else:
-                pass
+        if get_total_revenue(company_dict[value])['Total Revenue'][0] != 0:
+             revenue = get_total_revenue(company_dict[value])['Total Revenue'][0]
+        else:
+            revenue = 0
 
         #widget-five-kpi
         widget_five_kpi = html.Div(id = 'kpi_widget', children =[
@@ -148,16 +121,10 @@ def get_kpi_content_value(value):
                             ])])
 
         #get wiget data level
-        level = 0
-
-        for entry in get_kpi_data():
-            if value == entry['_id']:
-                if 'level' in entry:
-                    level = entry['level']
-                else:
-                    pass
-            else:
-                pass
+        if get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0] != 0:
+             level = get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0]
+        else:
+            level = 0
         
         #widget-six-kpi
         widget_six_kpi = html.Div(id = 'kpi_widget', children =[

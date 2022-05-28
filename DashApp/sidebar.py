@@ -3,14 +3,12 @@ from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 from datetime import date
 from retrieve_sample_data import get_kpi_data
+from company_dic import *
 
 #get all dax companys
-data_kpi = ['adidas', 'deutsche post']
-# for entry in get_kpi_data():
-#     if 'level' in entry:
-#         data_kpi.append(entry['_id'])
-
-data_kpi.sort()
+data_kpi = []
+for entry in company_dict:
+    data_kpi.append(entry)
 
 #navigation/sidebar
 sidebar = html.Div(id = 'navigation',children=[
