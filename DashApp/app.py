@@ -5,7 +5,6 @@ import pandas as pd
 import sidebar as sb
 import kpi
 import news
-from retrieve_sample_data import get_stocks_data, get_news_data, get_kpi_data
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 

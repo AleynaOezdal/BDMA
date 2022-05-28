@@ -2,7 +2,6 @@ from webbrowser import get
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 from datetime import date
-from retrieve_sample_data import get_kpi_data
 from company_dic import *
 
 #get all dax companys

@@ -3,31 +3,10 @@ from dash import dcc, html
 import plotly.express as px
 import pandas as pd
 from zmq import EMSGSIZE
-from retrieve_sample_data import get_stocks_data, get_news_data, get_kpi_data
 from sidebar import data_kpi
 from retrieve_mongo_db import *
 from company_dic import *
 
-#figure for widget
-# see https://plotly.com/python/px-arguments/ for more options
-df = pd.DataFrame({
-    'x': [1,2,1,2],
-    'y': [1,2,3,4],
-    'customdata': [1,2,3,4],
-    'fruit': ['apple', 'apple', 'orange', 'orange']
-})
-
-fig = px.scatter(df, x='x', y='y', color='fruit', custom_data=['customdata'])
-
-#widget one graph
-fig.update_layout(
-    height = 80,
-    showlegend=False,
-    margin_l = 0,
-    margin_r = 0,
-    margin_t = 0,
-    margin_b = 0,
-)
 
 def get_value_without_kpi(value):
     if value == 'None':
@@ -57,12 +36,7 @@ def get_kpi_content_value(value):
                                 html.P(id='kpi_widget_header', children = 'Free Cashflow in MEUR'),
                                 html.P(id='kpi_widget_key', children= esg),
                                 html.P(id='kpi_widget_pos', children=['▲'])
-                            ]),
-                            html.Div(id = 'graph-one', children= [
-                                dcc.Graph(
-                                figure = fig
-                            )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})  
-                        ])
+                            ])])
 
         #get wiget data ebitda
         if get_ebit(company_dict[value])['Ebit'][0] != 0:
@@ -70,13 +44,31 @@ def get_kpi_content_value(value):
         else:
             ebit = 0
         
+        fig_ebit = px.bar(get_ebit(company_dict[value]), y='Ebit',text_auto = True)
+        
+        fig_ebit.update_layout(
+            height = 90,
+            showlegend=False,
+            margin_l = 0,
+            margin_r = 0,
+            margin_t = 0,
+            margin_b = 0,
+            title_y = False,
+            title_x = False,
+        )
+
         #widget-two-kpi
         widget_two_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'EBIT in MEUR'),
                                 html.P(id='kpi_widget_key', children=ebit),
                                 html.P(id='kpi_widget_pos', children=['▲'])
-                            ])])
+                            ]),
+                            html.Div(id = 'graph-one', children= [
+                                dcc.Graph(
+                                figure = fig_ebit
+                            )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
+                        ])
         
         #get widget data gross profit
         if get_gross_profit(company_dict[value])['Gross Profit'][0] != 0:
@@ -84,19 +76,50 @@ def get_kpi_content_value(value):
         else:
             gross_profit = 0
 
+        fig_gross_profit = px.bar(get_gross_profit(company_dict[value]), y='Gross Profit',text_auto = True)
+
+        fig_gross_profit.update_layout(
+            height = 90,
+            showlegend=False,
+            margin_l = 0,
+            margin_r = 0,
+            margin_t = 0,
+            margin_b = 0,
+            title_y = False,
+            title_x = False,
+        )
+
         #widget-three-kpi
         widget_three_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Profit Margin in %'),
                                 html.P(id='kpi_widget_key', children=gross_profit),
                                 html.P(id='kpi_widget_pos', children=['▲'])
-                            ])])
+                            ]),
+                            html.Div(id = 'graph-one', children= [
+                                dcc.Graph(
+                                figure = fig_gross_profit
+                            )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
+                        ])
         
         #get wiget data level
         if get_net_income(company_dict[value])['Net Income'][0] != 0:
              income = get_net_income(company_dict[value])['Net Income'][0]
         else:
             income = 0
+        
+        fig_net_income = px.bar(get_net_income(company_dict[value]), y='Net Income',text_auto = True)
+
+        fig_net_income.update_layout(
+            height = 90,
+            showlegend=False,
+            margin_l = 0,
+            margin_r = 0,
+            margin_t = 0,
+            margin_b = 0,
+            title_y = False,
+            title_x = False,
+        )
 
         #widget-four-kpi
         widget_four_kpi = html.Div(id = 'kpi_widget', children =[
@@ -104,13 +127,31 @@ def get_kpi_content_value(value):
                                 html.P(id='kpi_widget_header', children = 'Net income'),
                                 html.P(id='kpi_widget_key', children=income),
                                 html.P(id='kpi_widget_pos', children=['▲'])
-                            ])])
+                            ]),
+                            html.Div(id = 'graph-one', children= [
+                                dcc.Graph(
+                                figure = fig_net_income
+                            )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
+                        ])
 
         #get widget data revenue
         if get_total_revenue(company_dict[value])['Total Revenue'][0] != 0:
              revenue = get_total_revenue(company_dict[value])['Total Revenue'][0]
         else:
             revenue = 0
+        
+        fig_total_revenue = px.bar(get_total_revenue(company_dict[value]), y='Total Revenue',text_auto = True)
+
+        fig_total_revenue.update_layout(
+            height = 90,
+            showlegend=False,
+            margin_l = 0,
+            margin_r = 0,
+            margin_t = 0,
+            margin_b = 0,
+            title_y = False,
+            title_x = False,
+        )
 
         #widget-five-kpi
         widget_five_kpi = html.Div(id = 'kpi_widget', children =[
@@ -118,7 +159,12 @@ def get_kpi_content_value(value):
                                 html.P(id='kpi_widget_header', children = 'Revenue in MEUR'),
                                 html.P(id='kpi_widget_key', children=revenue),
                                 html.P(id='kpi_widget_pos', children=['▲'])
-                            ])])
+                            ]),
+                            html.Div(id = 'graph-one', children= [
+                                dcc.Graph(
+                                figure = fig_total_revenue
+                            )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
+                        ])
 
         #get wiget data level
         if get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0] != 0:
@@ -126,13 +172,30 @@ def get_kpi_content_value(value):
         else:
             level = 0
         
+        fig_total_operating_expenses = px.bar(get_total_operating_expenses(company_dict[value]), y='Total Operating Expenses',text_auto = True)
+
+        fig_total_operating_expenses.update_layout(
+            height = 90,
+            showlegend=False,
+            margin_l = 0,
+            margin_r = 0,
+            margin_t = 0,
+            margin_b = 0,
+            title_y = False,
+            title_x = False,
+        )
+
         #widget-six-kpi
         widget_six_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Total operating expenses'),
                                 html.P(id='kpi_widget_key', children=level),
                                 html.P(id='kpi_widget_pos', children=['▲'])
-                            ]) 
+                            ]),
+                            html.Div(id = 'graph-one', children= [
+                                dcc.Graph(
+                                figure = fig_total_operating_expenses
+                            )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
                         ])
 
         content = html.Div(id = 'content', children=[
