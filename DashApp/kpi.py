@@ -7,6 +7,14 @@ from sidebar import data_kpi
 from retrieve_mongo_db import *
 from company_dic import *
 
+#get short numbers 
+def short_num(num):
+    magnitude = 0
+    while abs(num) >= 1000:
+        magnitude += 1
+        num /= 1000.0
+    # add more suffixes if you need them
+    return '%.2f%s' % (num, ['', 'Tausend', 'Millionen', 'Milliarden', 'Billionen', 'Trillionen'][magnitude])
 
 def get_value_without_kpi(value):
     if value == 'None':
@@ -27,20 +35,36 @@ def get_kpi_content_value(value):
 
         #get wiget data free cashflow
         if get_esg_score(company_dict[value]) != 0:
-             esg = get_esg_score(company_dict[value])
+            esg = get_esg_score(company_dict[value])
+            if esg >= 20:
+                high_average_low = 'HIGH'
+                color = 'green'
+            elif esg <= 20 and esg >= 10:
+                high_average_low = 'AVERAGE'
+                color = 'orange'
+            elif esg <= 10:
+                high_average_low = 'LOW'
+                color= 'red'
         else:
             esg = 0
+            high_average_low = 'LOW'
+            color= 'red'
+
         
         widget_esg_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'ESG Scroe'),
                                 html.P(id='kpi_widget_key', children= esg),
                                 html.P(id='kpi_widget_pos', children=['▲'])
-                            ])])
+                            ]),
+                            html.Div(id = 'graph-one', children= [
+                                html.P(id='kpi_widget_esg', children=high_average_low, style={'color': color})
+                            ],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%', 'vertical-align': 'middle', 'text-align': 'center'})
+                        ])
 
         #get wiget data ebit
         if get_ebit(company_dict[value])['Ebit'][0] != 0:
-             ebit = get_ebit(company_dict[value])['Ebit'][0]
+             ebit = short_num(get_ebit(company_dict[value])['Ebit'][0])
         else:
             ebit = 0
         
@@ -71,7 +95,7 @@ def get_kpi_content_value(value):
         
         #get widget data gross profit
         if get_gross_profit(company_dict[value])['Gross Profit'][0] != 0:
-             gross_profit = get_gross_profit(company_dict[value])['Gross Profit'][0]
+             gross_profit = short_num(get_gross_profit(company_dict[value])['Gross Profit'][0])
         else:
             gross_profit = 0
 
@@ -102,7 +126,7 @@ def get_kpi_content_value(value):
         
         #get wiget data net income
         if get_net_income(company_dict[value])['Net Income'][0] != 0:
-             income = get_net_income(company_dict[value])['Net Income'][0]
+             income = short_num(get_net_income(company_dict[value])['Net Income'][0])
         else:
             income = 0
         
@@ -133,7 +157,7 @@ def get_kpi_content_value(value):
 
         #get widget data total revenue
         if get_total_revenue(company_dict[value])['Total Revenue'][0] != 0:
-             revenue = get_total_revenue(company_dict[value])['Total Revenue'][0]
+             revenue = short_num(get_total_revenue(company_dict[value])['Total Revenue'][0])
         else:
             revenue = 0
         
@@ -164,7 +188,7 @@ def get_kpi_content_value(value):
 
         #get wiget data total operating expenses
         if get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0] != 0:
-             level = get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0]
+             level = short_num(get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0])
         else:
             level = 0
         
