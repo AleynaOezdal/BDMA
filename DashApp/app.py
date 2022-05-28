@@ -22,8 +22,8 @@ df2 = pd.read_csv(
 #header
 header = html.Div(id = 'Header', children= [
     html.H1(children='Dashboard'),
-    html.Div(children='Good morning, Mr. CEO.'),
-    html.Div(children='Team Dashboard wishes you a sucessful day with right decisions!')])
+    html.Div(children='Guten Morgen Herr. CEO.'),
+    html.Div(children='Team Dashboard wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!')])
 
 #content
 content = html.Div(id = 'page_content', children=[])
@@ -63,9 +63,9 @@ def render_page_content(pathname, n_clicks, value):
             return [overview(value)]
         elif pathname == "/KPI's":
             return [kpi.get_kpi_content_value(value)]
-        elif pathname == '/Stocks':
+        elif pathname == '/Investorrelations':
             return [
-                html.H1('Stocks for ADS.DE',
+                html.H1('Investor Relations for ADS.DE WKN: 9389145 / ISIN: NL0000235190',
                         style={
                     'font-family': font['helvetica'],
                     'font-weight': 'bold', 
@@ -75,7 +75,7 @@ def render_page_content(pathname, n_clicks, value):
                         figure=px.bar(df2, barmode='group', x='Years',
                                         y=['Girls Grade School', 'Boys Grade School']))
             ]
-        elif pathname == '/News':
+        elif pathname == '/Companyexperience':
             return [
                 html.Div(id = 'content', children=[
                     news.content_header_news,

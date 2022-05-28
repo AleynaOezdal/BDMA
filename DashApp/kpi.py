@@ -10,10 +10,10 @@ from company_dic import *
 
 def get_value_without_kpi(value):
     if value == 'None':
-        content  = html.H3(id = 'content-header', children=['Select a Company'])
+        content  = html.H3(id = 'content-header', children=['Wählen Sie ein Unternehmen aus'])
         return content
     else:
-        content  = html.H3(id = 'content-header', children=['Select a navigation point'])
+        content  = html.H3(id = 'content-header', children=['Wählen Sie ein Navigationspunkt aus'])
         return content
 
 def get_kpi_content_value(value):

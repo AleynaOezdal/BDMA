@@ -15,7 +15,7 @@ sidebar = html.Div(id = 'navigation',children=[
                 'Here you can Search'
             ),
             #html.Div(dcc.Input(id='input-box1', placeholder='Select DAX-Company', type='text')),
-            dcc.Dropdown(data_kpi, placeholder='Select DAX-Company', value = 'None', id='demo-dropdown'),
+            dcc.Dropdown(data_kpi, placeholder='DAX-Company auswählen', value = 'None', id='demo-dropdown'),
             html.Div(id='dd-output-container'),
             #absatz
             html.Br(),
@@ -26,22 +26,22 @@ sidebar = html.Div(id = 'navigation',children=[
             html.Div(id='output-container-button',
                     children=''),
             html.Br(),
-            html.Button('Submit', id='button-example-1'),
+            html.Button('Suchen', id='button-example-1'),
             dbc.Nav(
                 [
                     dbc.NavLink("KPI's", href="/KPI's", active='exact'),
-                    dbc.NavLink('Stocks', href='/Stocks', active='exact'),
-                    dbc.NavLink('News', href='/News', active='exact'),
+                    dbc.NavLink('Investor Relations', href='/Investorrelations', active='exact'),
+                    dbc.NavLink('Company Experience', href='/Companyexperience', active='exact'),
                 ],
                 vertical=True,
                 pills=True,
             ),
             html.Div(id = 'quote_sidebar',children=[
                 html.H5(
-                    'Quote of the Day:'
+                    'Motivation des Tages:'
                 ),
                 html.P(
-                'Every new day begins with possibilities.'
+                'Jeder Tag beginnt mit neuen Chancen!'
                 ),
             ])           
         ])
