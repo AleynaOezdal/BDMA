@@ -41,12 +41,13 @@ sidebar = html.Div(id = 'navigation',children=[
                 pills=True,
             ),
             html.Br(),
+            html.Br(),
             html.Div(id = 'quote_sidebar',children=[
-                html.H5(
+                html.H6(
                     'Motivation des Tages:'
                 ),
                 html.P(
-                'Jeder Tag beginnt mit neuen Chancen!'
+                '"Jeder Tag beginnt mit neuen Chancen!"'
                 ),
             ])           
         ])

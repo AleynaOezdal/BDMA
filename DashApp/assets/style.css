@@ -62,6 +62,7 @@ body {
 #navigation_point_one, #navigation_point_two, #navigation_point_three{
     background-color: #E5E5E5;
     color: black;
+    border-radius: 0;
 }
 
 #navigation_point_one.active, #navigation_point_two.active, #navigation_point_three.active{
@@ -71,6 +72,10 @@ body {
 #quote_sidebar {
     font-family: Monaco, sans-serif;
     text-align: center;
+}
+
+#quote_sidebar H6{
+    font-weight: bold;
 }
 
 /* Content */
