@@ -31,14 +31,14 @@ def get_kpi_content_value(value):
         else:
             esg = 0
         
-        widget_one_kpi = html.Div(id = 'kpi_widget', children =[
+        widget_esg_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'Free Cashflow in MEUR'),
+                                html.P(id='kpi_widget_header', children = 'ESG Scroe'),
                                 html.P(id='kpi_widget_key', children= esg),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ])])
 
-        #get wiget data ebitda
+        #get wiget data ebit
         if get_ebit(company_dict[value])['Ebit'][0] != 0:
              ebit = get_ebit(company_dict[value])['Ebit'][0]
         else:
@@ -57,8 +57,7 @@ def get_kpi_content_value(value):
             title_x = False,
         )
 
-        #widget-two-kpi
-        widget_two_kpi = html.Div(id = 'kpi_widget', children =[
+        widget_ebit_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'EBIT in MEUR'),
                                 html.P(id='kpi_widget_key', children=ebit),
@@ -89,8 +88,7 @@ def get_kpi_content_value(value):
             title_x = False,
         )
 
-        #widget-three-kpi
-        widget_three_kpi = html.Div(id = 'kpi_widget', children =[
+        widget_gross_profit_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Profit Margin in %'),
                                 html.P(id='kpi_widget_key', children=gross_profit),
@@ -102,7 +100,7 @@ def get_kpi_content_value(value):
                             )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
                         ])
         
-        #get wiget data level
+        #get wiget data net income
         if get_net_income(company_dict[value])['Net Income'][0] != 0:
              income = get_net_income(company_dict[value])['Net Income'][0]
         else:
@@ -121,8 +119,7 @@ def get_kpi_content_value(value):
             title_x = False,
         )
 
-        #widget-four-kpi
-        widget_four_kpi = html.Div(id = 'kpi_widget', children =[
+        widget_net_income_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Net income'),
                                 html.P(id='kpi_widget_key', children=income),
@@ -134,7 +131,7 @@ def get_kpi_content_value(value):
                             )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
                         ])
 
-        #get widget data revenue
+        #get widget data total revenue
         if get_total_revenue(company_dict[value])['Total Revenue'][0] != 0:
              revenue = get_total_revenue(company_dict[value])['Total Revenue'][0]
         else:
@@ -153,8 +150,7 @@ def get_kpi_content_value(value):
             title_x = False,
         )
 
-        #widget-five-kpi
-        widget_five_kpi = html.Div(id = 'kpi_widget', children =[
+        widget_total_revenue_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Revenue in MEUR'),
                                 html.P(id='kpi_widget_key', children=revenue),
@@ -166,7 +162,7 @@ def get_kpi_content_value(value):
                             )],style = {'width': '40%' , 'display': 'inline-block', 'margin': '5%'})
                         ])
 
-        #get wiget data level
+        #get wiget data total operating expenses
         if get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0] != 0:
              level = get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0]
         else:
@@ -186,7 +182,7 @@ def get_kpi_content_value(value):
         )
 
         #widget-six-kpi
-        widget_six_kpi = html.Div(id = 'kpi_widget', children =[
+        widget_total_operating_expenses_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
                                 html.P(id='kpi_widget_header', children = 'Total operating expenses'),
                                 html.P(id='kpi_widget_key', children=level),
@@ -201,12 +197,12 @@ def get_kpi_content_value(value):
         content = html.Div(id = 'content', children=[
                         content_header_kpi,
                         html.Div(id = 'widget', children = [ 
-                            widget_one_kpi,
-                            widget_two_kpi,
-                            widget_three_kpi,
-                            widget_four_kpi,
-                            widget_five_kpi,
-                            widget_six_kpi,
+                            widget_ebit_kpi,
+                            widget_total_revenue_kpi,
+                            widget_gross_profit_kpi,
+                            widget_net_income_kpi,
+                            widget_esg_kpi,
+                            widget_total_operating_expenses_kpi
                         ])
                     ])
         
