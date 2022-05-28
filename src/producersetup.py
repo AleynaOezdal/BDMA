@@ -160,7 +160,7 @@ yfinance_symbols_dax_companies = [
     "zal",
 ]
 
-kununu_compaies = [
+kununu_companies = [
     "adidas",
     "airbus",
     "allianzdeutschland",
@@ -201,6 +201,36 @@ kununu_compaies = [
     "volkswagen",
     "vonovia-se",
     "zalando",
+]
+
+community_company = [
+    "adidas",
+    "airbus",
+    "allianz",
+    "basf",
+    "bayer",
+    "bmw",
+    "brenntag",
+    "continental",
+    "covestro",
+    "daimler-truck-holding",
+    "delivery-hero",
+    #...
+]
+
+community_number = [
+    "109",
+    "40",
+    "715",
+    "364",
+    "1084",
+    "394",
+    "6442",
+    "130",
+    "6289",
+    "74246",
+    "15223",
+    #...
 ]
 
 test_symbols = ["ads", "air", "alv"]

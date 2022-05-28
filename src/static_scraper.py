@@ -16,6 +16,33 @@ from producersetup import (
     initialize_yf_tickers,
 )
 
+def get_description(companies: list = all_companies):
+
+    for company in companies:
+        try:
+            base_url = f"https://www.finanzen.net/unternehmensprofil/{company}"
+            soup = bs(get(base_url), "html.parser")
+            description = soup.find("div", {"class": "col-sm-8"}).find("div", {"class": "box"}).contents[-1].text
+
+        except Exception as e:
+            description = "NaN"
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
+
+        p.produce(
+            "company_description",
+            json.dumps(
+                {
+                    "_id" : company,
+                    "company_description" : description,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
+        )
+        p.flush()
+
+    return "Done. Produced all company_description to Kafka."
+
 
 def get_WKN_and_ISIN(companies: list = all_companies):
     # Scrape finanzen.net for each company for WKN/ ISIN

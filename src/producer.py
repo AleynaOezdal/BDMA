@@ -7,6 +7,8 @@ from producersetup import (
     p,
     companies_url,
     kununu_companies,
+    community_company,
+    community_number,
 )
 import datetime as dt
 import time
@@ -263,12 +265,12 @@ def get_world_news():
     return "Done. Produced all World-news to Kafka."
 
 
-def get_community(companies: list = all_companies):
+def get_community(companies: list = community_company, number: list = community_number):
 
-    for company in companies:
+    for company, numbers in zip(companies,number):
 
         try:
-            base_url = f"https://www.boersennews.de/community/diskussion/{company}/109/#moreComments"
+            base_url = f"https://www.boersennews.de/community/diskussion/{company}/{numbers}/#moreComments"
             soup = bs(get(base_url), "html.parser")
             count = 0
             found_community = soup.find(
