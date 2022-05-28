@@ -50,8 +50,8 @@ app.layout = html.Div( children=[
 @app.callback(
     Output('page_content', 'children'),
     Input('url', 'pathname'),
-    Input('button-example-1', 'n_clicks'),
-    State('demo-dropdown', 'value')
+    Input('button_search', 'n_clicks'),
+    State('dropdown', 'value')
 )
 
 #side posiblilitis 

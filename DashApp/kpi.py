@@ -14,7 +14,7 @@ def short_num(num):
         magnitude += 1
         num /= 1000.0
     # add more suffixes if you need them
-    return '%.2f%s' % (num, ['', 'Tausend', 'Millionen', 'Milliarden', 'Billionen', 'Trillionen'][magnitude])
+    return '%.2f%s' % (num, ['', ' Tausend', ' MIO.', ' MRD.', ' BIO.', ' Trillionen'][magnitude])
 
 def get_value_without_kpi(value):
     if value == 'None':
