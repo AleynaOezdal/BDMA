@@ -9,10 +9,44 @@ from producersetup import (
     kununu_companies,
     community_company,
     community_number,
+    yfinance_symbols_dax_companies,
 )
 import datetime as dt
 import time
+import yfinance as yf
 
+def get_actual_stock_price(companies: list = yfinance_symbols_dax_companies):
+    for company in companies:
+        try:
+            suffix = ".DE"
+            record_value = yf.download(
+                f"{company.upper()+suffix}",
+                period="1d",
+                interval="2m",
+                group_by="ticker",
+            ).to_json()
+
+        except Exception as e:
+            record_value = "NaN"
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
+
+        # Store company as key and stock history as value in a dict and transform it into JSON
+        # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
+        # Steps: res = json.loads(value), then result = pd.json_normalize(res)
+        p.produce(
+            "actual_stock_price",
+            json.dumps(
+                {
+                    "_id": company,
+                    "actual_stock_price": record_value,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
+        )
+        p.flush()
+
+    return "Done. Produced all stock data to Kafka."
 
 def get_stock_price(companies: list = all_companies):
 
