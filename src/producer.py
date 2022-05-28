@@ -1,6 +1,13 @@
 from bs4 import BeautifulSoup as bs
 import json
-from producersetup import all_companies, delivery_report, get, p, companies_url
+from producersetup import (
+    all_companies,
+    delivery_report,
+    get,
+    p,
+    companies_url,
+    kununu_companies,
+)
 import datetime as dt
 import time
 
@@ -111,7 +118,7 @@ def get_news(companies: list = all_companies):
     return "Done. Produced all News to Kafka."
 
 
-def get_worker_review(companies: list = all_companies):
+def get_worker_review(companies: list = kununu_companies):
 
     for company in companies:
         try:
@@ -323,6 +330,8 @@ def get_customer_experience(companies: list = companies_url):
         "fresenius",
         "freseniusmedicalcare",
         "infineon",
+        "merckgroup",
+        "munichre",
         "porsche",
         "puma",
         "qiagen",

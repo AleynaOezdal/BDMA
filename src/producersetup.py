@@ -55,6 +55,9 @@ all_companies = [
     "infineon",
     "linde",
     "mercedes-benz",
+    "merck",
+    "mtu",
+    "munich_re",
     "porsche",
     "puma",
     "qiagen",
@@ -95,6 +98,9 @@ companies_url = [
     "infineon",
     "linde-gas",
     "mercedes-benz",
+    "merckgroup",
+    "mtu",
+    "munichre",
     "porsche",
     "puma",
     "qiagen",
@@ -154,6 +160,49 @@ yfinance_symbols_dax_companies = [
     "zal",
 ]
 
+kununu_compaies = [
+    "adidas",
+    "airbus",
+    "allianzdeutschland",
+    "basf-se",
+    "bayer",
+    "bmwgroup",
+    "brenntag",
+    "continental-gruppe",
+    "covestro-deutschland3",
+    "daimler-truck3",
+    "delivery-hero",
+    "deutsche-bank",
+    "deutsche-boerse",
+    "deutsche-post",
+    "deutsche-telekom",
+    "eon",
+    "fresenius-se",
+    "fresenius-medical-care",
+    "hannover-rueckversicherung",
+    "heidelberg-zement",
+    "hellofresh",
+    "henkel-aa",
+    "infineon-technologies",
+    "linde",
+    "mercedes-benz-group",
+    "merckaa",
+    "mtuaeroengines",
+    "muenchener-rueckversicherung",
+    "porsche-gruppe",
+    "pumagroup",
+    "qiagen",
+    "rwe",
+    "sap",
+    "sartorius",
+    "siemens",
+    "siemens-healthineers-austria",
+    "symrise",
+    "volkswagen",
+    "vonovia-se",
+    "zalando",
+]
+
 test_symbols = ["ads", "air", "alv"]
 
 
@@ -177,3 +226,18 @@ def get(url, yahoo_finance=False):
         return res.text.strip()
     else:
         raise BaseException
+
+
+def create_company_dict(
+    company_names: list = all_companies, symbols: list = yfinance_symbols_dax_companies
+):
+    company_dict = {}
+    for index in range(len(company_names)):
+        company_dict[company_names[index]] = symbols[index]
+    return company_dict
+
+
+if __name__ == "__main__":
+    print(len(yfinance_symbols_dax_companies))
+    print(len(all_companies))
+    print(len(companies_url))
