@@ -33,7 +33,6 @@ body {
 
 #navigation {
     width: 20%;
-    height: 200%;
     vertical-align: middle;
     align-items: stretch;
     background-color: #F6F6F6;
@@ -56,6 +55,7 @@ body {
 #content {
     width: 100%;
     vertical-align: middle;
+    height: 100%;
 }
 
 #content-header {
@@ -92,4 +92,10 @@ body {
 #kpi_widget_pos{
     color: lightgreen;
     font-size: 80%;
+}
+
+#kpi_widget_esg{
+    font-size: 200%;
+    vertical-align: middle;
+    text-align: center;
 }
