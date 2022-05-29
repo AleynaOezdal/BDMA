@@ -88,7 +88,7 @@ def get_kpi_content_value(value):
 
         widget_ebit_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'EBIT in MEUR'),
+                                html.P(id='kpi_widget_header', children = 'EBIT'),
                                 html.P(id='kpi_widget_key', children=ebit),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ]),
@@ -103,7 +103,7 @@ def get_kpi_content_value(value):
         else:
             gross_profit = 0
 
-        fig_gross_profit = px.bar(get_gross_profit(company_dict[value]), y='Gross Profit', text_auto = True, labels={'Gross Profit': '',  'index': ''})
+        fig_gross_profit = px.bar(get_gross_profit(company_dict[value]), x='Gross Profit', text_auto = True, orientation='h',labels={'Gross Profit': '',  'index': ''})
 
         fig_gross_profit.update_layout(
             height = 90,
@@ -119,7 +119,7 @@ def get_kpi_content_value(value):
 
         widget_gross_profit_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'Profit Margin in %'),
+                                html.P(id='kpi_widget_header', children = 'Profit Margin'),
                                 html.P(id='kpi_widget_key', children=gross_profit),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ]),
@@ -134,8 +134,9 @@ def get_kpi_content_value(value):
              income = short_num(get_net_income(company_dict[value])['Net Income'][0])
         else:
             income = 0
-        
-        fig_net_income = px.line(get_net_income(company_dict[value]), labels={'Net Income': '',  'index': ''})
+
+        df = get_net_income(company_dict[value]).sort_index()
+        fig_net_income = px.line(df, y='Net Income', labels={'Net Income': '',  'index': ''})
 
         fig_net_income.update_layout(
             height = 90,
@@ -167,7 +168,7 @@ def get_kpi_content_value(value):
         else:
             revenue = 0
         
-        fig_total_revenue = px.bar(get_total_revenue(company_dict[value]), y='Total Revenue', text_auto = True, labels={'Total Revenue': '',  'index': ''})
+        fig_total_revenue = px.bar(get_total_revenue(company_dict[value]), x='Total Revenue', text_auto = True, orientation='h', labels={'Total Revenue': '',  'index': ''})
 
         fig_total_revenue.update_layout(
             height = 90,
@@ -183,7 +184,7 @@ def get_kpi_content_value(value):
 
         widget_total_revenue_kpi = html.Div(id = 'kpi_widget', children =[
                             html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'Revenue in MEUR'),
+                                html.P(id='kpi_widget_header', children = 'Revenue'),
                                 html.P(id='kpi_widget_key', children=revenue),
                                 html.P(id='kpi_widget_pos', children=['▲'])
                             ]),
@@ -199,7 +200,7 @@ def get_kpi_content_value(value):
         else:
             level = 0
         
-        fig_total_operating_expenses = px.bar(get_total_operating_expenses(company_dict[value]), y='Total Operating Expenses', text_auto = True, labels={'Total Operating Expenses': '',  'index': ''})
+        fig_total_operating_expenses = px.bar(get_total_operating_expenses(company_dict[value]), x='Total Operating Expenses', orientation='h', text_auto = True, labels={'Total Operating Expenses': '',  'index': ''})
 
         fig_total_operating_expenses.update_layout(
             height = 90,

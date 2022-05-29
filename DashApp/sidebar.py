@@ -20,7 +20,7 @@ sidebar = html.Div(id = 'navigation',children=[
             #absatz
             html.Br(),
             dcc.DatePickerSingle(
-                date=date(2022, 5, 17),
+                placeholder='Datum auswählen',
                 display_format='DD MM YY'
             ),
             html.Div(id='output-container-button',

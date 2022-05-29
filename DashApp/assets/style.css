@@ -43,21 +43,56 @@ body {
     bottom: 0%;
     left: 0%;
 }
+
+/* Dropdown */
+
 /* 
 #dropdown {
     border: 0;
     box-shadow: 2.5px 5px 4px silver;
 } */
 
+.drop-zone-columns {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: center;
+    margin: 1rem;
+}
+
+.drop-zone-dropdown {
+    color: #E5E5E5;
+    margin: 1rem;
+    font-size: 1.428571rem !important;
+    /*width:380px*/
+}
+
+ /* DatePicker */
+
+.DateInput, .DateInput_1 {
+    /* border: 0px; */
+    /* border-bottom: 2px; */
+}
+
+.DateInput_input, .DateInput_input_1 {
+    Height: 34px !important;
+    Width: 170% !important;
+    background-color: #F6F6F6;
+    border-bottom: 1px solid;
+    /* border-radius: inherit; */
+}
+
+.SingleDatePickerInput__withBorder {
+    border: 0;
+    background-color: #F6F6F6;
+}
+
+/* Button */
+
 #button_search{
     background-color: #E5E5E5;
     color: black;
     border: 0;
 }
-
-#button-search:hover {
-    box-shadow: 5px 12px 16px 0 silver, 0 17px 50px 0 silver;
-  }
 
 #navigation_point_one, #navigation_point_two, #navigation_point_three{
     background-color: #E5E5E5;
