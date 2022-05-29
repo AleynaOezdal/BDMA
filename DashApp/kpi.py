@@ -30,13 +30,19 @@ def get_kpi_content_value(value):
     if value in data_kpi:
         #big letter 
         name = value.title()
+
+        if '_' in name:
+            name = name.replace('_', ' ')
+        if 'Bmw' in name:
+            name = name.replace('Bmw', 'BMW')
+
         wkns_and_isins = get_wkns_and_isins(value)
 
         #content-header-kpi
         content_header_kpi  = html.H3(id = 'content-header', children=['Key Performance Indicators for '+ name+' '+wkns_and_isins])
 
         #get wiget data free cashflow
-        if get_esg_score(company_dict[value]) != 0:
+        if get_esg_score(company_dict[value]) != 0 and get_esg_score(company_dict[value]) != 'NaN':
             esg = get_esg_score(company_dict[value])
             if esg >= 40:
                 high_average_low = 'SERVER'
@@ -55,7 +61,7 @@ def get_kpi_content_value(value):
                 color= 'green'
         else:
             esg = 0
-            high_average_low = 'LOW'
+            high_average_low = 'NONE'
             color= 'green'
 
         
