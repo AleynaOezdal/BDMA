@@ -107,6 +107,7 @@ body {
     background-color: #F6F6F6;
     margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
+    padding: 0%;
 }
 
 #kpi_widget_text{
@@ -133,6 +134,23 @@ body {
     font-size: 200%;
     vertical-align: middle;
     text-align: center;
+}
+
+#kpi_graph{
+    width: 40%;
+    display: inline-block;
+    margin: 5%;
+    margin-left: 0%;
+}
+
+#kpi_graph_text{
+    width: 40%;
+    display: inline-block;
+    margin: 5%;
+    margin-left: 0%;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
 }
 
 /*News Widget*/
