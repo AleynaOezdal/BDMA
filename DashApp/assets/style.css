@@ -46,39 +46,20 @@ body {
 
 /* Dropdown */
 
-/* 
-#dropdown {
+.Select-control {
     border: 0;
-    box-shadow: 2.5px 5px 4px silver;
-} */
-
-.drop-zone-columns {
-    display: grid;
-    grid-template-columns: 2rem 1fr;
-    align-items: center;
-    margin: 1rem;
-}
-
-.drop-zone-dropdown {
-    color: #E5E5E5;
-    margin: 1rem;
-    font-size: 1.428571rem !important;
-    /*width:380px*/
+    border-radius: 0;
+    background-color: #F6F6F6;
+    border-bottom: 1px solid;
 }
 
  /* DatePicker */
 
-.DateInput, .DateInput_1 {
-    /* border: 0px; */
-    /* border-bottom: 2px; */
-}
-
 .DateInput_input, .DateInput_input_1 {
-    Height: 34px !important;
+    Height: 32px !important;
     Width: 170% !important;
     background-color: #F6F6F6;
     border-bottom: 1px solid;
-    /* border-radius: inherit; */
 }
 
 .SingleDatePickerInput__withBorder {

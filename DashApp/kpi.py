@@ -5,7 +5,9 @@ import pandas as pd
 from zmq import EMSGSIZE
 from sidebar import data_kpi
 from retrieve_mongo_db import *
-from company_dic import *
+from producersetup import create_company_dict
+
+company_dict = create_company_dict()
 
 #get short numbers 
 def short_num(num):

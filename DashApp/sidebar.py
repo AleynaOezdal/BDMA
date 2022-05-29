@@ -2,9 +2,11 @@ from webbrowser import get
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 from datetime import date
-from company_dic import *
+from producersetup import create_company_dict
 
 #get all dax companys
+
+company_dict = create_company_dict()
 data_kpi = []
 for entry in company_dict:
     data_kpi.append(entry)
