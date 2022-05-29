@@ -9,7 +9,12 @@ from producersetup import create_company_dict
 company_dict = create_company_dict()
 data_kpi = []
 for entry in company_dict:
-    data_kpi.append(entry)
+    name = entry.title()
+    if '_' in name:
+        name = name.replace('_', ' ')
+    if 'Bmw' in name:
+        name = name.replace('Bmw', 'BMW')
+    data_kpi.append(name)
 
 #navigation/sidebar
 sidebar = html.Div(id = 'navigation',children=[

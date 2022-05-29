@@ -28,13 +28,20 @@ def get_value_without_kpi(value):
 
 def get_kpi_content_value(value):
     if value in data_kpi:
-        #big letter 
+        #small letter for dict
+        if ' ' in value:
+            value = value.replace(' ', '_')
+
+        value = value.lower()
+
+        #big letter for Title
         name = value.title()
 
         if '_' in name:
             name = name.replace('_', ' ')
         if 'Bmw' in name:
             name = name.replace('Bmw', 'BMW')
+
 
         wkns_and_isins = get_wkns_and_isins(value)
 
