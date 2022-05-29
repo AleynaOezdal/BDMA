@@ -12,7 +12,7 @@ for entry in company_dict:
 #navigation/sidebar
 sidebar = html.Div(id = 'navigation',children=[
             html.P(
-                'Here you can Search'
+                'Starten Sie Ihre Suche hier:'
             ),
             #html.Div(dcc.Input(id='input-box1', placeholder='Select DAX-Company', type='text')),
             dcc.Dropdown(data_kpi, placeholder='DAX-Company auswählen', value = 'None', id='dropdown'),
@@ -27,6 +27,7 @@ sidebar = html.Div(id = 'navigation',children=[
                     children=''),
             html.Br(),
             html.Button('Suchen', id='button_search'),
+            html.Br(),
             html.Br(),
             dbc.Nav(
                 [

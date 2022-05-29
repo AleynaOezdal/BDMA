@@ -9,14 +9,14 @@ font = {
 }
 
 #style widget 
-style_widget_news = {
-    'width': '48%', 
-    'display': 'inline-block', 
-    'vertical-align': 'middle', 
-    'background': colors['background'], 
-    'margin': '1%'
+#style_widget_news = {
+  #  'width': '48%',
+  #  'display': 'inline-block',
+  #  'vertical-align': 'middle',
+  #  'background': colors['background'],
+  #  'margin': '1%'
 
-}
+#}
 
 #content-header-news
 content_header_news  = html.H3(id = 'content-header',children='Company Experience for ADS.DE WKN: 9389145 / ISIN: NL0000235190', style={
@@ -26,73 +26,73 @@ content_header_news  = html.H3(id = 'content-header',children='Company Experienc
             })
 
 #widget-one-news
-widget_one_news = html.Div(id = 'widget-one', children =[
+widget_one_news = html.Div(id = 'news_widget', children =[
                     html.Div(children=[
-                        html.H4(children = 'NEWS', style={'font-size': '100%'}),
-                        html.P(children='yfinance oder finanzen.net', style={'font-size': '80%'}),
-                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
-                    ], style={
-                        'width': '40%', 
-                        'margin': '5%',
-                        'display': 'inline-block'
+                        html.H4(id='news_widget_header', children = 'NEWS'),
+                        html.P(id='news_widget_text', children='finanzen.net'),
+                        html.P(id='kpi_widget_pos', children=['▲'], style={'color': 'green', 'font-size': '80%'})
+                    ],style={
+                        'width': '50%',
+                        'margin': '5%'
                     })
-                ], style=style_widget_news)
+                ])
 
 #widget-two-news
-widget_two_news = html.Div(id = 'widget-two', children =[
+widget_two_news = html.Div(id = 'news_widget', children =[
                     html.Div(children=[
-                        html.P(children = 'MITARBEITER-REVIEWS', style={'font-size': '100%'}),
-                        html.P(children='kununu oder glasdoor', style={'font-size': '80%'}),
-                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
-                    ], style={
-                        'width': '50%', 
-                        'margin': '5%'
-                    })   
-                ], style=style_widget_news)
-
-widget_three_news = html.Div(id = 'widget-three', children =[
-                    html.Div(children=[
-                        html.P(children = 'ALLE WELT NEWS', style={'font-size': '100%'}),
-                        html.P(children='finanzen.net oder boerse.de', style={'font-size': '80%'}),
-                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
+                        html.H5(id='news_widget_header', children = 'MITARBEITER-REVIEWS'),
+                        html.P(id='news_widget_text', children='kununu'),
+                        html.P(id='news_widget_pos', children=['▲'], style={'color': 'green', 'font-size': '80%'})
                     ], style={
                         'width': '50%',
                         'margin': '5%'
                     })
-                ], style=style_widget_news)
+                    ])
+
+
+widget_three_news = html.Div(id = 'news_widget', children =[
+                    html.Div(children=[
+                        html.P(id='news_widget_header', children = 'ALLE WELT NEWS'),
+                        html.P(id='news_widget_text', children='boerse.de'),
+                        html.P(id='news_widget_pos', children=['▲'], style={'color': 'green', 'font-size': '80%'})
+                    ], style={
+                        'width': '50%',
+                        'margin': '5%'
+                    })
+                    ])
 
 #widget-four-news
-widget_four_news = html.Div(id = 'widget-four', children =[
+widget_four_news = html.Div(id = 'news_widget', children =[
                     html.Div(children=[
-                        html.P(children = 'BÖRSENNEWS-FORUM', style={'font-size': '100%'}),
-                        html.P(children='boersennews.de/{ISIN}', style={'font-size': '80%'}),
-                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
+                        html.P(id='news_widget_header',children = 'BÖRSENNEWS-FORUM'),
+                        html.P(id='news_widget_text',children='boersennews.de/{ISIN}'),
+                        html.P(id='news_widget_pos', children=['▲'], style={'color': 'green', 'font-size': '80%'})
                     ], style={
                         'width': '50%', 
                         'margin': '5%'
                     })  
-                ], style=style_widget_news)
+                ])
 
 #widget-five-news
-widget_five_news = html.Div(id = 'widget-five', children =[
+widget_five_news = html.Div(id = 'news_widget', children =[
                     html.Div(children=[
-                        html.P(children = 'DAX NEWS', style={'font-size': '100%'}),
-                        html.P(children='finanzen.net', style={'font-size': '80%'}),
-                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
+                        html.P(id='news_widget_header', children = 'DAX NEWS'),
+                        html.P(id='news_widget_text',children='finanzen.net'),
+                        html.P(id='news_widget_pos',children=['▲'], style={'color': 'green', 'font-size': '80%'})
                     ], style={
                         'width': '50%', 
                         'margin': '5%'
                     })   
-                ], style=style_widget_news)
+                ])
 
 #widget-six-news
-widget_six_news = html.Div(id = 'widget-six', children =[
+widget_six_news = html.Div(id = 'news_widget', children =[
                     html.Div(children=[
-                        html.P(children = 'KUNDEN', style={'font-size': '100%'}),
-                        html.P(children='Trustpilot oder Google Reviews', style={'font-size': '80%'}),
-                        html.P(['▲'], style={'color': 'green', 'font-size': '80%'})
+                        html.P(id='news_widget_header', children = 'KUNDEN'),
+                        html.P(id='news_widget_text', children='Trustpilot'),
+                        html.P(id='news_widget_pos',children=['▲'], style={'color': 'green', 'font-size': '80%'})
                     ], style={
                         'width': '50%', 
                         'margin': '5%'
                     }) 
-                ], style=style_widget_news)
+                ])

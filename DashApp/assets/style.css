@@ -101,6 +101,7 @@ body {
 
 #kpi_widget {
     width: 48%;
+    height: 25%;
     display: inline-block;
     vertical-align: middle;
     background-color: #F6F6F6;
@@ -133,3 +134,32 @@ body {
     vertical-align: middle;
     text-align: center;
 }
+
+/*News Widget*/
+
+#news_widget {
+    width: 48%;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #F6F6F6;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
+}
+
+
+#news_widget_text{
+    width: 40%;
+    margin: 5%;
+    display: inline-block;
+}
+
+#news_widget_header{
+    font-size: 80%;
+}
+
+
+#news_widget_pos{
+    color: lightgreen;
+    font-size: 80%;
+}
+

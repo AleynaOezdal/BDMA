@@ -38,13 +38,13 @@ def get_kpi_content_value(value):
             esg = get_esg_score(company_dict[value])
             if esg >= 20:
                 high_average_low = 'HIGH'
-                color = 'green'
+                color = 'red'
             elif esg <= 20 and esg >= 10:
                 high_average_low = 'AVERAGE'
                 color = 'orange'
             elif esg <= 10:
                 high_average_low = 'LOW'
-                color= 'red'
+                color= 'green'
         else:
             esg = 0
             high_average_low = 'LOW'
