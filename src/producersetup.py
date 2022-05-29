@@ -215,7 +215,7 @@ community_company = [
     "covestro",
     "daimler-truck-holding",
     "delivery-hero",
-    #...
+    # ...
 ]
 
 community_number = [
@@ -230,7 +230,7 @@ community_number = [
     "6289",
     "74246",
     "15223",
-    #...
+    # ...
 ]
 
 test_symbols = ["ads", "air", "alv"]
