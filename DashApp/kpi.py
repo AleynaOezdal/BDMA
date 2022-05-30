@@ -98,7 +98,6 @@ def get_kpi_content_value(value):
         fig_ebit.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_ebit.update_layout(
-            height = 90,
             showlegend=False,
             margin_l = 0,
             margin_r = 0,
@@ -106,7 +105,7 @@ def get_kpi_content_value(value):
             margin_b = 0,
             paper_bgcolor = '#F6F6F6',
             plot_bgcolor = '#F6F6F6',
-            uniformtext_minsize=6
+            uniformtext_minsize=6,
         )
 
         widget_ebit_kpi = html.Div(id = 'kpi_widget', children =[
@@ -117,8 +116,10 @@ def get_kpi_content_value(value):
                             ]),
                             html.Div(id = 'kpi_graph', children= [
                                 dcc.Graph(
-                                figure = fig_ebit
-                            )])])
+                                figure = fig_ebit,
+                                style={'width': '20vmax', 'height': '10vmax'}
+                            )])
+                        ])
         
         #get widget data gross profit
         if get_gross_profit(company_dict[value])['Gross Profit'][0] != 0 and get_gross_profit(company_dict[value])['Gross Profit'][0] != 'NaN':
@@ -132,7 +133,6 @@ def get_kpi_content_value(value):
         fig_gross_profit.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_gross_profit.update_layout(
-            height = 90,
             showlegend=False,
             margin_l = 0,
             margin_r = 0,
@@ -151,7 +151,8 @@ def get_kpi_content_value(value):
                             ]),
                             html.Div(id = 'kpi_graph', children= [
                                 dcc.Graph(
-                                figure = fig_gross_profit
+                                figure = fig_gross_profit,
+                                style={'width': '20vmax', 'height': '10vmax'}
                             )])
                         ])
         
@@ -168,7 +169,6 @@ def get_kpi_content_value(value):
         fig_net_income.update_traces(mode='lines', line_color='#67E98B')
 
         fig_net_income.update_layout(
-            height = 90,
             showlegend=False,
             margin_l = 0,
             margin_r = 0,
@@ -186,7 +186,8 @@ def get_kpi_content_value(value):
                             ]),
                             html.Div(id = 'kpi_graph', children= [
                                 dcc.Graph(
-                                figure = fig_net_income
+                                figure = fig_net_income,
+                                style={'width': '20vmax', 'height': '10vmax'}
                             )])
                         ])
 
@@ -202,7 +203,6 @@ def get_kpi_content_value(value):
         fig_total_revenue.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_total_revenue.update_layout(
-            height = 90,
             showlegend=False,
             margin_l = 0,
             margin_r = 0,
@@ -221,7 +221,8 @@ def get_kpi_content_value(value):
                             ]),
                             html.Div(id = 'kpi_graph', children= [
                                 dcc.Graph(
-                                figure = fig_total_revenue
+                                figure = fig_total_revenue,
+                                style={'width': '20vmax', 'height': '10vmax'}
                             )])
                         ])
 
@@ -237,7 +238,6 @@ def get_kpi_content_value(value):
         fig_total_operating_expenses.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_total_operating_expenses.update_layout(
-            height = 90,
             showlegend=False,
             margin_l = 0,
             margin_r = 0,
@@ -245,7 +245,7 @@ def get_kpi_content_value(value):
             margin_b = 0,
             paper_bgcolor = '#F6F6F6',
             plot_bgcolor = '#F6F6F6',
-            uniformtext_minsize=6,
+            uniformtext_minsize=6
         )
 
         #widget-six-kpi
@@ -257,7 +257,8 @@ def get_kpi_content_value(value):
                             ]),
                             html.Div(id = 'kpi_graph', children= [
                                 dcc.Graph(
-                                figure = fig_total_operating_expenses
+                                figure = fig_total_operating_expenses,
+                                style={'width': '20vmax', 'height': '10vmax'}
                             )])
                         ])
 

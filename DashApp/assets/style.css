@@ -117,7 +117,7 @@ body {
 
 #kpi_widget {
     width: 48%;
-    height: 25%;
+    height: 200px;
     display: inline-block;
     vertical-align: middle;
     background-color: #F6F6F6;
@@ -128,7 +128,7 @@ body {
 
 #kpi_widget_text{
     width: 40%;
-    margin: 5%;
+    padding: 5%;
     display: inline-block;
 }
 
@@ -148,9 +148,11 @@ body {
 
 #kpi_widget_esg{
     font-size: 200%;
-    vertical-align: middle;
     text-align: center;
+    vertical-align: middle;
 }
+
+/* KPI graph */
 
 #kpi_graph{
     width: 40%;
@@ -167,6 +169,16 @@ body {
     vertical-align: middle;
     text-align: center;
     font-weight: bold;
+}
+
+.dash-graph{
+    height: 100%;
+    width: 100%;
+}
+
+.user-select-none.svg-container{
+    height: 100%;
+    width: 100%;
 }
 
 /*News Widget*/
