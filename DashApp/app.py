@@ -16,9 +16,6 @@ font = {
     'helvetica' : 'Arial, Helvetica, sans-serif'
 }
 
-#df2 = pd.read_csv(
-    #'https://raw.githubusercontent.com/Coding-with-Adam/Dash-by-Plotly/master/Bootstrap/Side-Bar/iranian_students.csv')
-
 #header
 header = html.Div(id = 'Header', children= [
     html.H1(children='Dashboard'),
@@ -65,15 +62,12 @@ def render_page_content(pathname, n_clicks, value):
             return [kpi.get_kpi_content_value(value)]
         elif pathname == '/Investorrelations':
             return [
-                html.H1('Investor Relations for ADS.DE WKN: 9389145 / ISIN: NL0000235190',
+                html.H3('Investor Relations for ADS.DE WKN: 9389145 / ISIN: NL0000235190',
                         style={
                    'font-family': font['helvetica'],
                    'font-weight': 'bold',
                    'margin': '1%'
-                }),
-             #   dcc.Graph(id='bargraph',
-              #          figure=px.bar(df2, barmode='group', x='Years',
-              #                          y=['Girls Grade School', 'Boys Grade School']))
+                })
             ]
         elif pathname == '/Companyexperience':
             return [

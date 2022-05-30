@@ -87,18 +87,12 @@ def get_kpi_content_value(value):
              ebit = short_num(get_ebit(company_dict[value])['Ebit'][0])
         else:
             ebit = 0
-        
-        # fig_ebit = px.bar(get_ebit(company_dict[value]), y='Ebit', text_auto = True, labels={'Ebit': '',  'index': ''})
-
-        # fig_ebit.update_traces(textfont_size=12, textangle=0, cliponaxis=False)
-
-
+      
         ebit_df = get_ebit(company_dict[value]).sort_index()
 
         fig_ebit = go.Figure(go.Scatter(y=ebit_df['Ebit'], x=ebit_df.index))
+        
         fig_ebit.update_traces(mode='lines', line_color='#67E98B')
-
-        fig_net_income.update_traces(mode='lines', line_color='#67E98B')
 
         fig_ebit.update_layout(
             showlegend=False,
@@ -202,7 +196,7 @@ def get_kpi_content_value(value):
 
         total_revenue_df = get_total_revenue(company_dict[value])
         
-        fig_total_revenue = go.Figure(go.Bar(x=total_revenue_df['Total Revenue'], y=total_revenue_df.index, text=total_revenue_df['Total Revenue'], orientation='h'))
+        fig_total_revenue = go.Figure(go.Bar(y=total_revenue_df['Total Revenue'], x=total_revenue_df.index, text=total_revenue_df['Total Revenue']))
         fig_total_revenue.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_total_revenue.update_layout(
