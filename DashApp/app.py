@@ -77,9 +77,9 @@ def render_page_content(pathname, n_clicks, value):
             ]
         elif pathname == '/Companyexperience':
             return [
-                html.Div(id = 'content', children=[
+                html.Div(id = 'content_news', children=[
                     news.content_header_news,
-                    html.Div(id = 'widget', children = [ 
+                    html.Div(id = 'widget_news', children = [ 
                         news.widget_one_news,
                         news.widget_two_news,
                         news.widget_three_news,

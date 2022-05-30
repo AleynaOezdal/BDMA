@@ -1,8 +1,8 @@
 from unittest import skip
 from dash import dcc, html
 import plotly.express as px
+import plotly.graph_objects as go
 import pandas as pd
-from zmq import EMSGSIZE
 from sidebar import data_kpi
 from retrieve_mongo_db import *
 from producersetup import create_company_dict
@@ -84,12 +84,19 @@ def get_kpi_content_value(value):
                         ])
 
         #get wiget data ebit
-        if get_ebit(company_dict[value])['Ebit'][0] != 0:
+        if get_ebit(company_dict[value])['Ebit'][0] != 0 and get_ebit(company_dict[value])['Ebit'][0] != 'NaN':
              ebit = short_num(get_ebit(company_dict[value])['Ebit'][0])
         else:
             ebit = 0
         
-        fig_ebit = px.bar(get_ebit(company_dict[value]), y='Ebit', text_auto = True, labels={'Ebit': '',  'index': ''})
+        # fig_ebit = px.bar(get_ebit(company_dict[value]), y='Ebit', text_auto = True, labels={'Ebit': '',  'index': ''})
+
+        # fig_ebit.update_traces(textfont_size=12, textangle=0, cliponaxis=False)
+
+        ebit_df = get_ebit(company_dict[value])
+        
+        fig_ebit = go.Figure(go.Bar(x=ebit_df.index,y=ebit_df['Ebit'], text=ebit_df['Ebit']))
+        fig_ebit.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_ebit.update_layout(
             height = 90,
@@ -98,7 +105,9 @@ def get_kpi_content_value(value):
             margin_r = 0,
             margin_t = 0,
             margin_b = 0,
-            paper_bgcolor = '#F6F6F6'
+            paper_bgcolor = '#F6F6F6',
+            plot_bgcolor = '#F6F6F6',
+            uniformtext_minsize=6
         )
 
         widget_ebit_kpi = html.Div(id = 'kpi_widget', children =[
@@ -113,13 +122,16 @@ def get_kpi_content_value(value):
                             )])])
         
         #get widget data gross profit
-        if get_gross_profit(company_dict[value])['Gross Profit'][0] != 0:
+        if get_gross_profit(company_dict[value])['Gross Profit'][0] != 0 and get_gross_profit(company_dict[value])['Gross Profit'][0] != 'NaN':
              gross_profit = short_num(get_gross_profit(company_dict[value])['Gross Profit'][0])
         else:
             gross_profit = 0
 
-        fig_gross_profit = px.bar(get_gross_profit(company_dict[value]), x='Gross Profit', text_auto = True, orientation='h',labels={'Gross Profit': '',  'index': ''})
-
+        gross_profit_df = get_gross_profit(company_dict[value])
+        
+        fig_gross_profit = go.Figure(go.Bar(x=gross_profit_df['Gross Profit'], y=gross_profit_df.index, text=gross_profit_df['Gross Profit'], orientation='h'))
+        fig_gross_profit.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        
         fig_gross_profit.update_layout(
             height = 90,
             showlegend=False,
@@ -127,9 +139,9 @@ def get_kpi_content_value(value):
             margin_r = 0,
             margin_t = 0,
             margin_b = 0,
-            title_y = False,
-            title_x = False,
-            paper_bgcolor = '#F6F6F6'
+            paper_bgcolor = '#F6F6F6',
+            plot_bgcolor = '#F6F6F6',
+            uniformtext_minsize=6,
         )
 
         widget_gross_profit_kpi = html.Div(id = 'kpi_widget', children =[
@@ -145,7 +157,7 @@ def get_kpi_content_value(value):
                         ])
         
         #get wiget data net income
-        if get_net_income(company_dict[value])['Net Income'][0] != 0:
+        if get_net_income(company_dict[value])['Net Income'][0] != 0 and get_net_income(company_dict[value])['Net Income'][0] != 'NaN':
              income = short_num(get_net_income(company_dict[value])['Net Income'][0])
         else:
             income = 0
@@ -178,13 +190,16 @@ def get_kpi_content_value(value):
                         ])
 
         #get widget data total revenue
-        if get_total_revenue(company_dict[value])['Total Revenue'][0] != 0:
+        if get_total_revenue(company_dict[value])['Total Revenue'][0] != 0 and get_total_revenue(company_dict[value])['Total Revenue'][0] != 'NaN':
              revenue = short_num(get_total_revenue(company_dict[value])['Total Revenue'][0])
         else:
             revenue = 0
-        
-        fig_total_revenue = px.bar(get_total_revenue(company_dict[value]), x='Total Revenue', text_auto = True, orientation='h', labels={'Total Revenue': '',  'index': ''})
 
+        total_revenue_df = get_total_revenue(company_dict[value])
+        
+        fig_total_revenue = go.Figure(go.Bar(x=total_revenue_df['Total Revenue'], y=total_revenue_df.index, text=total_revenue_df['Total Revenue'], orientation='h'))
+        fig_total_revenue.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        
         fig_total_revenue.update_layout(
             height = 90,
             showlegend=False,
@@ -192,9 +207,9 @@ def get_kpi_content_value(value):
             margin_r = 0,
             margin_t = 0,
             margin_b = 0,
-            title_y = False,
-            title_x = False,
-            paper_bgcolor = '#F6F6F6'
+            paper_bgcolor = '#F6F6F6',
+            plot_bgcolor = '#F6F6F6',
+            uniformtext_minsize=6,
         )
 
         widget_total_revenue_kpi = html.Div(id = 'kpi_widget', children =[
@@ -210,13 +225,16 @@ def get_kpi_content_value(value):
                         ])
 
         #get wiget data total operating expenses
-        if get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0] != 0:
+        if get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0] != 0 and get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0] != 'NaN':
              level = short_num(get_total_operating_expenses(company_dict[value])['Total Operating Expenses'][0])
         else:
             level = 0
-        
-        fig_total_operating_expenses = px.bar(get_total_operating_expenses(company_dict[value]), x='Total Operating Expenses', orientation='h', text_auto = True, labels={'Total Operating Expenses': '',  'index': ''})
 
+        total_operating_expenses_df = get_total_operating_expenses(company_dict[value])
+        
+        fig_total_operating_expenses = go.Figure(go.Bar(x=total_operating_expenses_df['Total Operating Expenses'], y=total_operating_expenses_df.index, text=total_operating_expenses_df['Total Operating Expenses'], orientation='h'))
+        fig_total_operating_expenses.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        
         fig_total_operating_expenses.update_layout(
             height = 90,
             showlegend=False,
@@ -224,9 +242,9 @@ def get_kpi_content_value(value):
             margin_r = 0,
             margin_t = 0,
             margin_b = 0,
-            title_y = False,
-            title_x = False,
-            paper_bgcolor = '#F6F6F6'
+            paper_bgcolor = '#F6F6F6',
+            plot_bgcolor = '#F6F6F6',
+            uniformtext_minsize=6,
         )
 
         #widget-six-kpi
