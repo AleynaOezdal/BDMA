@@ -1,6 +1,5 @@
 from unittest import skip
 from dash import dcc, html
-import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 from sidebar import data_kpi
@@ -162,8 +161,11 @@ def get_kpi_content_value(value):
         else:
             income = 0
 
-        df = get_net_income(company_dict[value]).sort_index()
-        fig_net_income = px.line(df, y='Net Income', labels={'Net Income': '',  'index': ''})
+        net_income_df = get_net_income(company_dict[value]).sort_index()
+
+        fig_net_income = go.Figure(go.Scatter(y=net_income_df['Net Income'], x=net_income_df.index))
+
+        fig_net_income.update_traces(mode='lines', line_color='#67E98B')
 
         fig_net_income.update_layout(
             height = 90,
@@ -172,9 +174,8 @@ def get_kpi_content_value(value):
             margin_r = 0,
             margin_t = 0,
             margin_b = 0,
-            title_y = False,
-            title_x = False,
-            paper_bgcolor = '#F6F6F6'
+            paper_bgcolor = '#F6F6F6',
+            plot_bgcolor = '#F6F6F6',
         )
 
         widget_net_income_kpi = html.Div(id = 'kpi_widget', children =[
