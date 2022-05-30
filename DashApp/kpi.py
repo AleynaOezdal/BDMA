@@ -92,11 +92,14 @@ def get_kpi_content_value(value):
 
         # fig_ebit.update_traces(textfont_size=12, textangle=0, cliponaxis=False)
 
-        ebit_df = get_ebit(company_dict[value])
-        
-        fig_ebit = go.Figure(go.Bar(x=ebit_df.index,y=ebit_df['Ebit'], text=ebit_df['Ebit']))
-        fig_ebit.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
-        
+
+        ebit_df = get_ebit(company_dict[value]).sort_index()
+
+        fig_ebit = go.Figure(go.Scatter(y=ebit_df['Ebit'], x=ebit_df.index))
+        fig_ebit.update_traces(mode='lines', line_color='#67E98B')
+
+        fig_net_income.update_traces(mode='lines', line_color='#67E98B')
+
         fig_ebit.update_layout(
             showlegend=False,
             margin_l = 0,
@@ -130,7 +133,7 @@ def get_kpi_content_value(value):
         gross_profit_df = get_gross_profit(company_dict[value])
         
         fig_gross_profit = go.Figure(go.Bar(x=gross_profit_df['Gross Profit'], y=gross_profit_df.index, text=gross_profit_df['Gross Profit'], orientation='h'))
-        fig_gross_profit.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        fig_gross_profit.update_traces(marker_color='#164DA8', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_gross_profit.update_layout(
             showlegend=False,
@@ -235,7 +238,7 @@ def get_kpi_content_value(value):
         total_operating_expenses_df = get_total_operating_expenses(company_dict[value])
         
         fig_total_operating_expenses = go.Figure(go.Bar(x=total_operating_expenses_df['Total Operating Expenses'], y=total_operating_expenses_df.index, text=total_operating_expenses_df['Total Operating Expenses'], orientation='h'))
-        fig_total_operating_expenses.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        fig_total_operating_expenses.update_traces(marker_color='#164DA8', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_total_operating_expenses.update_layout(
             showlegend=False,
