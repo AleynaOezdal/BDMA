@@ -1,11 +1,11 @@
 """
 Here we will extract data from the internet which won't change in June 2022
 """
+from re import M
 import time
 import datetime as dt
 import json
 from bs4 import BeautifulSoup as bs
-from click import pass_obj
 import yfinance as yf
 from producersetup import (
     p,
@@ -13,12 +13,87 @@ from producersetup import (
     yfinance_symbols_dax_companies,
     delivery_report,
     all_companies,
+    m_corps,
     initialize_yf_tickers,
 )
 
 
+def get_industry_and_competitors():
+    try:
+        base_url = "https://www.boerse.de/beste-schlechteste/Dax-Aktien/DE0008469008"
+        soup = bs(get(url=base_url), "html.parser")
+
+        industries = soup.find_all("tr", attrs={"class": "branche row-bordered"})
+        all_industries = [
+            str(industry.find("td").text.strip()) for industry in industries
+        ]
+
+        companies = soup.find_all("tr", attrs={"class": "aktie row-bordered"})
+        allco = [str(company.find("a").text.strip()) for company in companies]
+
+        dax40_distribution = [
+            {all_industries[0]: allco[:6]},
+            {all_industries[1]: allco[6:15]},
+            {all_industries[2]: allco[15:19]},
+            {all_industries[3]: allco[19:32]},
+            {all_industries[4]: allco[32:34]},
+            {all_industries[5]: allco[34:37]},
+            {all_industries[6]: allco[37:39]},
+            {all_industries[7]: allco[39:]},
+        ]
+
+        for pair in dax40_distribution:
+            for k, v in pair.items():
+                p.produce(
+                    "dax40_distribution",
+                    json.dumps(
+                        {
+                            "_id": k,
+                            "corporates_in_industry": v,
+                            "time": str(dt.datetime.now()),
+                        }
+                    ),
+                    callback=delivery_report,
+                )
+                p.flush()
+
+    except Exception as e:
+        print(f"FAILED. The following error occured: {type(e)}\n{e}")
+
+    return "Done. Produced all DAX industries to Kafka."
+
+
+def get_description(companies: list = all_companies):
+
+    for company in companies:
+        try:
+            base_url = f"https://www.finanzen.net/unternehmensprofil/{company}"
+            soup = bs(get(base_url), "html.parser")
+            description = soup.find("div", {"class": "col-sm-8"}).contents[1]
+            description = str(description).split("</div>")[1]
+
+        except Exception as e:
+            description = "NaN"
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
+
+        p.produce(
+            "company_description",
+            json.dumps(
+                {
+                    "_id": company,
+                    "company_description": description,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
+        )
+        p.flush()
+
+    return "Done. Produced all company_description to Kafka."
+
+
 def get_WKN_and_ISIN(companies: list = all_companies):
-    # Scrape finanzen.net for each company for WKN/ ISN
+    # Scrape finanzen.net for each company for WKN/ ISIN
     for company in companies:
         try:
             base_url = f"https://www.finanzen.net/aktien/{company}-aktie"
@@ -249,6 +324,7 @@ def get_dividends(companies: list = yfinance_symbols_dax_companies):
 if __name__ == "__main__":
     # Test if all KPIs are extractable
     print("Now: WKNs and ISINs for all DAX Companies ...")
+
     time.sleep(5)
     get_WKN_and_ISIN()
     print("Done. Waiting for 5 seconds.")
@@ -266,7 +342,30 @@ if __name__ == "__main__":
         get_financial_KPI(kpi=kpi, yearly_basis=True)
         print("Done. Waiting for 120 seconds.")
         time.sleep(120)
+
+    print("Now: Major Holders for all DAX Companies ...")
     get_holders()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: Yearly Dividends for all DAX Companies ...")
     get_dividends()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: History DAX price for all DAX Companies ...")
     get_DAX_history_stock_price_til_today()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: Description for all DAX Companies ...")
+    get_description()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
+    print("Now: Industry and Competitors for all DAX Companies ...")
+    get_industry_and_competitors()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)
+
     # tbd: get_history_stock_price()

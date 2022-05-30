@@ -1,61 +1,46 @@
 from bs4 import BeautifulSoup as bs
 import json
-from producersetup import all_companies, delivery_report, get, p, companies_url
+from producersetup import (
+    all_companies,
+    delivery_report,
+    get,
+    p,
+    companies_url,
+    kununu_companies,
+    community_company,
+    community_number,
+    yfinance_symbols_dax_companies,
+)
 import datetime as dt
 import time
+import pandas as pd
+import yfinance as yf
 
 
-def get_stock_price(companies: list = all_companies):
-
+def get_actual_stock_price(companies: list = yfinance_symbols_dax_companies):
     for company in companies:
-        comp_stock_prices = dict()
         try:
-            base_url = f"https://www.finanzen.net/aktien/{company}-aktie"
-            soup = bs(get(base_url), "html.parser")
-
-            stock_price = {
-                "price": soup.find("div", {"class": "row quotebox"})
-                .find_all("div")[0]
-                .text,
-                "change": soup.find("div", {"class": "row quotebox"})
-                .find_all("div")[2]
-                .text,
-                "open": soup.find("div", {"class": "box table-quotes"})
-                .find_all("td")[5]
-                .text.split()[0],
-                "day_before": soup.find("div", {"class": "box table-quotes"})
-                .find_all("td")[5]
-                .text.split()[2],
-                "highest": soup.find("div", {"class": "box table-quotes"})
-                .find_all("td")[11]
-                .text.split()[0],
-                "lowest": soup.find("div", {"class": "box table-quotes"})
-                .find_all("td")[11]
-                .text.split()[2],
-                "marketcap": soup.find("div", {"class": "box table-quotes"})
-                .find_all("td")[9]
-                .text,
-                "time": soup.find("div", {"class": "box table-quotes"})
-                .find_all("td")[3]
-                .text.split()[1],
-                "date": soup.find("div", {"class": "box table-quotes"})
-                .find_all("td")[3]
-                .text.split()[0],
-            }
-
-            comp_stock_prices[f"{company}"] = stock_price
+            suffix = ".DE"
+            record_value = yf.download(
+                f"{company.upper()+suffix}",
+                period="1d",
+                interval="2m",
+                group_by="ticker",
+            ).to_json()
 
         except Exception as e:
-            comp_stock_prices[f"{company}"] = "NaN"
+            record_value = "NaN"
             print(f"FAILED. For {company} the following error occured: {type(e)}")
 
-        # Store company as key and stock price as value in a dict and transform it into JSON
+        # Store company as key and stock history as value in a dict and transform it into JSON
+        # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
+        # Steps: res = json.loads(value), then result = pd.json_normalize(res)
         p.produce(
-            "current_stock_price",
+            "actual_stock_price",
             json.dumps(
                 {
                     "_id": company,
-                    "stock_price": comp_stock_prices,
+                    "actual_stock_price": record_value,
                     "time": str(dt.datetime.now()),
                 }
             ),
@@ -63,7 +48,7 @@ def get_stock_price(companies: list = all_companies):
         )
         p.flush()
 
-    return "Done. Produced all Stock Prices to Kafka."
+    return "Done. Produced all stock data to Kafka."
 
 
 def get_news(companies: list = all_companies):
@@ -111,7 +96,7 @@ def get_news(companies: list = all_companies):
     return "Done. Produced all News to Kafka."
 
 
-def get_worker_review(companies: list = all_companies):
+def get_worker_review(companies: list = kununu_companies):
 
     for company in companies:
         try:
@@ -253,12 +238,12 @@ def get_world_news():
     return "Done. Produced all World-news to Kafka."
 
 
-def get_community(companies: list = all_companies):
+def get_community(companies: list = community_company, number: list = community_number):
 
-    for company in companies:
+    for company, numbers in zip(companies, number):
 
         try:
-            base_url = f"https://www.boersennews.de/community/diskussion/{company}/109/#moreComments"
+            base_url = f"https://www.boersennews.de/community/diskussion/{company}/{numbers}/#moreComments"
             soup = bs(get(base_url), "html.parser")
             count = 0
             found_community = soup.find(
@@ -320,6 +305,8 @@ def get_customer_experience(companies: list = companies_url):
         "fresenius",
         "freseniusmedicalcare",
         "infineon",
+        "merckgroup",
+        "munichre",
         "porsche",
         "puma",
         "qiagen",
@@ -400,7 +387,9 @@ def get_customer_experience(companies: list = companies_url):
 if __name__ == "__main__":
     # Next steps: Every headline as single message to KAFKA
     # WARN: Only start if kafka cluster is set up!
-    # get_stock_price()
+
+    # get_actual_stock_price()
+
     print("Now: News for all DAX Companies ...")
     get_news()
     print("Done. Waiting for 5 seconds.")
@@ -418,6 +407,7 @@ if __name__ == "__main__":
 
     print("Now: Community Chats for all DAX Companies ...")
     get_community()
+
     print("Done. Waiting for 5 seconds.")
     time.sleep(5)
 
