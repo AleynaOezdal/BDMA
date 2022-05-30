@@ -51,20 +51,26 @@ body {
     border-radius: 0;
     background-color: #F6F6F6;
     border-bottom: 1px solid;
+    display: inline-block;
 }
 
  /* DatePicker */
 
 .DateInput_input, .DateInput_input_1 {
-    Height: 32px !important;
-    Width: 170% !important;
+    height: 36px;
     background-color: #F6F6F6;
-    border-bottom: 1px solid;
+    font-size: 18px;
+    width: max-content;
+    box-sizing: border-box;
 }
 
 .SingleDatePickerInput__withBorder {
     border: 0;
     background-color: #F6F6F6;
+}
+
+#date_picker{
+    border-bottom: 1px solid;
 }
 
 /* Button */

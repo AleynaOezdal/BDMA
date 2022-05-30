@@ -32,7 +32,7 @@ elif int(dt_string) >= 18 and int(dt_string) <= 23:
 #header
 header = html.Div(id = 'Header', children= [
     html.H1(children='DAX40 - das Unternehmer-Dashboard'),
-    html.Div(children=[greeting+'Herr. CEO.']),
+    html.Div(children=[greeting+'!']),
     html.Div(children='Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!')])
 
 #content

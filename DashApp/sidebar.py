@@ -19,19 +19,16 @@ for entry in company_dict:
 #navigation/sidebar
 sidebar = html.Div(id = 'navigation',children=[
             dcc.Dropdown(data_kpi, placeholder='DAX-Company auswählen', value = 'None', id='dropdown'),
-            html.Div(id='dd-output-container'),
             #absatz
             html.Br(),
-            dcc.DatePickerSingle(
-                placeholder='Datum auswählen',
-                display_format='DD MM YY'
-            ),
-            html.Div(id='output-container-button',
-                    children=''),
+            html.Div(id='date_picker', children=[
+                    dcc.DatePickerSingle(
+                    placeholder='Datum auswählen',
+                    display_format='DD MM YY'
+                ),
+            ]),
             html.Br(),
             html.Button('Suchen', id='button_search'),
-            html.Br(),
-            html.Br(),
             dbc.Nav(
                 [
                     html.Br(),
