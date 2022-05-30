@@ -18,6 +18,7 @@ for entry in company_dict:
 
 #navigation/sidebar
 sidebar = html.Div(id = 'navigation',children=[
+            html.Br(),
             dcc.Dropdown(data_kpi, placeholder='DAX-Company auswählen', value = 'None', id='dropdown'),
             #absatz
             html.Br(),
@@ -36,7 +37,7 @@ sidebar = html.Div(id = 'navigation',children=[
                     html.Br(),
                     dbc.NavLink('Investor Relations', href='/Investorrelations', active='exact', id = 'navigation_point_two'),
                     html.Br(),
-                    dbc.NavLink('Company Experience', href='/Companyexperience', active='exact', id = 'navigation_point_three'),
+                    dbc.NavLink('Company Environment', href='/Companyenvironment', active='exact', id = 'navigation_point_three'),
                 ],
                 vertical=True,
                 pills=True,

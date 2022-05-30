@@ -22,8 +22,13 @@ body {
     padding: 1%;
 }
 
-#Header h1 {
+#Header h2 {
     font-weight: bold;
+    font-family: arial;
+}
+
+#second_header {
+    font-family: arial;
 }
 
 #side {
@@ -108,6 +113,7 @@ body {
 
 #quote_sidebar P{
     font-family: 'Courier New', Courier, monospace;
+    size: 20;
 }
 
 /* Content */

@@ -19,7 +19,7 @@ font = {
 #}
 
 #content-header-news
-content_header_news  = html.H3(id = 'content-header',children='Company Experience for ADS.DE WKN: 9389145 / ISIN: NL0000235190', style={
+content_header_news  = html.H3(id = 'content-header',children='Company Environment for ADS.DE WKN: 9389145 / ISIN: NL0000235190', style={
                 'font-family': font['helvetica'],
                 'font-weight': 'bold', 
                 'margin': '1%'

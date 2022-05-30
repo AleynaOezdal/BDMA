@@ -31,9 +31,9 @@ elif int(dt_string) >= 18 and int(dt_string) <= 23:
 
 #header
 header = html.Div(id = 'Header', children= [
-    html.H1(children='DAX40 - das Unternehmer-Dashboard'),
+    html.H2(children='DAX40 - das Unternehmer Dashboard'),
     html.Div(children=[greeting+'!']),
-    html.Div(children='Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!')])
+    html.Div(id='second_header', children='Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!')])
 
 #content
 content = html.Div(id = 'page_content', children=[])
@@ -82,7 +82,7 @@ def render_page_content(pathname, n_clicks, value):
                    'margin': '1%'
                 })
             ]
-        elif pathname == '/Companyexperience':
+        elif pathname == '/Companyenvironment':
             return [
                 html.Div(id = 'content_news', children=[
                     news.content_header_news,
