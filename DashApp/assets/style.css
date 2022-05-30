@@ -87,17 +87,21 @@ body {
 }
 
 #quote_sidebar {
-    font-family: Monaco, sans-serif;
     text-align: center;
 }
 
 #quote_sidebar H6{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: bold;
     font-family: Verdana, Lucida Sans Unicode, sans-serif;
 }
 
 #quote_sidebar P{
     font-family: Courier New, monospace;
+}
+
+#quote_sidebar P{
+    font-family: 'Courier New', Courier, monospace;
 }
 
 /* Content */
@@ -120,11 +124,21 @@ body {
 
 /* KPI widget */
 
+#widget {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
 #kpi_widget {
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
     width: 48%;
-    height: 200px;
-    display: inline-block;
-    vertical-align: middle;
+    height: auto;
     background-color: #F6F6F6;
     margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
@@ -151,10 +165,24 @@ body {
     font-size: 80%;
 }
 
-#kpi_widget_esg{
-    font-size: 200%;
+#kpi_graph_text{
+    width: 40%;
+    display: flex;
+    margin: 5%;
+    vertical-align: top;
     text-align: center;
+    font-weight: bold;
+    font-size: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#kpi_widget_esg{
+    width: 40%;
+    margin: 5%;
+    margin-left: 0%;
     vertical-align: middle;
+    display: inline-block;
 }
 
 /* KPI graph */
@@ -166,16 +194,6 @@ body {
     margin-left: 0%;
     vertical-align: top;
  }
-
-#kpi_graph_text{
-    width: 40%;
-    display: inline-block;
-    margin: 5%;
-    margin-left: 0%;
-    vertical-align: middle;
-    text-align: center;
-    font-weight: bold;
-}
 
 .dash-graph{
     height: 100%;

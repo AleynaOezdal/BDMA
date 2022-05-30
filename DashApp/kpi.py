@@ -47,41 +47,6 @@ def get_kpi_content_value(value):
         #content-header-kpi
         content_header_kpi  = html.H3(id = 'content-header', children=['Key Performance Indicators for '+ name+' '+wkns_and_isins])
 
-        #get wiget data free cashflow
-        if get_esg_score(company_dict[value]) != 0 and get_esg_score(company_dict[value]) != 'NaN':
-            esg = get_esg_score(company_dict[value])
-            if esg >= 40:
-                high_average_low = 'SERVER'
-                color = 'red'
-            elif esg <= 40 and esg >= 30:
-                high_average_low = 'HIGH'
-                color = 'orange'
-            elif esg <= 30 and esg >= 20:
-                high_average_low = 'MEDIUM'
-                color = 'orange'    
-            elif esg <= 20 and esg >= 10:
-                high_average_low = 'LOW'
-                color = 'green'
-            elif esg <= 10:
-                high_average_low = 'NEGLIGIBLE'
-                color= 'green'
-        else:
-            esg = 0
-            high_average_low = 'NONE'
-            color= 'green'
-
-        
-        widget_esg_kpi = html.Div(id = 'kpi_widget', children =[
-                            html.Div(id = 'kpi_widget_text', children=[
-                                html.P(id='kpi_widget_header', children = 'ESG Risk Score'),
-                                html.P(id='kpi_widget_key', children= esg),
-                                html.P(id='kpi_widget_pos', children=['▲'])
-                            ]),
-                            html.Div(id = 'kpi_graph_text', children= [
-                                html.P(id='kpi_widget_esg', children=high_average_low, style={'color': color})
-                            ])
-                        ])
-
         #get wiget data ebit
         if get_ebit(company_dict[value])['Ebit'][0] != 0 and get_ebit(company_dict[value])['Ebit'][0] != 'NaN':
              ebit = short_num(get_ebit(company_dict[value])['Ebit'][0])
@@ -257,6 +222,40 @@ def get_kpi_content_value(value):
                                 figure = fig_total_operating_expenses,
                                 style={'width': '20vmax', 'height': '10vmax'}
                             )])
+                        ])
+        
+        #get wiget data esg risk score
+        if get_esg_score(company_dict[value]) != 0 and get_esg_score(company_dict[value]) != 'NaN':
+            esg = get_esg_score(company_dict[value])
+            if esg >= 40:
+                high_average_low = 'SERVER'
+                color = 'red'
+            elif esg <= 40 and esg >= 30:
+                high_average_low = 'HIGH'
+                color = 'red'
+            elif esg <= 30 and esg >= 20:
+                high_average_low = 'MEDIUM'
+                color = 'orange'    
+            elif esg <= 20 and esg >= 10:
+                high_average_low = 'LOW'
+                color = 'green'
+            elif esg <= 10:
+                high_average_low = 'NEGLIGIBLE'
+                color= 'green'
+        else:
+            esg = 0
+            high_average_low = 'NONE'
+            color= 'green'
+        
+        widget_esg_kpi = html.Div(id = 'kpi_widget', children =[
+                            html.Div(id = 'kpi_widget_text', children=[
+                                html.P(id='kpi_widget_header', children = 'ESG Risk Score'),
+                                html.P(id='kpi_widget_key', children= esg),
+                                html.P(id='kpi_widget_pos', children=['▲'])
+                            ]),
+                            html.Div(id = 'kpi_graph_text', children= [
+                                html.P(id='kpi_widget_esg', children=high_average_low, style={'color': color, 'font-size':'2.5vmax'})
+                            ])
                         ])
 
         content = html.Div(id = 'content', children=[
