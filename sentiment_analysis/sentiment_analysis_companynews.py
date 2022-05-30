@@ -62,12 +62,16 @@ nlpPipeline = Pipeline(stages=[
  sentimentClassifier
  ])
 
+# Leeren DataFrame für Ergebnisse erstellen
 empty_df = spark.createDataFrame([['']]).toDF("text")
 
+# Pipeline auf leeren DataFrame fitten
 pipelineModel = nlpPipeline.fit(empty_df)
 
+# Pipeline auf DataFrame mit Daten anwenden
 result = pipelineModel.transform(df2Flatten)
 
+# DataFrame für Ergebnisse erstellen, welches an Datenbank gesendet werden kann
 df_results = result.select(col("id"),
     col("more_info"),
     col("message"),
@@ -77,8 +81,10 @@ df_results = result.select(col("id"),
 
 df_resultsFlatten = df_results.toDF("id", "more_info", "message", "time", "timestamp", "class")
 
+# Entfernen der eckigen Klammern um Klasse
 finished_df = df_resultsFlatten.withColumn('class', F.explode('class'))
-finished_df.show()
+#finished_df.show()
 
+# DataFrame in Datenbank schreiben, collection company_news_sentiment
 finished_df.write.format("mongodb").mode("append").option("database", "Company-Experience").option("collection", "company_news_sentiment").save()
 

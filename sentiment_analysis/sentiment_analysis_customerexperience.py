@@ -31,7 +31,7 @@ spark = SparkSession.builder \
     .config(conf=conf) \
     .getOrCreate()
 
-# Auslesen der Collection company_news in Spark DataFrame
+# Auslesen der Collection Customer_experience in Spark DataFrame
 df = spark.read.format("mongodb").option("database", "Company-Experience").option("collection", "Customer_experience").load()
 
 # DataFrame in gewünschte Struktur bringen, Verschachtelungen glätten
@@ -63,12 +63,16 @@ nlpPipeline = Pipeline(stages=[
  sentimentClassifier
  ])
 
+# Leeren DataFrame für Ergebnisse erstellen
 empty_df = spark.createDataFrame([['']]).toDF("text")
 
+# Pipeline auf leeren DataFrame fitten
 pipelineModel = nlpPipeline.fit(empty_df)
 
+# Pipeline auf DataFrame mit Daten anwenden
 result = pipelineModel.transform(df2Flatten)
 
+# DataFrame für Ergebnisse erstellen, welches an Datenbank gesendet werden kann
 df_results = result.select(col("id"),
     col("more_info"),
     col("review"),
@@ -79,7 +83,9 @@ df_results = result.select(col("id"),
 
 df_resultsFlatten = df_results.toDF("id", "more_info", "review", "title", "time", "timestamp", "class")
 
+# Entfernen der eckigen Klammern um Klasse
 finished_df = df_resultsFlatten.withColumn('class', F.explode('class'))
-finished_df.show()
+#finished_df.show()
 
+# DataFrame in Datenbank schreiben, collection Customer_experience_sentiment
 finished_df.write.format("mongodb").mode("append").option("database", "Company-Experience").option("collection", "Customer_experience_sentiment").save()
