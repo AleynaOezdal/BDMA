@@ -243,7 +243,7 @@ community_company = [
     "symrise",
     "volkswagen-vw-vz",
     "vonovia",
-    "zalando"
+    "zalando",
 ]
 
 community_number = [
@@ -286,8 +286,7 @@ community_number = [
     "1006",
     "385",
     "2413",
-    "2692"
-
+    "2692",
 ]
 
 test_symbols = ["ads", "air", "alv"]
@@ -328,3 +327,6 @@ if __name__ == "__main__":
     print(len(yfinance_symbols_dax_companies))
     print(len(all_companies))
     print(len(companies_url))
+    print(len(community_number))
+    print(len(community_company))
+    print(len(community_company) == len(community_number))
