@@ -93,6 +93,11 @@ body {
 
 #quote_sidebar H6{
     font-weight: bold;
+    font-family: Verdana, Lucida Sans Unicode, sans-serif;
+}
+
+#quote_sidebar P{
+    font-family: Courier New, monospace;
 }
 
 /* Content */
@@ -209,4 +214,6 @@ body {
     color: lightgreen;
     font-size: 80%;
 }
+
+
 

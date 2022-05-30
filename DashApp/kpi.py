@@ -92,7 +92,7 @@ def get_kpi_content_value(value):
 
         fig_ebit = go.Figure(go.Scatter(y=ebit_df['Ebit'], x=ebit_df.index))
         
-        fig_ebit.update_traces(mode='lines', line_color='#67E98B')
+        fig_ebit.update_traces(mode='lines', line_color='#EA000D')
 
         fig_ebit.update_layout(
             showlegend=False,
@@ -127,7 +127,7 @@ def get_kpi_content_value(value):
         gross_profit_df = get_gross_profit(company_dict[value])
         
         fig_gross_profit = go.Figure(go.Bar(x=gross_profit_df['Gross Profit'], y=gross_profit_df.index, text=gross_profit_df['Gross Profit'], orientation='h'))
-        fig_gross_profit.update_traces(marker_color='#164DA8', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        fig_gross_profit.update_traces(marker_color='#19AD50', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_gross_profit.update_layout(
             showlegend=False,
@@ -163,7 +163,7 @@ def get_kpi_content_value(value):
 
         fig_net_income = go.Figure(go.Scatter(y=net_income_df['Net Income'], x=net_income_df.index))
 
-        fig_net_income.update_traces(mode='lines', line_color='#67E98B')
+        fig_net_income.update_traces(mode='lines', line_color='#EDA611')
 
         fig_net_income.update_layout(
             showlegend=False,
@@ -197,7 +197,7 @@ def get_kpi_content_value(value):
         total_revenue_df = get_total_revenue(company_dict[value])
         
         fig_total_revenue = go.Figure(go.Bar(y=total_revenue_df['Total Revenue'], x=total_revenue_df.index, text=total_revenue_df['Total Revenue']))
-        fig_total_revenue.update_traces(marker_color='#67E98B', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        fig_total_revenue.update_traces(marker_color='#79EB71', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_total_revenue.update_layout(
             showlegend=False,
@@ -232,7 +232,7 @@ def get_kpi_content_value(value):
         total_operating_expenses_df = get_total_operating_expenses(company_dict[value])
         
         fig_total_operating_expenses = go.Figure(go.Bar(x=total_operating_expenses_df['Total Operating Expenses'], y=total_operating_expenses_df.index, text=total_operating_expenses_df['Total Operating Expenses'], orientation='h'))
-        fig_total_operating_expenses.update_traces(marker_color='#164DA8', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        fig_total_operating_expenses.update_traces(marker_color='#3368AD', textposition = 'inside', texttemplate='%{text:.3s}')#, marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
         
         fig_total_operating_expenses.update_layout(
             showlegend=False,

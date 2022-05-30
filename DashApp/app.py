@@ -58,7 +58,7 @@ def render_page_content(pathname, n_clicks, value):
     else:
         if pathname == '/':
             return [overview(value)]
-        elif pathname == "/KPI's":
+        elif pathname == "/Keyperformance":
             return [kpi.get_kpi_content_value(value)]
         elif pathname == '/Investorrelations':
             return [

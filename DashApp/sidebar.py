@@ -39,7 +39,7 @@ sidebar = html.Div(id = 'navigation',children=[
             dbc.Nav(
                 [
                     html.Br(),
-                    dbc.NavLink("KPI's", href="/KPI's", active='exact', id = 'navigation_point_one'),
+                    dbc.NavLink("Key Performance", href="/Keyperformance", active='exact', id = 'navigation_point_one'),
                     html.Br(),
                     dbc.NavLink('Investor Relations', href='/Investorrelations', active='exact', id = 'navigation_point_two'),
                     html.Br(),
@@ -57,5 +57,5 @@ sidebar = html.Div(id = 'navigation',children=[
                 html.P(
                 '"Jeder Tag beginnt mit neuen Chancen!"'
                 ),
-            ])           
+            ])
         ])
