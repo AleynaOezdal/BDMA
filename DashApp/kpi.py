@@ -45,7 +45,12 @@ def get_kpi_content_value(value):
         wkns_and_isins = get_wkns_and_isins(value)
 
         #content-header-kpi
-        content_header_kpi  = html.H3(id = 'content-header', children=['Key Performance Indicators for '+ name+' '+wkns_and_isins])
+        content_header_kpi  = html.Div(id ='content_header_kpi', children=[
+                                html.H3(id = 'content_header_first', children=['Key Performance Indicators ']),
+                                html.H3(id = 'content_header_second', children=['for']),
+                                html.H3(id = 'content_header_third', children=[name+' '+wkns_and_isins])
+                            ])
+            
 
         #get wiget data ebit
         if get_ebit(company_dict[value])['Ebit'][0] != 0 and get_ebit(company_dict[value])['Ebit'][0] != 'NaN':

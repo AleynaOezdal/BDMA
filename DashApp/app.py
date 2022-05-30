@@ -18,9 +18,9 @@ font = {
 
 #header
 header = html.Div(id = 'Header', children= [
-    html.H1(children='Dashboard'),
-    html.Div(children='Guten Morgen Herr. CEO.'),
-    html.Div(children='Team Dashboard wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!')])
+    html.H1(children='DAX40 - das Unternehmer-Dashboard'),
+    html.Div(children='Guten Tag Herr. CEO.'),
+    html.Div(children='Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!')])
 
 #content
 content = html.Div(id = 'page_content', children=[])

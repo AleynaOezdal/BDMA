@@ -122,6 +122,29 @@ body {
     margin: 1%;
 }
 
+#content_header_kpi{
+    margin: 1%;
+}
+
+#content_header_first{
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#content_header_second{
+    display: inline-block;
+    vertical-align: top;
+    padding-left: .5%;
+}
+
+#content_header_third{
+    font-style: italic;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: .5%;
+}
+
 /* KPI widget */
 
 #widget {
