@@ -6,106 +6,124 @@ import sidebar as sb
 import kpi
 import news
 import Investorrelations
+from datetime import datetime
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-colors = {
-    'background': '#F6F6F6'
-}
-
-font = {
-    'helvetica' : 'Arial, Helvetica, sans-serif'
-}
-
-from datetime import datetime
 # datetime object containing current date and time
 now = datetime.now()
 
 dt_string = now.strftime("%H")
 
 if int(dt_string) >= 0 and int(dt_string) <= 9:
-    greeting = 'Guten Morgen '
+    greeting = "Guten Morgen "
 elif int(dt_string) >= 10 and int(dt_string) <= 17:
-    greeting = 'Guten Tag '
+    greeting = "Guten Tag "
 elif int(dt_string) >= 18 and int(dt_string) <= 23:
-    greeting = 'Guten Abend '
+    greeting = "Guten Abend "
 
-#header
-header = html.Div(id = 'Header', children= [
-    html.H2(children='DAX40 - das Unternehmer Dashboard'),
-    html.Div(children=[greeting+'!']),
-    html.Div(id='second_header', children='Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!')])
-
-#content
-content = html.Div(id = 'page_content', children=[])
-
-#▼
-
-#overview
-def overview(value):
-    overview_content = html.Div(id = 'content', children=[
-                            kpi.get_value_without_kpi(value),
-                            html.Div(id = 'widget', children = [])])
-    return overview_content
-
-# app layout
-app.layout = html.Div( children=[
-    header,
-    html.Div(id = 'side',children= [
-        dcc.Location(id='url'),
-        sb.sidebar,
-        content
-    ]),   
-])
-
-@app.callback(
-    Output('page_content', 'children'),
-    Input('url', 'pathname'),
-    Input('button_search', 'n_clicks'),
-    State('dropdown', 'value')
+# header
+header = html.Div(
+    id="Header",
+    children=[
+        html.H2(children="DAX40 - das Unternehmer Dashboard"),
+        html.Div(children=[greeting + "!"]),
+        html.Div(
+            id="second_header",
+            children="Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!",
+        ),
+    ],
 )
 
-#side posiblilitis 
+# content
+content = html.Div(id="page_content", children=[])
+
+# overview
+def overview(value):
+    overview_content = html.Div(
+        id="content",
+        children=[kpi.get_value_without_kpi(value), html.Div(id="widget", children=[])],
+    )
+    return overview_content
+
+
+# app layout
+app.layout = html.Div(
+    children=[
+        header,
+        html.Div(id="side", children=[dcc.Location(id="url"), sb.sidebar, content]),
+    ]
+)
+
+
+@app.callback(
+    Output("page_content", "children"),
+    Input("url", "pathname"),
+    Input("button_search", "n_clicks"),
+    State("dropdown", "value"),
+)
+
+# side posiblilitis
 def render_page_content(pathname, n_clicks, value):
     if n_clicks is None:
         return [overview(value)]
     else:
-        if pathname == '/':
+        if pathname == "/":
             return [overview(value)]
         elif pathname == "/Keyperformance":
             return [kpi.get_kpi_content_value(value)]
-        elif pathname == '/Investorrelations':
+        elif pathname == "/Investorrelations":
             return [
-                html.Div(id='content_news', children=[
-                html.H3('Investor Relations for ADS.DE WKN: 9389145 / ISIN: NL0000235190',
-                        style={
-                   'font-family': font['helvetica'],
-                   'font-weight': 'bold',
-                   'margin': '1%'
-                }),Investorrelations.dashboard,
-            ])]
-        elif pathname == '/Companyenvironment':
+                html.Div(
+                    id="content_news",
+                    children=[
+                        html.H3(
+                            "Investor Relations for ADS.DE WKN: 9389145 / ISIN: NL0000235190",
+                            style={
+                                "font-family": "Arial, Helvetica, sans-serif",
+                                "font-weight": "bold",
+                                "margin": "1%",
+                            },
+                        ),
+                        Investorrelations.dashboard,
+                    ],
+                )
+            ]
+        elif pathname == "/Companyenvironment":
             return [
-                html.Div(id = 'content_news', children=[
-                    news.content_header_news,
-                    html.Div(id = 'widget_news', children = [ 
-                        news.widget_one_news,
-                        news.widget_two_news,
-                        news.widget_three_news,
-                        news.widget_four_news,
-                        news.widget_five_news,
-                        news.widget_six_news,
-                    ])
-                ], style={'width': '100%', 'display': 'inline-block', 'vertical-align': 'middle','font-family': font['helvetica']})
+                html.Div(
+                    id="content_news",
+                    children=[
+                        news.content_header_news,
+                        html.Div(
+                            id="widget_news",
+                            children=[
+                                news.widget_one_news,
+                                news.widget_two_news,
+                                news.widget_three_news,
+                                news.widget_four_news,
+                                news.widget_five_news,
+                                news.widget_six_news,
+                            ],
+                        ),
+                    ],
+                    style={
+                        "width": "100%",
+                        "display": "inline-block",
+                        "vertical-align": "middle",
+                        "font-family": "Arial, Helvetica, sans-serif",
+                    },
+                )
             ]
         # If the user tries to reach a different page, return a 404 message
         return dbc.Jumbotron(
             [
-                html.H1('404: Not found', className='text-danger'),
+                html.H1("404: Not found", className="text-danger"),
                 html.Hr(),
-                html.P(f'The pathname {pathname} was not recognised...'),
+                html.P(f"The pathname {pathname} was not recognised..."),
             ]
         )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run_server(debug=True)

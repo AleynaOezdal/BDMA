@@ -243,7 +243,7 @@ community_company = [
     "symrise",
     "volkswagen-vw-vz",
     "vonovia",
-    "zalando"
+    "zalando",
 ]
 
 community_number = [
@@ -286,8 +286,7 @@ community_number = [
     "1006",
     "385",
     "2413",
-    "2692"
-
+    "2692",
 ]
 
 test_symbols = ["ads", "air", "alv"]

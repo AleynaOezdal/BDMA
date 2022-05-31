@@ -33,6 +33,7 @@ db_reviews = client["Company-Experience"]["reviews"]
 db_customer_experience = client["Company-Experience"]["customer_experience"]
 db_community_news = client["Company-Experience"]["community_news"]
 
+
 def get_wkns_and_isins(company: str):
     return db_wkns_and_isins.find_one({"_id": company})["wkns_and_isins"]
 
@@ -67,17 +68,21 @@ def get_ebit(symbol: str) -> pd.DataFrame:
     result = db_ebit.find_one({"_id": symbol})["Ebit"]
     return pd.DataFrame(result, index=["Ebit"]).T
 
+
 def get_description(company: str) -> pd.DataFrame:
     return db_description.find_one({"_id": company})["company_description"]
+
 
 # besser mit Company als id
 def get_distribution(company: str) -> pd.DataFrame:
     return db_distribution.find_one({"corporates_in_industry": company})["_id"]
 
-#hauptsitz
-def get_main_competitor(company: str) -> pd.DataFrame:
-    return db_distribution.find_one({"corporates_in_industry": company})['corporates_in_industry']
 
+# hauptsitz
+def get_main_competitor(company: str) -> pd.DataFrame:
+    return db_distribution.find_one({"corporates_in_industry": company})[
+        "corporates_in_industry"
+    ]
 
 
 if __name__ == "__main__":
@@ -92,4 +97,3 @@ if __name__ == "__main__":
     pp.pprint(f"adidas: {get_description('adidas')}")
     pp.pprint(f"Airbus: {get_distribution('Airbus')}")
     pp.pprint(f"Adidas: {get_main_competitor('Adidas')}")
-
