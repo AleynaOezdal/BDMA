@@ -20,6 +20,8 @@ db_total_operating_expenses = client["KPIs"]["Total_Operating_Expenses"]
 db_net_income = client["KPIs"]["Net_Income"]
 db_gross_profit = client["KPIs"]["Gross_Profit"]
 db_ebit = client["KPIs"]["Ebit"]
+db_description = client["KPIs"]["company_description"]
+db_distribution = client["KPIs"]["dax40_distribution"]
 
 db_holders = client["Investor-Relations"]["holders"]
 db_dividends = client["Investor-Relations"]["dividends"]
@@ -65,6 +67,14 @@ def get_ebit(symbol: str) -> pd.DataFrame:
     result = db_ebit.find_one({"_id": symbol})["Ebit"]
     return pd.DataFrame(result, index=["Ebit"]).T
 
+def get_description(company: str) -> pd.DataFrame:
+    return db_description.find_one({"_id": company})["company_description"]
+
+#besser mit Company als id
+# def get_distribution(company: str) -> pd.DataFrame:
+#     return db_distribution.find_one({"corporates_in_industry": company})["_id"]
+
+
 
 if __name__ == "__main__":
     # test if you get the data
@@ -75,3 +85,5 @@ if __name__ == "__main__":
     pp.pprint(f"sap: {get_net_income('sap')}")
     pp.pprint(f"muv2:{get_gross_profit('muv2')}")
     pp.pprint(f"ifx: {get_ebit('ifx')}")
+    pp.pprint(f"adidas: {get_description('adidas')}")
+    pp.pprint(f"adidas: {get_distribution('Airbus')}")

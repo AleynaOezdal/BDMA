@@ -5,6 +5,7 @@ import pandas as pd
 from sidebar import data_kpi
 from retrieve_mongo_db import *
 from producersetup import create_company_dict
+import dash_bootstrap_components as dbc
 
 company_dict = create_company_dict()
 
@@ -262,16 +263,39 @@ def get_kpi_content_value(value):
                                 html.P(id='kpi_widget_esg', children=high_average_low, style={'color': color, 'font-size':'2.5vmax'})
                             ])
                         ])
+        #description
+        description = get_description(value)
+        # distribution = get_distribution(value)
+
+        accordion = html.Div(
+                dbc.Accordion(
+                    [
+                        dbc.AccordionItem(
+                            dbc.Row([
+                                dbc.Col(html.Div(id='description', children=[html.H6("Beschreibung: "), description]),width= 6,),
+                                dbc.Col(html.Div(id="branche", children=[html.H6("Branche: ")])),
+                                dbc.Col(html.Div("Hauptkonkurrent: Adidas, Daimler, Hellofresh"))]),
+
+
+                            title= "Detaillierte Informationen zum Unternehmen",
+                        ),
+                    ],
+                    flush=True,
+                    start_collapsed=True
+                ),
+        )
+
 
         content = html.Div(id = 'content', children=[
                         content_header_kpi,
-                        html.Div(id = 'widget', children = [ 
+                        accordion,
+                        html.Div(id = 'widget', children = [
                             widget_ebit_kpi,
                             widget_total_revenue_kpi,
                             widget_gross_profit_kpi,
                             widget_net_income_kpi,
                             widget_esg_kpi,
-                            widget_total_operating_expenses_kpi
+                            widget_total_operating_expenses_kpi,
                         ])
                     ])
         

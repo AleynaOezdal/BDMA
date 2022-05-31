@@ -5,6 +5,7 @@ import pandas as pd
 import sidebar as sb
 import kpi
 import news
+import Investorrelations
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -75,13 +76,14 @@ def render_page_content(pathname, n_clicks, value):
             return [kpi.get_kpi_content_value(value)]
         elif pathname == '/Investorrelations':
             return [
+                html.Div(id='content_news', children=[
                 html.H3('Investor Relations for ADS.DE WKN: 9389145 / ISIN: NL0000235190',
                         style={
                    'font-family': font['helvetica'],
                    'font-weight': 'bold',
                    'margin': '1%'
-                })
-            ]
+                }),Investorrelations.dashboard,
+            ])]
         elif pathname == '/Companyenvironment':
             return [
                 html.Div(id = 'content_news', children=[
