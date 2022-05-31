@@ -3,17 +3,20 @@ from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 from datetime import date
 from producersetup import create_company_dict
+from dict import *
 
 #get all dax companys
 
 company_dict = create_company_dict()
 data_kpi = []
 for entry in company_dict:
-    name = entry.title()
+    if entry in dict_company_names:
+        name = dict_company_names[entry]
+    else:
+        name = entry.title()
+
     if '_' in name:
         name = name.replace('_', ' ')
-    if 'Bmw' in name:
-        name = name.replace('Bmw', 'BMW')
     data_kpi.append(name)
 
 #navigation/sidebar

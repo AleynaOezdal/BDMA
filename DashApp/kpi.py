@@ -6,6 +6,7 @@ from sidebar import data_kpi
 from retrieve_mongo_db import *
 from producersetup import create_company_dict
 import dash_bootstrap_components as dbc
+from dict import *
 
 company_dict = create_company_dict()
 
@@ -28,20 +29,16 @@ def get_value_without_kpi(value):
 
 def get_kpi_content_value(value):
     if value in data_kpi:
+        #value for header
+        name = value
+
         #small letter for dict
         if ' ' in value:
             value = value.replace(' ', '_')
+        if '.' in value:
+            value = value.replace('.','')
 
         value = value.lower()
-
-        #big letter for Title
-        name = value.title()
-
-        if '_' in name:
-            name = name.replace('_', ' ')
-        if 'Bmw' in name:
-            name = name.replace('Bmw', 'BMW')
-
 
         wkns_and_isins = get_wkns_and_isins(value)
 
@@ -265,7 +262,7 @@ def get_kpi_content_value(value):
                         ])
         #description
         description = get_description(value)
-        # distribution = get_distribution(value)
+        #distribution = get_distribution(value.title())
 
         accordion = html.Div(
                 dbc.Accordion(
@@ -275,7 +272,6 @@ def get_kpi_content_value(value):
                                 dbc.Col(html.Div(id='description', children=[html.H6("Beschreibung: "), description]),width= 6,),
                                 dbc.Col(html.Div(id="branche", children=[html.H6("Branche: ")])),
                                 dbc.Col(html.Div("Hauptkonkurrent: Adidas, Daimler, Hellofresh"))]),
-
 
                             title= "Detaillierte Informationen zum Unternehmen",
                         ),
