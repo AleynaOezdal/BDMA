@@ -1,0 +1,268 @@
+/* Table of contents ––––––––––––––––––––––––––––––––––––––––––––––––––
+- Navigation
+- Dropdown
+-DatePicker
+-Button
+-Content
+-KPI widget
+-KPI graph
+-News Widget
+ */
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#Header {
+    padding: 1%;
+}
+
+#Header h2 {
+    font-weight: bold;
+    font-family: arial;
+}
+
+#second_header {
+    font-family: arial;
+}
+
+#side {
+    padding: 1%;
+    display: flex;
+}
+
+/* Navigation */
+
+#navigation {
+    width: 20%;
+    vertical-align: middle;
+    align-items: stretch;
+    background-color: #F6F6F6;
+    padding: 1%;
+    top: 0%;
+    bottom: 0%;
+    left: 0%;
+}
+
+/* Dropdown */
+
+.Select-control {
+    border: 0;
+    border-radius: 0;
+    background-color: #F6F6F6;
+    border-bottom: 1px solid;
+    display: inline-block;
+}
+
+ /* DatePicker */
+
+.DateInput_input, .DateInput_input_1 {
+    height: 36px;
+    background-color: #F6F6F6;
+    font-size: 18px;
+    width: max-content;
+    box-sizing: border-box;
+}
+
+.SingleDatePickerInput__withBorder {
+    border: 0;
+    background-color: #F6F6F6;
+}
+
+#date_picker{
+    border-bottom: 1px solid;
+}
+
+/* Button */
+
+#button_search{
+    background-color: #E5E5E5;
+    color: black;
+    border: 0;
+}
+
+#navigation_point_one, #navigation_point_two, #navigation_point_three{
+    background-color: #E5E5E5;
+    color: black;
+    border-radius: 0;
+    text-align: center;
+}
+
+#navigation_point_one.active, #navigation_point_two.active, #navigation_point_three.active{
+    background-color: #67E98B;
+}
+
+#quote_sidebar {
+    text-align: center;
+}
+
+#quote_sidebar H6{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    font-family: Verdana, Lucida Sans Unicode, sans-serif;
+}
+
+#quote_sidebar P{
+    font-family: Courier New, monospace;
+}
+
+#quote_sidebar P{
+    font-family: 'Courier New', Courier, monospace;
+    size: 20;
+}
+
+/* Content */
+
+#page_content{
+    width: 75%;
+    vertical-align: middle;
+}
+
+#content {
+    width: 100%;
+    vertical-align: middle;
+    height: 100%;
+}
+
+#content-header {
+    font-weight: bold;
+    margin: 1%;
+}
+
+#content_header_kpi{
+    margin: 1%;
+}
+
+#content_header_first{
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#content_header_second{
+    display: inline-block;
+    vertical-align: top;
+    padding-left: .5%;
+}
+
+#content_header_third{
+    font-style: italic;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: .5%;
+}
+
+/* KPI widget */
+
+#widget {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+#kpi_widget {
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
+    width: 48%;
+    height: auto;
+    background-color: #F6F6F6;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
+    padding: 0%;
+}
+
+#kpi_widget_text{
+    width: 40%;
+    padding: 5%;
+    display: inline-block;
+}
+
+#kpi_widget_header{
+    font-size: 80%;
+}
+
+#kpi_widget_key {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+#kpi_widget_pos{
+    color: lightgreen;
+    font-size: 80%;
+}
+
+#kpi_graph_text{
+    width: 40%;
+    display: flex;
+    margin: 5%;
+    vertical-align: top;
+    text-align: center;
+    font-weight: bold;
+    font-size: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#kpi_widget_esg{
+    width: 40%;
+    margin: 5%;
+    margin-left: 0%;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* KPI graph */
+
+#kpi_graph{
+    width: 40%;
+    display: inline-block;
+    margin: 5%;
+    margin-left: 0%;
+    vertical-align: top;
+ }
+
+.dash-graph{
+    height: 100%;
+    width: 100%;
+}
+
+.user-select-none.svg-container{
+    height: 100%;
+    width: 100%;
+}
+
+/*News Widget*/
+
+#news_widget {
+    width: 48%;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #F6F6F6;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
+}
+
+
+#news_widget_text{
+    width: 40%;
+    margin: 5%;
+    display: inline-block;
+}
+
+#news_widget_header{
+    font-size: 80%;
+}
+
+
+#news_widget_pos{
+    color: lightgreen;
+    font-size: 80%;
+}
+
+
+
