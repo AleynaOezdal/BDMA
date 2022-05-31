@@ -52,4 +52,5 @@ dict_company_names = {
     "rwe": "RWE",
     "sap": "SAP",
     "sartorius_vz": "Sartorius vz.",
+    'hellofresh': 'HelloFresh'
 }
