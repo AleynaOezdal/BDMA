@@ -262,7 +262,8 @@ def get_kpi_content_value(value):
                         ])
         #description
         description = get_description(value)
-        #distribution = get_distribution(value.title())
+        distribution_value = dict_company_names_long[value]
+        distribution = get_distribution(distribution_value)
 
         accordion = html.Div(
                 dbc.Accordion(
@@ -270,7 +271,7 @@ def get_kpi_content_value(value):
                         dbc.AccordionItem(
                             dbc.Row([
                                 dbc.Col(html.Div(id='description', children=[html.H6("Beschreibung: "), description]),width= 6,),
-                                dbc.Col(html.Div(id="branche", children=[html.H6("Branche: ")])),
+                                dbc.Col(html.Div(id="branche", children=[html.H6("Branche: "+distribution)])),
                                 dbc.Col(html.Div("Hauptkonkurrent: Adidas, Daimler, Hellofresh"))]),
 
                             title= "Detaillierte Informationen zum Unternehmen",
