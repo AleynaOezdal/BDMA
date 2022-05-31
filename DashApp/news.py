@@ -4,15 +4,7 @@ colors = {"background": "#F6F6F6"}
 
 font = {"helvetica": "Arial, Helvetica, sans-serif"}
 
-# style widget
-# style_widget_news = {
-#  'width': '48%',
-#  'display': 'inline-block',
-#  'vertical-align': 'middle',
-#  'background': colors['background'],
-#  'margin': '1%'
 
-# }
 
 # content-header-news
 content_header_news = html.H3(

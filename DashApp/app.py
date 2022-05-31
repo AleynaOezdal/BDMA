@@ -15,6 +15,8 @@ now = datetime.now()
 
 dt_string = now.strftime("%H")
 
+#if-elif to use the right greeting on time
+
 if int(dt_string) >= 0 and int(dt_string) <= 9:
     greeting = "Guten Morgen "
 elif int(dt_string) >= 10 and int(dt_string) <= 17:
@@ -70,9 +72,9 @@ def render_page_content(pathname, n_clicks, value):
     else:
         if pathname == "/":
             return [overview(value)]
-        elif pathname == "/Keyperformance":
+        elif pathname == "/Keyperformance": #navigationpointone
             return [kpi.get_kpi_content_value(value)]
-        elif pathname == "/Investorrelations":
+        elif pathname == "/Investorrelations": #navigationpointtwo
             return [
                 html.Div(
                     id="content_news",
@@ -89,7 +91,7 @@ def render_page_content(pathname, n_clicks, value):
                     ],
                 )
             ]
-        elif pathname == "/Companyenvironment":
+        elif pathname == "/Companyenvironment": #navigationpointthree
             return [
                 html.Div(
                     id="content_news",

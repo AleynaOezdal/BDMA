@@ -1,3 +1,5 @@
+#dict to write the company names rigth
+
 dict_company_names_long = {
     "adidas": "Adidas",
     "airbus": "Airbus",

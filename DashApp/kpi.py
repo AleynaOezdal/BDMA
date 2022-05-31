@@ -10,7 +10,7 @@ from dict import *
 
 company_dict = create_company_dict()
 
-# get short numbers
+# get short numbers with two decimal places
 def short_num(num):
     magnitude = 0
     while abs(num) >= 1000:
@@ -22,7 +22,7 @@ def short_num(num):
         ["", " Tausend", " MIO.", " MRD.", " BIO.", " Trillionen"][magnitude],
     )
 
-
+#value to select a company and navigationpoint
 def get_value_without_kpi(value):
     if value == "None":
         content = html.H3(
@@ -74,10 +74,12 @@ def get_kpi_content_value(value):
         else:
             ebit = 0
 
+        #df to sort the index for the line chart
         ebit_df = get_ebit(company_dict[value]).sort_index()
 
         fig_ebit = go.Figure(go.Scatter(y=ebit_df["Ebit"], x=ebit_df.index))
 
+        #sytle from the line chart
         fig_ebit.update_traces(mode="lines", line_color="#EA000D")
 
         fig_ebit.update_layout(
@@ -90,7 +92,7 @@ def get_kpi_content_value(value):
             plot_bgcolor="#F6F6F6",
             uniformtext_minsize=6,
         )
-
+        #style the widget and grapgh
         widget_ebit_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -127,6 +129,7 @@ def get_kpi_content_value(value):
 
         gross_profit_df = get_gross_profit(company_dict[value])
 
+        #figure bar chart gross profit
         fig_gross_profit = go.Figure(
             go.Bar(
                 x=gross_profit_df["Gross Profit"],
@@ -150,6 +153,7 @@ def get_kpi_content_value(value):
             uniformtext_minsize=6,
         )
 
+        #div to complete the widget and graph
         widget_gross_profit_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -182,8 +186,9 @@ def get_kpi_content_value(value):
         else:
             income = 0
 
+        #df to sort the index for the line chart
         net_income_df = get_net_income(company_dict[value]).sort_index()
-
+        #figure
         fig_net_income = go.Figure(
             go.Scatter(y=net_income_df["Net Income"], x=net_income_df.index)
         )
@@ -200,6 +205,7 @@ def get_kpi_content_value(value):
             plot_bgcolor="#F6F6F6",
         )
 
+        #div to complete and style the widget and graph
         widget_net_income_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -236,6 +242,7 @@ def get_kpi_content_value(value):
 
         total_revenue_df = get_total_revenue(company_dict[value])
 
+        #figure total revenue bar chart
         fig_total_revenue = go.Figure(
             go.Bar(
                 y=total_revenue_df["Total Revenue"],
@@ -243,9 +250,10 @@ def get_kpi_content_value(value):
                 text=total_revenue_df["Total Revenue"],
             )
         )
+        #style of the figure total revenue
         fig_total_revenue.update_traces(
             marker_color="#79EB71", textposition="inside", texttemplate="%{text:.3s}"
-        )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+        )
 
         fig_total_revenue.update_layout(
             showlegend=False,
@@ -258,6 +266,7 @@ def get_kpi_content_value(value):
             uniformtext_minsize=6,
         )
 
+        #div to complete/style the widget and graph
         widget_total_revenue_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -358,7 +367,7 @@ def get_kpi_content_value(value):
         ):
             esg = get_esg_score(company_dict[value])
             if esg >= 40:
-                high_average_low = "SERVER"
+                high_average_low = "SERVER"     #different levels and colors for the esg score
                 color = "red"
             elif esg <= 40 and esg >= 30:
                 high_average_low = "HIGH"
@@ -372,11 +381,12 @@ def get_kpi_content_value(value):
             elif esg <= 10:
                 high_average_low = "NEGLIGIBLE"
                 color = "green"
-        else:
+        else:                               # if no data available
             esg = 0
             high_average_low = "NONE"
             color = "green"
 
+        #div to complete/style the widget and graph
         widget_esg_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -400,7 +410,7 @@ def get_kpi_content_value(value):
                 ),
             ],
         )
-        # description
+        # description of the companies
         description = get_description(value)
         value_long = dict_company_names_long[value]
         distribution = get_distribution(value_long)
@@ -416,6 +426,7 @@ def get_kpi_content_value(value):
                 else:
                     main_competitor_string = main_competitor_string + ", " + entry
 
+        #text and structure of the descripton dropwdown
         accordion = html.Div(
             dbc.Accordion(
                 [
@@ -452,6 +463,7 @@ def get_kpi_content_value(value):
                 start_collapsed=True,
             ),
         )
+        #content from the descripton
 
         content = html.Div(
             id="content",

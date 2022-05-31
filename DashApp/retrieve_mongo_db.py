@@ -33,11 +33,11 @@ db_reviews = client["Company-Experience"]["reviews"]
 db_customer_experience = client["Company-Experience"]["customer_experience"]
 db_community_news = client["Company-Experience"]["community_news"]
 
-
+#get wkns and isins for the companies
 def get_wkns_and_isins(company: str):
     return db_wkns_and_isins.find_one({"_id": company})["wkns_and_isins"]
 
-
+#get the kpis
 def get_esg_score(symbol: str):
     return db_esg.find_one({"_id": symbol})["esg_score"]
 
@@ -68,7 +68,7 @@ def get_ebit(symbol: str) -> pd.DataFrame:
     result = db_ebit.find_one({"_id": symbol})["Ebit"]
     return pd.DataFrame(result, index=["Ebit"]).T
 
-
+#description of the companies
 def get_description(company: str) -> pd.DataFrame:
     return db_description.find_one({"_id": company})["company_description"]
 
