@@ -41,29 +41,29 @@ def get_wkns_and_isins(company: str):
 def get_esg_score(symbol: str):
     return db_esg.find_one({"_id": symbol})["esg_score"]
 
-
+#get total revenue
 def get_total_revenue(symbol: str) -> pd.DataFrame:
     result = db_total_revenue.find_one({"_id": symbol})["Total Revenue"]
     return pd.DataFrame(result, index=["Total Revenue"]).T
 
-
+#get total operatong expenses
 def get_total_operating_expenses(symbol: str) -> pd.DataFrame:
     result = db_total_operating_expenses.find_one({"_id": symbol})[
         "Total Operating Expenses"
     ]
     return pd.DataFrame(result, index=["Total Operating Expenses"]).T
 
-
+#get net income
 def get_net_income(symbol: str) -> pd.DataFrame:
     result = db_net_income.find_one({"_id": symbol})["Net Income"]
     return pd.DataFrame(result, index=["Net Income"]).T
 
-
+#get gross profit
 def get_gross_profit(symbol: str) -> pd.DataFrame:
     result = db_gross_profit.find_one({"_id": symbol})["Gross Profit"]
     return pd.DataFrame(result, index=["Gross Profit"]).T
 
-
+#get ebit
 def get_ebit(symbol: str) -> pd.DataFrame:
     result = db_ebit.find_one({"_id": symbol})["Ebit"]
     return pd.DataFrame(result, index=["Ebit"]).T
@@ -73,12 +73,11 @@ def get_description(company: str) -> pd.DataFrame:
     return db_description.find_one({"_id": company})["company_description"]
 
 
-# besser mit Company als id
+#get distribution of company
 def get_distribution(company: str) -> pd.DataFrame:
     return db_distribution.find_one({"corporates_in_industry": company})["_id"]
 
-
-# hauptsitz
+#get main competitor of company
 def get_main_competitor(company: str) -> pd.DataFrame:
     return db_distribution.find_one({"corporates_in_industry": company})[
         "corporates_in_industry"
