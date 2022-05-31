@@ -262,8 +262,20 @@ def get_kpi_content_value(value):
                         ])
         #description
         description = get_description(value)
-        distribution_value = dict_company_names_long[value]
-        distribution = get_distribution(distribution_value)
+        value_long = dict_company_names_long[value]
+        distribution = get_distribution(value_long)
+        main_competitor = get_main_competitor(value_long)
+        main_competitor_string = ''
+
+        for entry in main_competitor:
+            if value_long in entry:
+                pass
+            else:
+                if main_competitor_string == '':
+                    main_competitor_string = entry
+                else:
+                    main_competitor_string = main_competitor_string+', '+entry
+                    
 
         accordion = html.Div(
                 dbc.Accordion(
@@ -272,7 +284,7 @@ def get_kpi_content_value(value):
                             dbc.Row([
                                 dbc.Col(html.Div(id='description', children=[html.H6("Beschreibung: "), description]),width= 6,),
                                 dbc.Col(html.Div(id="branche", children=[html.H6("Branche: "+distribution)])),
-                                dbc.Col(html.Div("Hauptkonkurrent: Adidas, Daimler, Hellofresh"))]),
+                                dbc.Col(html.Div("Hauptkonkurrent: "+main_competitor_string))]),
 
                             title= "Detaillierte Informationen zum Unternehmen",
                         ),

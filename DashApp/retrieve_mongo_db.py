@@ -74,6 +74,10 @@ def get_description(company: str) -> pd.DataFrame:
 def get_distribution(company: str) -> pd.DataFrame:
     return db_distribution.find_one({"corporates_in_industry": company})["_id"]
 
+#hauptsitz
+def get_main_competitor(company: str) -> pd.DataFrame:
+    return db_distribution.find_one({"corporates_in_industry": company})['corporates_in_industry']
+
 
 
 if __name__ == "__main__":
@@ -87,3 +91,5 @@ if __name__ == "__main__":
     pp.pprint(f"ifx: {get_ebit('ifx')}")
     pp.pprint(f"adidas: {get_description('adidas')}")
     pp.pprint(f"Airbus: {get_distribution('Airbus')}")
+    pp.pprint(f"Adidas: {get_main_competitor('Adidas')}")
+
