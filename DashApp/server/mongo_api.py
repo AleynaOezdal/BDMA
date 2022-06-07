@@ -7,6 +7,7 @@ import pprint as pp
 from flask import Flask
 from flask_restx import Resource, Api
 import json
+from datetime import datetime, timedelta
 
 # Building a restful API with flask-restx
 app = Flask(__name__)
@@ -113,6 +114,30 @@ class MainCompetitors(Resource):
         ]
 
 
+class MajorHolders(Resource):
+    def get(self, symbol):
+        return db_holders.find_one({"_id": symbol})["holders"]
+
+
+class Dividends(Resource):
+    def get(self, symbol):
+        return db_dividends.find_one({"_id": symbol})["dividends"]
+
+
+class DAXStockDataByDay(Resource):
+    def get(self, date):
+        return db_dax_history_stock_data.find_one({"stock_date": date})[
+            "stock_history_til_date"
+        ]
+
+
+class AllWorldNewsByDate(Resource):
+    def get(self):
+        cursor = db_world_news.find({"time": {"$gt": datetime.today() - timedelta(30)}})
+        queries = [object for object in cursor]
+        return queries
+
+
 # Add our API Endpoints to the FLASK APIs
 # Dashboard: Key Performance Indicators
 # Status: No problems, all working
@@ -129,11 +154,14 @@ api.add_resource(MainCompetitors, "/main_competitors/<company>")
 
 
 # Dashboard: Investor Relations
-# Status: to be tested
-
+# Status:  to be tested
+api.add_resource(MajorHolders, "/major_holders/<symbol>")
+api.add_resource(Dividends, "/dividends/<symbol>")
+api.add_resource(DAXStockDataByDay, "/dax_data_per_day/<date>")
 
 # Dashboard: Company Environment
 # Status: to be tested
+api.add_resource(AllWorldNewsByDate, "/world_news_by_date")
 
 
 if __name__ == "__main__":
