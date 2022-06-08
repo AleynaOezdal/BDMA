@@ -129,6 +129,40 @@ def get_news(companies: list = all_companies):
 
     return "Done. Produced all News to Kafka."
 
+def get_dax_news():
+    try:
+        base_url = "https://www.finanzen.net/index/dax/marktberichte"
+        soup = bs(get(base_url), "html.parser")
+        found_news = soup.find("div", {"id": "general-news-table"}).find("table", {"class":"table"}).find_all("tr")
+        count = 0
+        for headline in found_news:
+            headline_news = {
+                "headline": headline.find("a").text,
+                "timestamp": headline.find("td", {"class": "col-date"}).text.replace("  ", "").replace("\n", "").replace("\r", "").replace("\t", ""),
+                "more_info": base_url,
+            }
+            count += 1
+            # Generate unique key with company and iterating count
+            # Store headline as value for specific key
+            # Store company as key and headline as value in a dict and transform it into JSON
+            p.produce(
+                "dax_news",
+                json.dumps(
+                    {
+                        "_id": f"dax_news_{count}",
+                        "news": headline_news,
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
+                callback=delivery_report,
+            )
+            p.flush()
+
+    except Exception as e:
+        # Because there a lots of news for DAX, we don't produce a failed news item to Kafka
+        print(f"FAILED. For Dax News the following error occured: {type(e)}")
+
+    return "Done. Produced all Dax News to Kafka."
 
 def get_worker_review(companies: list = kununu_companies):
 
