@@ -289,6 +289,12 @@ community_number = [
     "2692",
 ]
 
+all_cities = [
+    "frankfurt-am-main",
+    "esslingen",
+    # ...
+]
+
 test_symbols = ["ads", "air", "alv"]
 
 
