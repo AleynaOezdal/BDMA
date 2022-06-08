@@ -8,6 +8,9 @@ from flask import Flask
 from flask_restx import Resource, Api
 import json
 from datetime import datetime, timedelta
+import re
+
+from requests import head
 
 # Building a restful API with flask-restx
 app = Flask(__name__)
@@ -35,12 +38,17 @@ db_distribution = client["KPIs"]["dax40_distribution"]
 db_holders = client["Investor-Relations"]["holders"]
 db_dividends = client["Investor-Relations"]["dividends"]
 db_dax_history_stock_data = client["Investor-Relations"]["dax_history_stock_data"]
+# db_key_characteristics tbd
+# db_company_stock_data tbd
+# db_dax_stock_data tbd
+# + API
 
 db_world_news = client["Company-Experience"]["world_news"]
-db_company_news = client["Company-Experience"]["company_news"]
-db_reviews = client["Company-Experience"]["reviews"]
-db_customer_experience = client["Company-Experience"]["customer_experience"]
-db_community_news = client["Company-Experience"]["community_news"]
+db_company_news = client["Company-Experience"]["company_news_sentiment"]
+db_reviews = client["Company-Experience"]["Reviews"]
+db_customer_experience = client["Company-Experience"]["Customer_experience_sentiment"]
+db_community_news = client["Company-Experience"]["Community_news_sentiment"]
+# db_dax_news
 
 
 # Get WKN and ISIN for a company
@@ -124,11 +132,10 @@ class Dividends(Resource):
         return db_dividends.find_one({"_id": symbol})["dividends"]
 
 
-class DAXStockDataByDay(Resource):
-    def get(self, date):
-        return db_dax_history_stock_data.find_one({"stock_date": date})[
-            "stock_history_til_date"
-        ]
+class DAXStockDataLowerBorder(Resource):
+    def get(self, YYYY_MM_DD: str):
+        courses = db_dax_history_stock_data.find({"stock_date": {"$gt": YYYY_MM_DD}})
+        return [stock_day for stock_day in courses]
 
 
 class AllWorldNewsByDate(Resource):
@@ -138,7 +145,49 @@ class AllWorldNewsByDate(Resource):
         return queries
 
 
-# Add our API Endpoints to the FLASK APIs
+class CompanyNews(Resource):
+    def get(self, company):
+        cursor = db_company_news.find(
+            {"id": {"$regex": re.escape(company) + r"_[0-9]*"}}
+        )
+        headlines_for_company = []
+        for obj in cursor:
+            del obj["_id"]
+            headlines_for_company.append(obj)
+        return headlines_for_company
+
+
+class Reviews(Resource):
+    def get(self, company):
+        cursor = db_reviews.find({"_id": {"$regex": re.escape(company) + r"_[0-9]*"}})
+        return [obj for obj in cursor]
+
+
+class CustomerExperience(Resource):
+    def get(self, company):
+        cursor = db_customer_experience.find(
+            {"id": {"$regex": re.escape(company) + r"_[0-9]*"}}
+        )
+        customer_experience = []
+        for obj in cursor:
+            del obj["_id"]
+            customer_experience.append(obj)
+        return customer_experience
+
+
+class CommunityNewsForCompany(Resource):
+    def get(self, company):
+        cursor = db_community_news.find(
+            {"id": {"$regex": re.escape(company) + r"_[0-9]*"}}
+        )
+        community_posts = []
+        for obj in cursor:
+            del obj["_id"]
+            community_posts.append(obj)
+        return community_posts
+
+
+# Add our API Endpoints
 # Dashboard: Key Performance Indicators
 # Status: No problems, all working
 api.add_resource(WKN, "/wkns_and_isins/<company>")
@@ -157,11 +206,15 @@ api.add_resource(MainCompetitors, "/main_competitors/<company>")
 # Status:  to be tested
 api.add_resource(MajorHolders, "/major_holders/<symbol>")
 api.add_resource(Dividends, "/dividends/<symbol>")
-api.add_resource(DAXStockDataByDay, "/dax_data_per_day/<date>")
+api.add_resource(DAXStockDataLowerBorder, "/dax_data_per_day/<YYYY_MM_DD>")
 
 # Dashboard: Company Environment
 # Status: to be tested
 api.add_resource(AllWorldNewsByDate, "/world_news_by_date")
+api.add_resource(CompanyNews, "/company_news_classified/<company>")
+api.add_resource(Reviews, "/reviews/<company>")
+api.add_resource(CustomerExperience, "/customer_experience/<company>")
+api.add_resource(CommunityNewsForCompany, "/community_news/<company>")
 
 
 if __name__ == "__main__":
