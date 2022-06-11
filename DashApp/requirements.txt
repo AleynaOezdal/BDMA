@@ -1,5 +1,10 @@
 dash
-dash_bootstrap_components
-plotly.express
-python-dotenv
-pymongo
+plotly
+pandas
+dash-html-components
+dash-core-components
+dash-table
+dash-bootstrap-components
+datetime
+gunicorn
+requests

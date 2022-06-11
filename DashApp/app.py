@@ -8,7 +8,9 @@ import news
 import Investorrelations
 from datetime import datetime
 
+
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 # datetime object containing current date and time
 now = datetime.now()
@@ -128,4 +130,4 @@ def render_page_content(pathname, n_clicks, value):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host="0.0.0.0", port=8080)
