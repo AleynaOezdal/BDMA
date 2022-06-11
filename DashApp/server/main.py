@@ -1,26 +1,17 @@
 import pandas as pd
 import pymongo
-import os
-from dotenv import load_dotenv
 import certifi
-import pprint as pp
 from flask import Flask
 from flask_restx import Resource, Api
-import json
 from datetime import datetime, timedelta
 import re
-
-from requests import head
 
 # Building a restful API with flask-restx
 app = Flask(__name__)
 api = Api(app)
 
-
-load_dotenv()
-
 client = pymongo.MongoClient(
-    f"mongodb+srv://{os.getenv('MONGODB.USERNAME')}:{os.getenv('MONGODB.PASSWORD')}@cluster0.hj2sr.mongodb.net/?retryWrites=true&w=majority",
+    f"mongodb+srv://jkulinsky:HsROUDZbeeU1JjDq@cluster0.hj2sr.mongodb.net/?retryWrites=true&w=majority",
     tlsCAFile=certifi.where(),
 )
 

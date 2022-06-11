@@ -1,0 +1,6 @@
+pandas
+pymongo[srv]
+certifi
+flask
+flask-restx
+datetime

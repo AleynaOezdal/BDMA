@@ -1,9 +1,4 @@
-import os
-from dotenv import load_dotenv
 import requests
-
-
-load_dotenv()
 
 
 def delivery_report(err, msg):
