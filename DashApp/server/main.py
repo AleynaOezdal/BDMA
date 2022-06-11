@@ -5,13 +5,14 @@ from flask import Flask
 from flask_restx import Resource, Api
 from datetime import datetime, timedelta
 import re
+import os
 
 # Building a restful API with flask-restx
 app = Flask(__name__)
 api = Api(app)
 
 client = pymongo.MongoClient(
-    f"mongodb+srv://jkulinsky:HsROUDZbeeU1JjDq@cluster0.hj2sr.mongodb.net/?retryWrites=true&w=majority",
+    os.get_env("MONGODB.URI"),
     tlsCAFile=certifi.where(),
 )
 
