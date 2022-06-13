@@ -75,22 +75,24 @@ def render_page_content(pathname, n_clicks, value):
         elif pathname == "/Keyperformance":  # navigationpointone
             return [kpi.get_kpi_content_value(value)]
         elif pathname == "/Investorrelations":  # navigationpointtwo
-            return [
-                html.Div(
+            return [html.Div(
                     id="content_news",
                     children=[
-                        html.H3(
-                            "Investor Relations for ADS.DE WKN: 9389145 / ISIN: NL0000235190",
-                            style={
-                                "font-family": "Arial, Helvetica, sans-serif",
-                                "font-weight": "bold",
-                                "margin": "1%",
-                            },
+                        Investorrelations.get_stocks_content_value(value),
+                        html.Div(
+                            id="widget_news",
+                            children=[
+                                Investorrelations.widget_one_stocks,
+                            ],
                         ),
-                        Investorrelations.dashboard,
                     ],
-                )
-            ]
+                    style={
+                        "width": "100%",
+                        "display": "inline-block",
+                        "vertical-align": "middle",
+                        "font-family": "Arial, Helvetica, sans-serif",
+                    },
+                )]
         elif pathname == "/Companyenvironment":  # navigationpointthree
             return [
                 html.Div(

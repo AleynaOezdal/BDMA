@@ -164,7 +164,7 @@ body {
     flex-wrap: wrap;
 }
 
-#kpi_widget {
+#kpi_widget, #stocks_widget{
     display: -webkit-flex; 
     display: -ms-flexbox; 
     display: flex;
@@ -176,17 +176,17 @@ body {
     padding: 0%;
 }
 
-#kpi_widget_text{
+#kpi_widget_text, #stocks_widget_text{
     width: 40%;
     padding: 5%;
     display: inline-block;
 }
 
-#kpi_widget_header{
+#kpi_widget_header, #stocks_widget_header{
     font-size: 80%;
 }
 
-#kpi_widget_key {
+#kpi_widget_key, #stocks_widget_key {
     font-size: 150%;
     font-weight: bold;
 }
@@ -218,7 +218,7 @@ body {
 
 /* KPI graph */
 
-#kpi_graph{
+#kpi_graph, #stocks_graph{
     width: 40%;
     display: inline-block;
     margin: 5%;
