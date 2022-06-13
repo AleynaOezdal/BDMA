@@ -52,6 +52,7 @@ def get_stocks_content_value(value):
             ],
         )
 
+        return content_header_stocks
 
 #widget-one-stocks
 widget_one_stocks = html.Div(id = 'stocks_widget', children=[
@@ -69,7 +70,6 @@ widget_one_stocks = html.Div(id = 'stocks_widget', children=[
                     ],)
 
                 ],)
-
 
 
 
