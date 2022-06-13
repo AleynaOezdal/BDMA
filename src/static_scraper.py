@@ -13,8 +13,6 @@ from producersetup import (
     yfinance_symbols_dax_companies,
     delivery_report,
     all_companies,
-    m_corps,
-    initialize_yf_tickers,
 )
 
 
@@ -45,10 +43,10 @@ def get_industry_and_competitors():
         for pair in dax40_distribution:
             for k, v in pair.items():
                 p.produce(
-                    "dax40_distribution",
+                    "industry_with_competitors",
                     json.dumps(
                         {
-                            "_id": k,
+                            "industry": k,
                             "corporates_in_industry": v,
                             "time": str(dt.datetime.now()),
                         }
@@ -57,8 +55,34 @@ def get_industry_and_competitors():
                 )
                 p.flush()
 
+    # Error Handling Strategy: Dead-Letter-Queues (DLQ)
     except Exception as e:
-        print(f"FAILED. The following error occured: {type(e)}\n{e}")
+        dax40_distribution = "NaN"
+        # Send NaN-Value to industry_and_competitors topic
+        message = json.dumps(
+            {
+                "company": "NaN",
+                "corporates_in_industry": "NaN",
+                "time": str(dt.datetime.now()),
+            }
+        )
+        p.produce("industry_and_competitors", message, callback=delivery_report)
+        p.flush
+
+        # Send Error-Object to error topic (DLQ)
+        error_message = json.dumps(
+            {
+                "scraper": "industry_and_competitors",
+                "timestamp": str(dt.datetime.now()),
+                "error": e,
+                "error_type": type(e),
+            }
+        )
+        p.produce("error", error_message, callback=delivery_report)
+        p.flush
+        print(
+            f"FAILED. For Industry and Competitors the following error occured: {type(e)}"
+        )
 
     return "Done. Produced all DAX industries to Kafka."
 
@@ -72,27 +96,51 @@ def get_description(companies: list = all_companies):
             description = soup.find("div", {"class": "col-sm-8"}).contents[1]
             description = str(description).split("</div>")[1]
 
-        except Exception as e:
-            description = "NaN"
-            print(f"FAILED. For {company} the following error occured: {type(e)}")
+            p.produce(
+                "company_description",
+                json.dumps(
+                    {
+                        "company": company,
+                        "company_description": description,
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
+                callback=delivery_report,
+            )
+            p.flush()
 
-        p.produce(
-            "company_description",
-            json.dumps(
+        # Error Handling Strategy: Dead-Letter-Queues (DLQ)
+        except Exception as e:
+            # Send NaN-Value to company_description topic
+            message = json.dumps(
                 {
-                    "_id": company,
-                    "company_description": description,
+                    "company": company,
+                    "company_description": "NaN",
                     "time": str(dt.datetime.now()),
                 }
-            ),
-            callback=delivery_report,
-        )
-        p.flush()
+            )
+            p.produce("company_description", message, callback=delivery_report)
+            p.flush
+
+            # Send Error-Object to error topic (DLQ)
+            error_message = json.dumps(
+                {
+                    "scraper": "company_description",
+                    "timestamp": str(dt.datetime.now()),
+                    "error": e,
+                    "error_type": type(e),
+                }
+            )
+            p.produce("error", error_message, callback=delivery_report)
+            p.flush
+            print(
+                f"FAILED. For Industry and Competitors the following error occured: {type(e)}"
+            )
 
     return "Done. Produced all company_description to Kafka."
 
 
-def get_WKN_and_ISIN(companies: list = all_companies):
+def get_WKN_and_ISIN(companies: list = ["test"]):
     # Scrape finanzen.net for each company for WKN/ ISIN
     for company in companies:
         try:
@@ -101,24 +149,48 @@ def get_WKN_and_ISIN(companies: list = all_companies):
             identification_numbers = soup.find(
                 "span", attrs={"class": "instrument-id"}
             ).text
+            # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
+            p.produce(
+                "wkns_and_isins",
+                json.dumps(
+                    {
+                        "company": company,
+                        "wkns_and_isins": identification_numbers,
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
+                callback=delivery_report,
+            )
+            p.flush()
 
+        # Error Handling Strategy: Dead-Letter-Queues (DLQ)
         except Exception as e:
-            identification_numbers = "NaN"
-            print(f"FAILED. For {company} the following error occured: {type(e)}")
-
-        # Store company as key and WKN/ISIN as value in a dict and transform it into JSON
-        p.produce(
-            "wkns_and_isins",
-            json.dumps(
+            # Send NaN-Value to wkns_and_isins topic
+            message = json.dumps(
                 {
-                    "_id": company,
-                    "wkns_and_isins": identification_numbers,
+                    "company": company,
+                    "wkns_and_isins": "NaN",
                     "time": str(dt.datetime.now()),
                 }
-            ),
-            callback=delivery_report,
-        )
-        p.flush()
+            )
+            p.produce("company_description", message, callback=delivery_report)
+            p.flush
+
+            # Send Error-Object to error topic (DLQ)
+            error_message = json.dumps(
+                {
+                    "scraper": "wkns_and_isins",
+                    "company": company,
+                    "timestamp": str(dt.datetime.now()),
+                    "error": repr(e),
+                    "error_type": str(type(e)),
+                }
+            )
+            p.produce("error", error_message, callback=delivery_report)
+            p.flush
+            print(
+                f"FAILED. For Industry and Competitors the following error occured: {type(e)}"
+            )
 
     return "Done. Produced all WKNs and ISINs to Kafka."
 
@@ -237,7 +309,7 @@ def convert_timestamps_keys_to_str(d: dict):
 def get_kpi_topic(kpi: str):
     # Because Confluent Kafka doesn't allow blank spaces within a topic name,
     # we replace the blank space in the kpi's name with an underscore.
-    return kpi.replace(" ", "_")
+    return kpi.lower().replace(" ", "_")
 
 
 def get_financial_KPI(
@@ -323,7 +395,7 @@ def get_dividends(companies: list = yfinance_symbols_dax_companies):
 
 if __name__ == "__main__":
     # Test if all KPIs are extractable
-    print("Now: WKNs and ISINs for all DAX Companies ...")
+    """print("Now: WKNs and ISINs for all DAX Companies ...")
 
     time.sleep(5)
     get_WKN_and_ISIN()
@@ -365,6 +437,11 @@ if __name__ == "__main__":
 
     print("Now: Industry and Competitors for all DAX Companies ...")
     get_industry_and_competitors()
+    print("Done. Waiting for 5 seconds.")
+    time.sleep(5)"""
+
+    print("Now: WKNs and ISINs for all DAX Companies ...")
+    get_WKN_and_ISIN()
     print("Done. Waiting for 5 seconds.")
     time.sleep(5)
 
