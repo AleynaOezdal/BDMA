@@ -1,17 +1,59 @@
-from dash import html
 
-colors = {"background": "#F6F6F6"}
+import pandas as pd
+from sidebar import data_kpi
+from setup import create_company_dict
+import dash_bootstrap_components as dbc
+from company_map import *
+import requests as req
+from dash import dcc, html
+import plotly.express as px
+import pandas as pd
 
-font = {"helvetica": "Arial, Helvetica, sans-serif"}
+colors = {
+    'background': '#F6F6F6'
+}
+
+font = {
+    'helvetica' : 'Arial, Helvetica, sans-serif'
+}
+
+company_dict = create_company_dict()
 
 
+def api_call(data, value):
+    url = f"http://127.0.0.1:5000/{data}/{value}"
+    result = req.get(url)
+    return result.json()
 
-# content-header-news
-content_header_news = html.H3(
-    id="content-header",
-    children="Company Environment for ADS.DE WKN: 9389145 / ISIN: NL0000235190",
-    style={"font-family": font["helvetica"], "font-weight": "bold", "margin": "1%"},
-)
+def get_news_content_value(value):
+    if value in data_kpi:
+        # value for header
+        name = value
+
+        # small letter for dict
+        if " " in value:
+            value = value.replace(" ", "_")
+        if "." in value:
+            value = value.replace(".", "")
+
+        value = value.lower()
+
+        wkns_and_isins = api_call("wkns_and_isins", value)
+
+        #content-header-news
+        content_header_news = html.Div(
+            id="content_header_news",
+            children=[
+                html.H3(
+                    id="content_header_first", children=["Company Relations "]),
+                html.H3(id="content_header_second", children=["for"]),
+                html.H3(
+                    id="content_header_third", children=[name + " " + wkns_and_isins]
+                ),
+            ],
+        )
+
+        return content_header_news
 
 # widget-one-news
 widget_one_news = html.Div(

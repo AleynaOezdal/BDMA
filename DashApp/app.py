@@ -98,7 +98,7 @@ def render_page_content(pathname, n_clicks, value):
                 html.Div(
                     id="content_news",
                     children=[
-                        news.content_header_news,
+                        news.get_news_content_value(value),
                         html.Div(
                             id="widget_news",
                             children=[
