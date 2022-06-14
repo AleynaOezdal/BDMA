@@ -64,8 +64,6 @@ def get_stocks_content_value(value):
             ],
         )
 
-
-
         #widget-one-stocks
         widget_one_stocks = html.Div(id = 'stocks_widget', children=[
                         html.Div(
@@ -193,7 +191,7 @@ def get_stocks_content_value(value):
         ], )
 
         content = html.Div(
-            id="content",
+            id="content_stocks",
             children=[
                 content_header_stocks,
                 html.Div(
@@ -214,11 +212,3 @@ def get_stocks_content_value(value):
     else:
         content_header_stocks = html.H3(id="content-header", children=["Select a Company"])
         return content_header_stocks
-
-        #dashboard = html.Div(
-        #    [
-        #        html.Br(),
-         #       html.Div(id="my-output"),
-          #      dcc.Graph(id="output-graph"),
-           # ]
-        #)
