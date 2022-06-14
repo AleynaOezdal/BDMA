@@ -8,8 +8,21 @@ import requests as req
 
 #example DataFrame
 
-d = {'message': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 'date': ['23:52', '11:50'], 'class': ['Negative', 'Positive']}
+d = {
+    'message': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
+    'date': ['23:52', '11:50','23:52', '11:50','23:52', '11:50'], 
+    'class': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
 df = pd.DataFrame(data=d)
+
+d_2 = {
+    'message': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'],  
+    'class': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
+df_2 = pd.DataFrame(data=d_2)
+
+d_3 = {
+    'message': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
+    'date': ['23:52', '11:50','23:52', '11:50','23:52', '11:50']}
+df_3 = pd.DataFrame(data=d_3)
 
 company_dict = create_company_dict()
 
@@ -76,34 +89,104 @@ def get_news_content(value):
             id="news_widget",
             children=[
                 html.Div(
+                    id="news_widget_content",
                     children=[
                         html.H6(id="news_widget_header", children="Unternehmensnews"),
                         html.Div(children=[
                             dbc.Table.from_dataframe(df)
                         ]),     
-                    ],
-                    style={"width": "50%", "margin": "5%"},
+                    ]
                 )
             ],
         )
 
-        # widget-one-news
+        # widget-two-news
         widget_two_news = html.Div(
             id="news_widget",
             children=[
                 html.Div(
+                    id="news_widget_content",
                     children=[
                         html.H6(id="news_widget_header", children="Mitarbeiter-Bewertungen"),
                         html.Div(children=[
                             html.Div(id ='news_latest_positive', children=[
-                                html.P(children='Latest Positive')
+                                html.P(children='Latest Positive'),
+                                html.Div(id = 'news_company_review',children = [
+                                    html.P(id= 'news_company_review_text', children='nike und puma es gibt sehr viele schöne…')
+                                ])
                             ]),
                             html.Div(id ='news_latest_negative',children=[
-                                html.P(children='Latest Negative')
+                                html.P(children='Latest Negative'),
+                                html.Div(id = 'news_company_review', children = [
+                                    html.P(id= 'news_company_review_text', children='Nutzlosester Support aller Zeiten')
+                                ])
                             ])
                         ]),     
-                    ],
-                    style={"width": "50%", "margin": "5%"},
+                    ]
+                )
+            ],
+        )
+
+        # widget-three-news
+        widget_three_news = html.Div(
+            id="news_widget",
+            children=[
+                html.Div(
+                    id="news_widget_content",
+                    children=[
+                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.Div(children=[
+                            dbc.Table.from_dataframe(df_2)
+                        ]),     
+                    ]
+                )
+            ],
+        )
+
+        # widget-four-news
+        widget_four_news = html.Div(
+            id="news_widget",
+            children=[
+                html.Div(
+                    id="news_widget_content",
+                    children=[
+                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.Div(children=[
+                            dbc.Table.from_dataframe(df_3)
+                        ]),     
+                    ]
+                )
+            ],
+        )
+
+        # widget-five-news
+        widget_five_news = html.Div(
+            id="news_widget",
+            children=[
+                html.Div(
+                    id="news_widget_content",
+                    children=[
+                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.Div(children=[
+                            dbc.Table.from_dataframe(df_3)
+                        ]),     
+                    ]
+                )
+            ],
+        )
+
+        # widget-six-news
+        widget_six_news = html.Div(
+            id="news_widget",
+            children=[
+                html.Div(
+                    id="news_widget_content",
+                    children=[
+                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.Div(children=[
+                            dbc.Table.from_dataframe(df_3)
+                        ]),     
+                    ]
                 )
             ],
         )
@@ -117,10 +200,10 @@ def get_news_content(value):
                         children=[
                             widget_one_news,
                             widget_two_news,
-                            widget_one_news,
-                            widget_one_news,
-                            widget_one_news,
-                            widget_one_news,
+                            widget_three_news,
+                            widget_four_news,
+                            widget_five_news,
+                            widget_six_news,
                         ],
                     ),
                 ],
@@ -136,117 +219,3 @@ def get_news_content(value):
     else:
         content_header_news = html.H3(id="content-header", children=["Select a Company"])
         return content_header_news
-
-# # widget-one-news
-# widget_one_news = html.Div(
-#     id="news_widget",
-#     children=[
-#         html.Div(
-#             children=[
-#                 html.H4(id="news_widget_header", children="NEWS"),
-#                 html.P(id="news_widget_text", children="finanzen.net"),
-#                 html.P(
-#                     id="kpi_widget_pos",
-#                     children=["▲"],
-#                     style={"color": "green", "font-size": "80%"},
-#                 ),
-#             ],
-#             style={"width": "50%", "margin": "5%"},
-#         )
-#     ],
-# )
-
-# # widget-two-news
-# widget_two_news = html.Div(
-#     id="news_widget",
-#     children=[
-#         html.Div(
-#             children=[
-#                 html.H5(id="news_widget_header", children="MITARBEITER-REVIEWS"),
-#                 html.P(id="news_widget_text", children="kununu"),
-#                 html.P(
-#                     id="news_widget_pos",
-#                     children=["▲"],
-#                     style={"color": "green", "font-size": "80%"},
-#                 ),
-#             ],
-#             style={"width": "50%", "margin": "5%"},
-#         )
-#     ],
-# )
-
-
-# widget_three_news = html.Div(
-#     id="news_widget",
-#     children=[
-#         html.Div(
-#             children=[
-#                 html.P(id="news_widget_header", children="ALLE WELT NEWS"),
-#                 html.P(id="news_widget_text", children="boerse.de"),
-#                 html.P(
-#                     id="news_widget_pos",
-#                     children=["▲"],
-#                     style={"color": "green", "font-size": "80%"},
-#                 ),
-#             ],
-#             style={"width": "50%", "margin": "5%"},
-#         )
-#     ],
-# )
-
-# # widget-four-news
-# widget_four_news = html.Div(
-#     id="news_widget",
-#     children=[
-#         html.Div(
-#             children=[
-#                 html.P(id="news_widget_header", children="BÖRSENNEWS-FORUM"),
-#                 html.P(id="news_widget_text", children="boersennews.de/{ISIN}"),
-#                 html.P(
-#                     id="news_widget_pos",
-#                     children=["▲"],
-#                     style={"color": "green", "font-size": "80%"},
-#                 ),
-#             ],
-#             style={"width": "50%", "margin": "5%"},
-#         )
-#     ],
-# )
-
-# # widget-five-news
-# widget_five_news = html.Div(
-#     id="news_widget",
-#     children=[
-#         html.Div(
-#             children=[
-#                 html.P(id="news_widget_header", children="DAX NEWS"),
-#                 html.P(id="news_widget_text", children="finanzen.net"),
-#                 html.P(
-#                     id="news_widget_pos",
-#                     children=["▲"],
-#                     style={"color": "green", "font-size": "80%"},
-#                 ),
-#             ],
-#             style={"width": "50%", "margin": "5%"},
-#         )
-#     ],
-# )
-
-# # widget-six-news
-# widget_six_news = html.Div(
-#     id="news_widget",
-#     children=[
-#         html.Div(
-#             children=[
-#                 html.P(id="news_widget_header", children="KUNDEN"),
-#                 html.P(id="news_widget_text", children="Trustpilot"),
-#                 html.P(
-#                     id="news_widget_pos",
-#                     children=["▲"],
-#                     style={"color": "green", "font-size": "80%"},
-#                 ),
-#             ],
-#             style={"width": "50%", "margin": "5%"},
-#         )
-#     ],
-# )

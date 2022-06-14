@@ -277,13 +277,31 @@ body {
 
 /*News Widget*/
 
+#widget_news {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
 #news_widget {
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
     width: 31%;
     display: inline-block;
     vertical-align: middle;
     margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
 }
+
+#news_widget_content{
+    margin: 5%;
+}
+
+/* News Widget Table */
 
 th{
     font-size: small;
@@ -297,8 +315,18 @@ tr{
     border-bottom: 2px;
 }
 
-#news_latest_positive, #news_latest_negative{
+/* News Widget Review */
+
+#news_latest_positive , #news_latest_negative {
     font-size: smaller;
     font-weight: bold;
 }
 
+#news_company_review{
+    font-weight: normal;
+    background-color: #F6F6F6;
+}
+
+#news_company_review_text{
+    padding: 3%;
+}
