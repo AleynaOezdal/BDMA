@@ -249,38 +249,64 @@ def get_holders(companies: list = yfinance_symbols_dax_companies):
     return "Done. Produced all holders to Kafka."
 
 
-# TBD: to be discussed in which format to send to kafka and in which type of database to store
-def get_history_stock_price(companies: list = yfinance_symbols_dax_companies):
+def get_history_stock_price(
+    companies: list = yfinance_symbols_dax_companies + ["^GDAXI"],
+):
     for company in companies:
         try:
-            suffix = ".DE"
+            if company == "^GDAXI":
+                suffix = ""
+            else:
+                suffix = ".DE"
             record_value = yf.download(
                 f"{company.upper()+suffix}",
-                start="2022-05-01",
-                end="2022-05-21",
+                start="2021-05-01",
+                end="2022-06-13",
                 interval="1d",
                 group_by="ticker",
             ).to_json()
 
-        except Exception as e:
-            record_value = "NaN"
-            print(f"FAILED. For {company} the following error occured: {type(e)}")
+            # Store company as key and stock history as value in a dict and transform it into JSON
+            # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
+            # Steps: res = json.loads(value), then result = pd.json_normalize(res)
+            p.produce(
+                "history_stock_price",
+                json.dumps(
+                    {
+                        "company": company,
+                        "history_stock_price": record_value,
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
+                callback=delivery_report,
+            )
+            p.flush()
 
-        # Store company as key and stock history as value in a dict and transform it into JSON
-        # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
-        # Steps: res = json.loads(value), then result = pd.json_normalize(res)
-        p.produce(
-            "history_stock_price",
-            json.dumps(
+        except Exception as e:
+            # Send NaN-Value to history_stock_price topic
+            message = json.dumps(
                 {
-                    "_id": company,
-                    "history_stock_price": record_value,
+                    "company": company,
+                    "history_stock_price": "NaN",
                     "time": str(dt.datetime.now()),
                 }
-            ),
-            callback=delivery_report,
-        )
-        p.flush()
+            )
+            p.produce("history_stock_price", message, callback=delivery_report)
+            p.flush()
+
+            # Send Error-Object to error topic (DLQ)
+            error_message = json.dumps(
+                {
+                    "scraper": "history_stock_price",
+                    "company": company,
+                    "timestamp": str(dt.datetime.now()),
+                    "error": repr(e),
+                    "error_type": str(type(e)),
+                }
+            )
+            p.produce("error", error_message, callback=delivery_report)
+            p.flush()
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
 
     return "Done. Produced all stock data to Kafka."
 
@@ -424,30 +450,6 @@ def get_financial_KPI(
     return f"Done. Produced {financial_KPIs} for all DAX40 companies to Kafka."
 
 
-# tbd
-def get_DAX_history_stock_price_til_today(
-    end=str(dt.datetime.today()).split(" ")[0], *args
-):
-    dax_stock_data = yf.download("^GDAXI", start="2015-01-01", end=end, *args)
-    for stock_day in range(len(dax_stock_data)):
-        p.produce(
-            "dax_history_stock_data",
-            json.dumps(
-                {
-                    "_id": f"DAX40_{stock_day}",
-                    "stock_history_til_date": dax_stock_data.iloc[stock_day].to_json(),
-                    "stock_date": str(dax_stock_data.iloc[stock_day].name).split(" ")[
-                        0
-                    ],
-                    "time": str(dt.datetime.now()),
-                }
-            ),
-            callback=delivery_report,
-        )
-        p.flush()
-    return "DONE. DAX Stock Evolution is produced successfully."
-
-
 def get_dividends(companies: list = yfinance_symbols_dax_companies):
     for company in companies:
         try:
@@ -542,9 +544,4 @@ if __name__ == "__main__":
     print("Done. Waiting for 5 seconds.")
     time.sleep(5)"""
 
-    print("Now: Yearly Dividends for all DAX Companies ...")
-    get_dividends()
-    print("Done. Waiting for 5 seconds.")
-    time.sleep(5)
-
-    # tbd: get_history_stock_price() or get_DAX_stock_price
+    get_history_stock_price()
