@@ -63,13 +63,9 @@ def get_kpi_content_value(value):
         content_header_kpi = html.Div(
             id="content_header_kpi",
             children=[
-                html.H3(
-                    id="content_header_first", children=["Key Performance Indicators "]
-                ),
+                html.H3(id="content_header_first", children=["Key Performance Indicators "]),
                 html.H3(id="content_header_second", children=["for"]),
-                html.H3(
-                    id="content_header_third", children=[name + " " + wkns_and_isins]
-                ),
+                html.H3(id="content_header_third", children=[name + " " + wkns_and_isins]),
             ],
         )
 
@@ -108,7 +104,7 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="EBIT"),
                         html.P(id="kpi_widget_key", children=ebit),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.I(className="bi bi-info-circle-fill me-2")
                     ],
                 ),
                 html.Div(
@@ -171,7 +167,7 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Profit Margin"),
                         html.P(id="kpi_widget_key", children=gross_profit),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.I(className="bi bi-info-circle-fill me-2")
                     ],
                 ),
                 html.Div(
@@ -228,7 +224,7 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Net income"),
                         html.P(id="kpi_widget_key", children=income),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.I(className="bi bi-info-circle-fill me-2")
                     ],
                 ),
                 html.Div(
@@ -292,7 +288,7 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Revenue"),
                         html.P(id="kpi_widget_key", children=revenue),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.I(className="bi bi-info-circle-fill me-2")
                     ],
                 ),
                 html.Div(
@@ -357,7 +353,7 @@ def get_kpi_content_value(value):
                             id="kpi_widget_header", children="Total operating expenses"
                         ),
                         html.P(id="kpi_widget_key", children=level),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.I(className="bi bi-info-circle-fill me-2")                    
                     ],
                 ),
                 html.Div(
@@ -408,7 +404,7 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="ESG Risk Score"),
                         html.P(id="kpi_widget_key", children=esg),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.I(className="bi bi-info-circle-fill me-2")                   
                     ],
                 ),
                 html.Div(

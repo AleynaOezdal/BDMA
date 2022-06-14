@@ -8,7 +8,7 @@ import news
 import Investorrelations
 from datetime import datetime
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
 
 # datetime object containing current date and time
 now = datetime.now()
@@ -94,31 +94,7 @@ def render_page_content(pathname, n_clicks, value):
                     },
                 )]
         elif pathname == "/Companyenvironment":  # navigationpointthree
-            return [
-                html.Div(
-                    id="content_news",
-                    children=[
-                        news.get_news_content_value(value),
-                        html.Div(
-                            id="widget_news",
-                            children=[
-                                news.widget_one_news,
-                                news.widget_two_news,
-                                news.widget_three_news,
-                                news.widget_four_news,
-                                news.widget_five_news,
-                                news.widget_six_news,
-                            ],
-                        ),
-                    ],
-                    style={
-                        "width": "100%",
-                        "display": "inline-block",
-                        "vertical-align": "middle",
-                        "font-family": "Arial, Helvetica, sans-serif",
-                    },
-                )
-            ]
+            return [news.get_news_content(value)]
         # If the user tries to reach a different page, return a 404 message
         return dbc.Jumbotron(
             [

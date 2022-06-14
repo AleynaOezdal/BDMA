@@ -70,16 +70,3 @@ widget_one_stocks = html.Div(id = 'stocks_widget', children=[
                     ],)
 
                 ],)
-
-
-
-
-
-
-#dashboard = html.Div(
-#    [
-#        html.Br(),
- #       html.Div(id="my-output"),
-  #      dcc.Graph(id="output-graph"),
-   # ]
-#)

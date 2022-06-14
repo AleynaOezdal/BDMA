@@ -119,7 +119,7 @@ body {
     vertical-align: middle;
 }
 
-#content {
+#content, #content_news {
     width: 100%;
     vertical-align: middle;
     height: 100%;
@@ -130,7 +130,7 @@ body {
     margin: 1%;
 }
 
-#content_header_kpi, #content_header_stocks, #content_header_news {
+#content_header_kpi, #content_header_stocks, #content_header_news{
     margin: 1%;
 }
 
@@ -164,7 +164,7 @@ body {
     flex-wrap: wrap;
 }
 
-#kpi_widget, #stocks_widget{
+#kpi_widget{
     display: -webkit-flex; 
     display: -ms-flexbox; 
     display: flex;
@@ -176,17 +176,17 @@ body {
     padding: 0%;
 }
 
-#kpi_widget_text, #stocks_widget_text{
+#kpi_widget_text{
     width: 40%;
     padding: 5%;
     display: inline-block;
 }
 
-#kpi_widget_header, #stocks_widget_header{
+#kpi_widget_header{
     font-size: 80%;
 }
 
-#kpi_widget_key, #stocks_widget_key {
+#kpi_widget_key{
     font-size: 150%;
     font-weight: bold;
 }
@@ -218,7 +218,7 @@ body {
 
 /* KPI graph */
 
-#kpi_graph, #stocks_graph{
+#kpi_graph{
     width: 40%;
     display: inline-block;
     margin: 5%;
@@ -236,33 +236,69 @@ body {
     width: 100%;
 }
 
+/* Stocks graph */
+
+#stocks_graph{
+    width: 40%;
+    display: inline-block;
+    margin: 5%;
+    margin-left: 0%;
+    vertical-align: top;
+ }
+
+/* Stocks widget */
+
+#stocks_widget{
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
+    width: 48%;
+    height: auto;
+    background-color: #F6F6F6;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
+    padding: 0%;
+}
+
+#stocks_widget_text{
+    width: 40%;
+    padding: 5%;
+    display: inline-block;
+}
+
+#stocks_widget_header{
+    font-size: 80%;
+}
+
+#stocks_widget_key {
+    font-size: 150%;
+    font-weight: bold;
+}
+
 /*News Widget*/
 
 #news_widget {
-    width: 48%;
+    width: 31%;
     display: inline-block;
     vertical-align: middle;
-    background-color: #F6F6F6;
     margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
 }
 
-
-#news_widget_text{
-    width: 40%;
-    margin: 5%;
-    display: inline-block;
+th{
+    font-size: small;
 }
 
-#news_widget_header{
-    font-size: 80%;
+td {
+    font-size: smaller;  
 }
 
-
-#news_widget_pos{
-    color: lightgreen;
-    font-size: 80%;
+tr{
+    border-bottom: 2px;
 }
 
-
+#news_latest_positive, #news_latest_negative{
+    font-size: smaller;
+    font-weight: bold;
+}
 
