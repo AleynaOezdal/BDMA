@@ -9,19 +9,19 @@ import requests as req
 #example DataFrame
 
 d = {
-    'message': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
-    'date': ['23:52', '11:50','23:52', '11:50','23:52', '11:50'], 
-    'class': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
+    '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
+    'Datum': ['23:52', '11:50','23:52', '11:50','23:52', '11:50'], 
+    'Klassifizierung': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
 df = pd.DataFrame(data=d)
 
 d_2 = {
-    'message': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'],  
-    'class': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
+    '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'],  
+    'Klassifizierung': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
 df_2 = pd.DataFrame(data=d_2)
 
 d_3 = {
-    'message': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
-    'date': ['23:52', '11:50','23:52', '11:50','23:52', '11:50']}
+    '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
+    'Datum': ['23:52', '11:50','23:52', '11:50','23:52', '11:50']}
 df_3 = pd.DataFrame(data=d_3)
 
 company_dict = create_company_dict()
@@ -85,6 +85,14 @@ def get_news_content(value):
         )
 
         # widget-one-news
+        company_news = api_call('community_news', value)
+        company_news_df = pd.DataFrame(company_news)
+        company_news_df_2 = pd.DataFrame()
+
+        company_news_df_2[''] = company_news_df['message'][0:6]
+        company_news_df_2['Datum'] = company_news_df['time'][0:6]
+        company_news_df_2['Klassifizierung'] = company_news_df['class'][0:6]
+
         widget_one_news = html.Div(
             id="news_widget",
             children=[
@@ -94,6 +102,14 @@ def get_news_content(value):
                         html.H6(id="news_widget_header", children="Unternehmensnews"),
                         html.Div(children=[
                             dbc.Table.from_dataframe(df)
+                            # html.Table(
+                            #     # Header
+                            #     [html.Tr([html.Th(col) for col in df.columns]) ] +
+                            #     # Body
+                            #     [html.Tr([
+                            #         html.Td(df.iloc[i][col]) for col in df.columns
+                            #     ]) for i in range(min(len(df), 6))]
+                            # )
                         ]),     
                     ]
                 )
@@ -184,14 +200,7 @@ def get_news_content(value):
                     children=[
                         html.H6(id="news_widget_header", children="Börsen-Community"),
                         html.Div(children=[
-                            html.Table(
-                                # Header
-                                [html.Tr([html.Th(col) for col in df_3.columns]) ] +
-                                # Body
-                                [html.Tr([
-                                    html.Td(df_3.iloc[i][col]) for col in df_3.columns
-                                ]) for i in range(min(len(df_3), 6))]
-                            )
+                            dbc.Table.from_dataframe(df_3)
                         ]),     
                     ]
                 )
