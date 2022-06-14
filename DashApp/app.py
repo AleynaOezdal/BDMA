@@ -2,6 +2,7 @@ from dash import Dash, dcc, html, Output, Input, State
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import pandas as pd
+import home
 import sidebar as sb
 import kpi
 import news
@@ -48,15 +49,18 @@ def overview(value):
     )
     return overview_content
 
+#home
+# home_content = html.Div(id="side_version", children=[])
 
-# app layout
 app.layout = html.Div(
     children=[
         header,
-        html.Div(id="side", children=[dcc.Location(id="url"), sb.sidebar, content]),
+        html.Div(id="side", children=[
+            dcc.Location(id="url"), 
+            sb.sidebar,
+            content]),
     ]
 )
-
 
 @app.callback(
     Output("page_content", "children"),

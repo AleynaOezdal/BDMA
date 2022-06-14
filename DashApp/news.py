@@ -134,7 +134,7 @@ def get_news_content(value):
                 html.Div(
                     id="news_widget_content",
                     children=[
-                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.H6(id="news_widget_header", children="Kundenrezesionen"),
                         html.Div(children=[
                             dbc.Table.from_dataframe(df_2)
                         ]),     
@@ -150,7 +150,7 @@ def get_news_content(value):
                 html.Div(
                     id="news_widget_content",
                     children=[
-                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.H6(id="news_widget_header", children="DAX-News"),
                         html.Div(children=[
                             dbc.Table.from_dataframe(df_3)
                         ]),     
@@ -166,7 +166,7 @@ def get_news_content(value):
                 html.Div(
                     id="news_widget_content",
                     children=[
-                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.H6(id="news_widget_header", children="Globale News"),
                         html.Div(children=[
                             dbc.Table.from_dataframe(df_3)
                         ]),     
@@ -182,9 +182,16 @@ def get_news_content(value):
                 html.Div(
                     id="news_widget_content",
                     children=[
-                        html.H6(id="news_widget_header", children="Unternehmensnews"),
+                        html.H6(id="news_widget_header", children="Börsen-Community"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(df_3)
+                            html.Table(
+                                # Header
+                                [html.Tr([html.Th(col) for col in df_3.columns]) ] +
+                                # Body
+                                [html.Tr([
+                                    html.Td(df_3.iloc[i][col]) for col in df_3.columns
+                                ]) for i in range(min(len(df_3), 6))]
+                            )
                         ]),     
                     ]
                 )
