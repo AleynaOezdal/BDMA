@@ -164,8 +164,8 @@ body {
     flex-wrap: wrap;
 }
 
-#kpi_widget{
-    display: -webkit-flex; 
+#kpi_widget {
+    display: -webkit-flex;
     display: -ms-flexbox; 
     display: flex;
     width: 48%;
@@ -176,7 +176,7 @@ body {
     padding: 0%;
 }
 
-#kpi_widget_text{
+#kpi_widget_text {
     width: 40%;
     padding: 5%;
     display: inline-block;
@@ -186,7 +186,8 @@ body {
     font-size: 80%;
 }
 
-#kpi_widget_key{
+
+#kpi_widget_key {
     font-size: 150%;
     font-weight: bold;
 }
@@ -218,7 +219,7 @@ body {
 
 /* KPI graph */
 
-#kpi_graph{
+#kpi_graph {
     width: 40%;
     display: inline-block;
     margin: 5%;
@@ -330,3 +331,36 @@ tr{
 #news_company_review_text{
     padding: 3%;
 }
+/*stocks widget*/
+
+#stocks_widget{
+    width: 48%;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #FFFFFF;
+    margin: 1%;
+    padding: 0%;
+}
+
+#stocks_widget_text{
+    padding: 5%;
+}
+#stocks_widget_header{
+    font-size: 80%; }
+
+#stocks_widget_key {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+
+
+/*Stocks graph*/
+
+#stocks_graph{
+    width: 40%;
+    display: inline-block;
+    margin: 5%;
+    margin-left: 0%;
+    vertical-align: top;
+ }

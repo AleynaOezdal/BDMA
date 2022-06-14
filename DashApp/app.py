@@ -75,24 +75,7 @@ def render_page_content(pathname, n_clicks, value):
         elif pathname == "/Keyperformance":  # navigationpointone
             return [kpi.get_kpi_content_value(value)]
         elif pathname == "/Investorrelations":  # navigationpointtwo
-            return [html.Div(
-                    id="content_news",
-                    children=[
-                        Investorrelations.get_stocks_content_value(value),
-                        html.Div(
-                            id="widget_news",
-                            children=[
-                                Investorrelations.widget_one_stocks,
-                            ],
-                        ),
-                    ],
-                    style={
-                        "width": "100%",
-                        "display": "inline-block",
-                        "vertical-align": "middle",
-                        "font-family": "Arial, Helvetica, sans-serif",
-                    },
-                )]
+            return [Investorrelations.get_stocks_content_value(value)]
         elif pathname == "/Companyenvironment":  # navigationpointthree
             return [news.get_news_content(value)]
         # If the user tries to reach a different page, return a 404 message
