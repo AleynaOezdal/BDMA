@@ -86,7 +86,7 @@ def get_stocks_content_value(value):
                         html.Div(
                             id="stocks_widget_text",
                             children=[
-                                html.P(id="stocks_widget_header", children="Key Characteristics"),
+                                html.P(id="stocks_widget_header", children="DAX40"),
                                 #html.P(id="stocks_widget_key", children=ebit),
                             ],),
                             html.Div(id = 'stocks_graph', children= [
@@ -103,7 +103,7 @@ def get_stocks_content_value(value):
                         html.Div(
                             id="stocks_widget_text",
                             children=[
-                                html.P(id="stocks_widget_header", children="Dividendenzahlungen"),
+                                html.P(id="stocks_widget_header", children="Key Characteristics"),
                                 #html.P(id="stocks_widget_key", children=ebit),
                             ],),
                             html.Div(id = 'stocks_graph', children= [
@@ -116,24 +116,64 @@ def get_stocks_content_value(value):
                         ],)
 
         #widget-four-stocks
-        widget_four_stocks = html.Div(id = 'stocks_widget', children=[
-                        html.Div(
-                            id="stocks_widget_text",
-                            children=[
-                                html.P(id="stocks_widget_header", children="DAX40"),
-                                #html.P(id="stocks_widget_key", children=ebit),
-                            ],),
-                            html.Div(id = 'stocks_graph', children= [
-                                dcc.Graph(
-                                id="output-graph",
-                                style={"width": "20vmax", "height": "10vmax"},
-                            )
-                            ],     style={"width": "50%", "margin": "5%"})
+        # get widget data Dividends
+        gross_profit_api_data = api_call("gross_profit", company_dict[value])
+        gross_profit_api_data_df = pd.DataFrame(
+            gross_profit_api_data, index=["Gross Profit"]
+        ).T
+        if (
+                gross_profit_api_data_df["Gross Profit"][0] != 0
+                and gross_profit_api_data_df["Gross Profit"][0] != "NaN"
+        ):
+            gross_profit = short_num(gross_profit_api_data_df["Gross Profit"][0])
+        else:
+            gross_profit = 0
 
-                        ],)
+        gross_profit_df = gross_profit_api_data_df.sort_index()
+
+        # figure dividends bar chart
+        fig_dividends = go.Figure(
+            data=[go.Pie(labels = ['Insiders', 'Institutionen mit Aktienbeteiligung', 'Streubesitz Institutionen']
+,
+            values=[4500, 2500, 1053, 500])])
+
+        # style of the figure total revenue
+        colors = ['gold', 'mediumturquoise', 'darkorange']
+
+        fig_dividends.update_traces(hoverinfo='label', textinfo='value', textfont_size=10,
+                  marker=dict(colors=colors, line=dict(color='#000000', width=2))
+        )
+
+        fig_dividends.update_layout(
+            showlegend=False,
+            margin_l=0,
+            margin_r=0,
+            margin_t=0,
+            margin_b=0,
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
+            uniformtext_minsize=10,
+        )
+
+        # widget-four-stocks
+        widget_four_stocks = html.Div(id='stocks_widget', children=[
+            html.Div(
+                id="stocks_widget_text",
+                children=[
+                    html.P(id="stocks_widget_header", children="Major Holders"),
+                    # html.P(id="stocks_widget_key", children=ebit),
+                ], ),
+            html.Div(id='stocks_graph', children=[
+                dcc.Graph(
+                    figure=fig_dividends,
+                    style={"width": "20vmax", "height": "10vmax"},
+                )
+            ], )
+
+        ], )
 
 
-        # get widget data major holders
+        # get widget data Dividends
         total_revenue_api_data = api_call("total_revenue", company_dict[value])
         total_revenue_api_data_df = pd.DataFrame(
             total_revenue_api_data, index=["Total Revenue"]
@@ -149,8 +189,8 @@ def get_stocks_content_value(value):
 
         total_revenue_df = total_revenue_api_data_df.sort_index()
 
-        # figure total revenue bar chart
-        fig_major_holders = go.Figure(
+        # figure dividends bar chart
+        fig_dax_data_per_day = go.Figure(
             go.Bar(
                 y=total_revenue_df["Total Revenue"],
                 x=total_revenue_df.index,
@@ -158,11 +198,11 @@ def get_stocks_content_value(value):
             )
         )
         # style of the figure total revenue
-        fig_major_holders.update_traces(
+        fig_dax_data_per_day.update_traces(
             marker_color="#79EB71", textposition="inside", texttemplate="%{text:.3s}"
         )
 
-        fig_major_holders.update_layout(
+        fig_dax_data_per_day.update_layout(
             showlegend=False,
             margin_l=0,
             margin_r=0,
@@ -178,12 +218,12 @@ def get_stocks_content_value(value):
             html.Div(
                 id="stocks_widget_text",
                 children=[
-                    html.P(id="stocks_widget_header", children="Major Holders"),
+                    html.P(id="stocks_widget_header", children="Dividendenzahlungen"),
                     # html.P(id="stocks_widget_key", children=ebit),
                 ], ),
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
-                    figure=fig_major_holders,
+                    figure=fig_dax_data_per_day,
                     style={"width": "20vmax", "height": "10vmax"},
                 )
             ], )
