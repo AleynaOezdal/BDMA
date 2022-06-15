@@ -135,19 +135,19 @@ body {
 
 #content_header_first{
     font-weight: bold;
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
 }
 
 #content_header_second{
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
     padding-left: .5%;
 }
 
 #content_header_third{
     font-style: italic;
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
     padding-left: .5%;
 }

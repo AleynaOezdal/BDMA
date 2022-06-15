@@ -10,7 +10,7 @@ import requests as req
 
 d = {
     '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
-    'Datum': ['23:52', '11:50','23:52', '11:50','23:52', '11:50'], 
+    'Datum': ['22.05.2022 23:52', '11:50','23:52', '11:50','23:52', '11:50'], 
     'Klassifizierung': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
 df = pd.DataFrame(data=d)
 
@@ -21,7 +21,7 @@ df_2 = pd.DataFrame(data=d_2)
 
 d_3 = {
     '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
-    'Datum': ['23:52', '11:50','23:52', '11:50','23:52', '11:50']}
+    'Datum': ['22.05.2022 23:52', '11:50','23:52', '11:50','23:52', '11:50']}
 df_3 = pd.DataFrame(data=d_3)
 
 company_dict = create_company_dict()
@@ -85,13 +85,13 @@ def get_news_content(value):
         )
 
         # widget-one-news
-        company_news = api_call('community_news', value)
-        company_news_df = pd.DataFrame(company_news)
-        company_news_df_2 = pd.DataFrame()
+        # company_news = api_call('community_news', value)
+        # company_news_df = pd.DataFrame(company_news)
+        # company_news_df_2 = pd.DataFrame()
 
-        company_news_df_2[''] = company_news_df['message'][0:6]
-        company_news_df_2['Datum'] = company_news_df['time'][0:6]
-        company_news_df_2['Klassifizierung'] = company_news_df['class'][0:6]
+        # company_news_df_2[''] = company_news_df['message'][0:6]
+        # company_news_df_2['Datum'] = company_news_df['time'][0:6]
+        # company_news_df_2['Klassifizierung'] = company_news_df['class'][0:6]
 
         widget_one_news = html.Div(
             id="news_widget",
