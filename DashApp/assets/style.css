@@ -261,9 +261,7 @@ body {
 }
 
 #stocks_widget_text{
-    width: 40%;
     padding: 5%;
-    display: inline-block;
 }
 
 #stocks_widget_header{
