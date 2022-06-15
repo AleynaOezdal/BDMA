@@ -131,20 +131,27 @@ def get_stocks_content_value(value):
         gross_profit_df = gross_profit_api_data_df.sort_index()
 
         # figure dividends bar chart
-        fig_dividends = go.Figure(
-            data=[go.Pie(labels = ['Insiders', 'Institutionen mit Aktienbeteiligung', 'Streubesitz Institutionen']
-,
-            values=[4500, 2500, 1053, 500])])
+        labels_fig = ['Insiders', 'Institutionen mit Aktienbeteiligung', 'Streubesitz Institutionen']
+        values_fig=[4500, 2500, 1053, 500]
+
+        fig_dividends = go.Figure(data=[go.Pie(labels=labels_fig, values=values_fig, hole=.3)])
 
         # style of the figure total revenue
         colors = ['gold', 'mediumturquoise', 'darkorange']
 
         fig_dividends.update_traces(hoverinfo='label', textinfo='value', textfont_size=10,
-                  marker=dict(colors=colors, line=dict(color='#000000', width=2))
+                  marker=dict(colors=colors)
         )
 
         fig_dividends.update_layout(
             showlegend=True,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            ),
             margin_l=0,
             margin_r=0,
             margin_t=0,

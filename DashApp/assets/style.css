@@ -275,9 +275,7 @@ body {
 /* Stocks graph */
 
 #stocks_graph{
-    display: inline-block;
     margin: 5%;
-    vertical-align: top;
  }
 
 /*News Widget*/
