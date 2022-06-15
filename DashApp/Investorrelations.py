@@ -69,8 +69,7 @@ def get_stocks_content_value(value):
                         html.Div(
                             id="stocks_widget_text",
                             children=[
-                                html.P(id="stocks_widget_header", children="Adidas"),
-                                #html.P(id="stocks_widget_key", children=ebit),
+                                html.P(id="stocks_widget_header", children="Adidas")
                             ],),
                             html.Div(id = 'stocks_graph', children= [
                                 dcc.Graph(
@@ -86,8 +85,7 @@ def get_stocks_content_value(value):
                         html.Div(
                             id="stocks_widget_text",
                             children=[
-                                html.P(id="stocks_widget_header", children="DAX40"),
-                                #html.P(id="stocks_widget_key", children=ebit),
+                                html.P(id="stocks_widget_header", children="DAX40")
                             ],),
                             html.Div(id = 'stocks_graph', children= [
                                 dcc.Graph(
@@ -99,19 +97,20 @@ def get_stocks_content_value(value):
                         ],)
 
         #widget-three-stocks
+        d = {
+            '': ['Price', 'Change','Open', 'Day Before','Highest', 'Lowest','Marketcap', 'Date'], 
+            ' ': ['234,32', '4,5','235,23', '115,23','232,24', '114,12','35,5 MRD.', '30.05.2022']}
+        df = pd.DataFrame(data=d)
+
         widget_three_stocks = html.Div(id = 'stocks_widget', children=[
                         html.Div(
                             id="stocks_widget_text",
                             children=[
-                                html.P(id="stocks_widget_header", children="Key Characteristics"),
-                                #html.P(id="stocks_widget_key", children=ebit),
+                                html.P(id="stocks_widget_header", children="Key Characteristics")
                             ],),
                             html.Div(id = 'stocks_graph', children= [
-                                dcc.Graph(
-                                id="output-graph",
-                                style={"width": "20vmax", "height": "10vmax"},
-                            )
-                            ],      style={"width": "50%", "margin": "5%"})
+                                dbc.Table.from_dataframe(df)
+                            ])
 
                         ],)
 
@@ -160,8 +159,7 @@ def get_stocks_content_value(value):
             html.Div(
                 id="stocks_widget_text",
                 children=[
-                    html.P(id="stocks_widget_header", children="Major Holders"),
-                    # html.P(id="stocks_widget_key", children=ebit),
+                    html.P(id="stocks_widget_header", children="Major Holders")
                 ], ),
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
@@ -218,8 +216,7 @@ def get_stocks_content_value(value):
             html.Div(
                 id="stocks_widget_text",
                 children=[
-                    html.P(id="stocks_widget_header", children="Dividendenzahlungen"),
-                    # html.P(id="stocks_widget_key", children=ebit),
+                    html.P(id="stocks_widget_header", children="Dividendenzahlungen")
                 ], ),
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
