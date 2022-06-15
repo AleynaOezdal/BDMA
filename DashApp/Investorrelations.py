@@ -65,7 +65,7 @@ def get_stocks_content_value(value):
         )
 
         #widget-one-stocks
-        widget_one_stocks = html.Div(id = 'stocks_widget', children=[
+        widget_one_stocks = html.Div(id = 'stocks_widget_2', children=[
                         html.Div(
                             id="stocks_widget_text",
                             children=[
@@ -82,7 +82,7 @@ def get_stocks_content_value(value):
                         ],)
 
         #widget-two-stocks
-        widget_two_stocks = html.Div(id = 'stocks_widget', children=[
+        widget_two_stocks = html.Div(id = 'stocks_widget_2', children=[
                         html.Div(
                             id="stocks_widget_text",
                             children=[
@@ -145,14 +145,14 @@ def get_stocks_content_value(value):
         )
 
         fig_dividends.update_layout(
-            showlegend=False,
+            showlegend=True,
             margin_l=0,
             margin_r=0,
             margin_t=0,
             margin_b=0,
             paper_bgcolor="#FFFFFF",
             plot_bgcolor="#FFFFFF",
-            uniformtext_minsize=10,
+            uniformtext_minsize=5,
         )
 
         # widget-four-stocks

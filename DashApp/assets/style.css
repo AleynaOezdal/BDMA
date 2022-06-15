@@ -330,13 +330,24 @@ tr{
 }
 /*stocks widget*/
 
-#stocks_widget{
+#stocks_widget_2 {
     width: 48%;
     display: inline-block;
     vertical-align: middle;
     background-color: #FFFFFF;
     margin: 1%;
     padding: 0%;
+}
+
+#stocks_widget {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 31%;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
 }
 
 #stocks_widget_text{
@@ -353,7 +364,6 @@ tr{
 /*Stocks graph*/
 
 #stocks_graph{
-    width: 40%;
     display: inline-block;
     margin: 5%;
     margin-left: 0%;
