@@ -37,7 +37,7 @@ sidebar = html.Div(
             children=[
                 dcc.DatePickerSingle(
                     placeholder="Datum auswählen",
-                    display_format="DD MM YY",  # datepicker to select date
+                    display_format="YYYY-MM-DD",  # datepicker to select date
                 ),
             ],
         ),
