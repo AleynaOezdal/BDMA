@@ -225,7 +225,7 @@ def get_stocks_content_value(value):
                 orientation="h",
                 yanchor="bottom",
                 y=1.02,
-                xanchor="left",
+                xanchor="right",
                 x=1
             ),
             width=310,
