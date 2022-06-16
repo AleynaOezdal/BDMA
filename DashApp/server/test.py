@@ -22,7 +22,7 @@ client = pymongo.MongoClient(
 mongodb = client["Investor-Relations"]["stock_price_lasthour"]
 
 
-def to_df():
+def to_df(symbol):
     for item in mongodb.find(
         {"time": {"$gt": "2022-06-15 15:59:30"}, "company": symbol}
     ):
