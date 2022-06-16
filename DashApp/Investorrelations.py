@@ -145,8 +145,6 @@ def get_stocks_content_value(value):
 
         fig_dax_data_per_day.update_layout(
             showlegend=False,
-            width=310,
-            height=310,
             margin=dict(
                 l=0,
                 r=0,
@@ -179,7 +177,7 @@ def get_stocks_content_value(value):
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
                     figure=fig_dax_data_per_day,
-                    style={"width": "20vmax", "height": "10vmax"},
+                    style={"width": "20vmax", "height": "20vmax"},
                 )
             ], )
 
@@ -220,16 +218,13 @@ def get_stocks_content_value(value):
         fig_dividends.update_layout(
             showlegend=True,
             legend_font_family="Arial",
-            legend_yanchor= 'auto',
             legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
+                orientation="v",
+                yanchor="top",
+                y=1.3,
+                xanchor="left",
+                x=0
             ),
-            width=310,
-            height=310,
             margin=dict(
                 l=0,
                 r=0,
@@ -253,8 +248,8 @@ def get_stocks_content_value(value):
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
                     figure=fig_dividends,
-                    style={"width": "20vmax", "height": "10vmax"},
-                )
+                    style={"width": "20vmax", "height": "20vmax" }, 
+                ),
             ], )
 
         ], )
