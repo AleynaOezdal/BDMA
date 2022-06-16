@@ -276,6 +276,9 @@ body {
 
 #stocks_graph{
     margin: 5%;
+    auto-size= True,
+
+
  }
 
 /*News Widget*/

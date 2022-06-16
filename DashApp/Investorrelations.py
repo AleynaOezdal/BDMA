@@ -114,71 +114,6 @@ def get_stocks_content_value(value):
 
                         ],)
 
-        #widget-four-stocks
-        # get widget data Dividends
-        gross_profit_api_data = api_call("gross_profit", company_dict[value])
-        gross_profit_api_data_df = pd.DataFrame(
-            gross_profit_api_data, index=["Gross Profit"]
-        ).T
-        if (
-                gross_profit_api_data_df["Gross Profit"][0] != 0
-                and gross_profit_api_data_df["Gross Profit"][0] != "NaN"
-        ):
-            gross_profit = short_num(gross_profit_api_data_df["Gross Profit"][0])
-        else:
-            gross_profit = 0
-
-        gross_profit_df = gross_profit_api_data_df.sort_index()
-
-        # figure dividends bar chart
-        labels_fig = ['Insiders', 'Institutionen mit Aktienbeteiligung', 'Streubesitz Institutionen']
-        values_fig=[4500, 2500, 1053, 500]
-
-        fig_dividends = go.Figure(data=[go.Pie(labels=labels_fig, values=values_fig, hole=.3)])
-
-        # style of the figure total revenue
-        colors = ['gold', 'mediumturquoise', 'darkorange']
-
-        fig_dividends.update_traces(hoverinfo='label', textinfo='value', textfont_size=10,
-                  marker=dict(colors=colors)
-        )
-
-        fig_dividends.update_layout(
-            showlegend=True,
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=1.02,
-                xanchor="right",
-                x=1
-            ),
-            margin_l=0,
-            margin_r=0,
-            margin_t=0,
-            margin_b=0,
-            paper_bgcolor="#FFFFFF",
-            plot_bgcolor="#FFFFFF",
-            uniformtext_minsize=5,
-            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
-        )
-
-        # widget-four-stocks
-        widget_four_stocks = html.Div(id='stocks_widget', children=[
-            html.Div(
-                id="stocks_widget_text",
-                children=[
-                    html.P(id="stocks_widget_header", children="Major Holders")
-                ], ),
-            html.Div(id='stocks_graph', children=[
-                dcc.Graph(
-                    figure=fig_dividends,
-                    style={"width": "20vmax", "height": "10vmax"},
-                )
-            ], )
-
-        ], )
-
-
         # get widget data Dividends
         total_revenue_api_data = api_call("total_revenue", company_dict[value])
         total_revenue_api_data_df = pd.DataFrame(
@@ -210,18 +145,32 @@ def get_stocks_content_value(value):
 
         fig_dax_data_per_day.update_layout(
             showlegend=False,
-            margin_l=0,
-            margin_r=0,
-            margin_t=0,
-            margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            width=310,
+            height=310,
+            margin=dict(
+                l=0,
+                r=0,
+                b=0,
+                t=0,
+                pad=0
+            ),
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
-            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio",
+                            "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation",
+                            "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d",
+                            "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox",
+                            "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale",
+                            "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud",
+                            "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines",
+                            "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d",
+                            "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin",
+                            "zoomout"]
         )
 
         # widget-four-stocks
-        widget_five_stocks = html.Div(id='stocks_widget', children=[
+        widget_four_stocks = html.Div(id='stocks_widget', children=[
             html.Div(
                 id="stocks_widget_text",
                 children=[
@@ -235,6 +184,83 @@ def get_stocks_content_value(value):
             ], )
 
         ], )
+
+
+
+        #widget-five-stocks
+        # get widget data Dividends
+        gross_profit_api_data = api_call("gross_profit", company_dict[value])
+        gross_profit_api_data_df = pd.DataFrame(
+            gross_profit_api_data, index=["Gross Profit"]
+        ).T
+        if (
+                gross_profit_api_data_df["Gross Profit"][0] != 0
+                and gross_profit_api_data_df["Gross Profit"][0] != "NaN"
+        ):
+            gross_profit = short_num(gross_profit_api_data_df["Gross Profit"][0])
+        else:
+            gross_profit = 0
+
+        gross_profit_df = gross_profit_api_data_df.sort_index()
+
+        # figure dividends bar chart
+        labels_fig = ['Insiders', 'Institutionen mit Aktienbeteiligung', 'Streubesitz Institutionen']
+        values_fig=[4500, 2500, 1053, 500]
+
+        fig_dividends = go.Figure(data=[go.Pie(labels=labels_fig, values=values_fig, hole=.3)])
+
+        # style of the figure total revenue
+        colors = ['#E34132', '#701929', '#B00719']
+
+        fig_dividends.update_traces(hoverinfo='label', textinfo='value', textfont_size=10,
+                  marker=dict(colors=colors),
+
+        )
+
+        fig_dividends.update_layout(
+            showlegend=True,
+            legend_font_family="Arial",
+            legend_yanchor= 'auto',
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="left",
+                x=1
+            ),
+            width=310,
+            height=310,
+            margin=dict(
+                l=0,
+                r=0,
+                b=0,
+                t=0,
+                pad=0
+            ),
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
+            uniformtext_minsize=5,
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
+        )
+
+        # widget-five-stocks
+        widget_five_stocks = html.Div(id='stocks_widget', children=[
+            html.Div(
+                id="stocks_widget_text",
+                children=[
+                    html.P(id="stocks_widget_header", children="Major Holders")
+                ], ),
+            html.Div(id='stocks_graph', children=[
+                dcc.Graph(
+                    figure=fig_dividends,
+                    style={"width": "20vmax", "height": "10vmax"},
+                )
+            ], )
+
+        ], )
+
+
+
 
         content = html.Div(
             id="content_stocks",
