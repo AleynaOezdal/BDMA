@@ -20,7 +20,7 @@ api = Api(app)
 load_dotenv()
 
 client = pymongo.MongoClient(
-    f"mongodb+srv://{os.getenv('MONGODB.USERNAME')}:{os.getenv('MONGODB.PASSWORD')}@bdma.rvryhyj.mongodb.net/?retryWrites=true&w=majority",
+    f"mongodb+srv://{os.getenv('MONGODB.USERNAME')}:{os.getenv('MONGODB.PASSWORD')}@{os.getenv('MONGODB.URI')}/?retryWrites=true&w=majority",
     tlsCAFile=certifi.where(),
 )
 
