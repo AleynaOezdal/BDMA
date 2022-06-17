@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from datetime import date
 from company_map import *
 from setup import create_company_dict
+import random
 
 # get all dax companys
 
@@ -18,6 +19,21 @@ for entry in company_dict:
     if "_" in name:
         name = name.replace("_", " ")
     data_kpi.append(name)
+
+# zitate für Motivation des Tages
+
+zitate = [    '"Jeder Tag beginnt mit neuen Chancen!"',
+                  '„Tue heute etwas, worauf du morgen stolz sein kannst.“',
+                  '„Die Tat unterscheidet das Ziel vom Traum.“',
+                  '„Niemand, der sein Bestes gegeben hat, hat es später bereut.“',
+                  '„Es gibt nur zwei Tage im Leben, an denen du nichts ändern kannst: Der eine ist gestern und der andere ist morgen.“',
+                  '„Wünsche dir nicht, dass es einfach wäre. Wünsche dir, dass du besser darin wirst.“',
+                  '„Scheitern ist nicht das Gegenteil von Erfolg. Es ist ein Teil davon.“'
+            ]
+
+def selectRandom(zitate):
+    return random.choice(zitate)
+
 
 # navigation/sidebar
 sidebar = html.Div(
@@ -77,7 +93,7 @@ sidebar = html.Div(
             id="quote_sidebar",
             children=[
                 html.H6("Motivation des Tages:"),  # quote
-                html.P('"Jeder Tag beginnt mit neuen Chancen!"'),
+                html.P(random.choice(zitate)),
             ],
         ),
     ],
