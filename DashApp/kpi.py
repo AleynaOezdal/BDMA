@@ -7,6 +7,7 @@ from setup import create_company_dict
 import dash_bootstrap_components as dbc
 from company_map import *
 import requests as req
+import definitionen_infobutton as dinfo
 
 company_dict = create_company_dict()
 
@@ -107,7 +108,7 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="EBIT"),
                         html.P(id="kpi_widget_key", children=ebit),
-                        html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                        html.Button([html.I(className="bi bi-info-circle-fill me-2")], id="info-button")
                     ],
                 ),
                 html.Div(
@@ -122,6 +123,21 @@ def get_kpi_content_value(value):
             ],
         )
 
+        # style the widget
+        widget_ebit_definition_kpi = html.Div(
+            id="kpi_widget",
+            children=[
+                html.Div(
+                    id="kpi_widget_text",
+                    children=[
+                        html.P(id="kpi_widget_header", children="Was ist EBIT?"),
+                        #html.P(id="kpi_widget_text", dinfo.definitions["EBIT"])
+                        #html.Button([html.I(className="bi-arrow-left-square-fill")], id="info-button")
+                    ],
+                ),
+
+            ],
+        )
 
         # get widget data gross profit
         gross_profit_api_data = api_call("gross_profit", company_dict[value])
