@@ -13,7 +13,7 @@ company_dict = create_company_dict()
 #config = {'displayModeBar': False}
 
 def api_call(data, value):
-    url = f"http://127.0.0.1:5000/{data}/{value}"
+    url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
     result = req.get(url)
     return result.json()
 
