@@ -27,7 +27,7 @@ df_3 = pd.DataFrame(data=d_3)
 company_dict = create_company_dict()
 
 def api_call(data, value):
-    url = f"http://127.0.0.1:5000/{data}/{value}"
+    url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
     result = req.get(url)
     return result.json()
 
