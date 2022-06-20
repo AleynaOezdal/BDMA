@@ -36,7 +36,7 @@ import datetime
 # }
 
 def get_content_home():
-    content = html.Div(children=[html.P(children= 'Hello')])
+    content = html.Div(id = 'content',children=[html.P(children= 'Hello')])
     return content 
 
 # def get_content_home_2():

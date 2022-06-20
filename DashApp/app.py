@@ -63,33 +63,37 @@ app.layout = html.Div(
 )
 
 @app.callback(
+    Output('memory_value', 'data'),
+    Input('dropdown', 'value')
+)
+
+def get_value(value):
+    return value
+
+@app.callback(
     Output("page_content", "children"),
     Input("url", "pathname"),
-    Input("button_search", "n_clicks"),
-    State("dropdown", "value"),
+    Input('memory_value', 'data')
 )
 
 # side posiblilitis
-def render_page_content(pathname, n_clicks, value):
-    if n_clicks is None:
-        return [overview(value)]
+def render_page_content(pathname, data):
+    if pathname == "/":
+        return [overview(data)]
+    elif pathname == "/Keyperformance":  # navigationpointone
+        return [kpi.get_kpi_content_value(data)]
+    elif pathname == "/Investorrelations":  # navigationpointtwo
+        return [Investorrelations.get_stocks_content_value(data)]
+    elif pathname == "/Companyenvironment":  # navigationpointthree
+        return [news.get_news_content(data)]
+    # If the user tries to reach a different page, return a 404 message
     else:
-        if pathname == "/":
-            return [overview(value)]
-        elif pathname == "/Keyperformance":  # navigationpointone
-            return [kpi.get_kpi_content_value(value)]
-        elif pathname == "/Investorrelations":  # navigationpointtwo
-            return [Investorrelations.get_stocks_content_value(value)]
-        elif pathname == "/Companyenvironment":  # navigationpointthree
-            return [news.get_news_content(value)]
-        # If the user tries to reach a different page, return a 404 message
         return dbc.Jumbotron(
             [
                 html.H1("404: Not found", className="text-danger"),
                 html.Hr(),
                 html.P(f"The pathname {pathname} was not recognised..."),
-            ]
-        )
+            ])
 
 
 if __name__ == "__main__":

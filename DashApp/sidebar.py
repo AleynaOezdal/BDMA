@@ -40,6 +40,7 @@ sidebar = html.Div(
     id="navigation",
     children=[
         html.Br(),
+        dcc.Store(id= 'memory_value'),
         dcc.Dropdown(
             data_kpi,
             placeholder="DAX-Company auswählen",
@@ -57,10 +58,18 @@ sidebar = html.Div(
                 ),
             ],
         ),
-        html.Br(),
-        html.Button("Suchen", id="button_search"),  # button to submit
+        # html.Br(),
+        # html.Button("Suchen", id="button_search"),  # button to submit
         dbc.Nav(
             [
+                html.Br(),  # section
+                # route of the navigation points
+                dbc.NavLink(
+                    "Startseite",
+                    href="/",
+                    active="exact",
+                    id="navigation_point_home",
+                ),
                 html.Br(),  # section
                 # route of the navigation points
                 dbc.NavLink(

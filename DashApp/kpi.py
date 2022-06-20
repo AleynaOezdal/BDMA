@@ -100,28 +100,38 @@ def get_kpi_content_value(value):
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
         # style the widget and grapgh
-        widget_ebit_kpi = html.Div(
-            id="kpi_widget",
-            children=[
-                html.Div(
-                    id="kpi_widget_text",
-                    children=[
-                        html.P(id="kpi_widget_header", children="EBIT"),
-                        html.P(id="kpi_widget_key", children=ebit),
-                        html.Button([html.I(className="bi bi-info-circle-fill me-2")], id="info-button")
-                    ],
-                ),
-                html.Div(
-                    id="kpi_graph",
-                    children=[
-                        dcc.Graph(
-                            figure=fig_ebit,
-                            style={"width": "20vmax", "height": "10vmax"},
-                        )
-                    ],
-                ),
-            ],
-        )
+        widget_ebit_kpi = html.Div( id="kpi_widget",
+                        children=[
+                            html.Div(
+                                id="kpi_widget_text",
+                                children=[
+                                    html.P(id="kpi_widget_header", children="EBIT"),
+                                    html.P(id="kpi_widget_key", children=ebit),
+                                    html.Div(children =[
+                                        dbc.Button(
+                                            html.I(className="bi bi-info-circle-fill me-2"),
+                                            id="info-button",
+                                            className="me-1",
+                                        ),
+                                        dbc.Popover(
+                                            dbc.PopoverBody(dinfo.definitions["EBIT"]),
+                                            target="info-button",
+                                            trigger="click",
+                                        ),
+                                    ])
+                                ],
+                            ),
+                            html.Div(
+                                id="kpi_graph",
+                                children=[
+                                    dcc.Graph(
+                                        figure=fig_ebit,
+                                        style={"width": "20vmax", "height": "10vmax"},
+                                    )
+                                ],
+                            ),
+                        ],
+                    )
 
         # style the widget
         widget_ebit_definition_kpi = html.Div(
