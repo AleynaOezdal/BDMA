@@ -10,6 +10,7 @@ import pandas as pd
 from .setup import create_company_dict, get
 from .company_map import *
 import requests as req
+from .definitionen_infobutton import *
 
 company_dict = create_company_dict()
 
@@ -89,46 +90,45 @@ def get_content_kpi(value):
         modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
     )
     # style the widget and grapgh
-    widget_ebit_kpi = html.Div(
-        id="kpi_widget",
-        children=[
-            html.Div(
-                id="kpi_widget_text",
-                children=[
-                    html.P(id="kpi_widget_header", children="EBIT"),
-                    html.P(id="kpi_widget_key", children=ebit),
-                    html.A(
-                        html.Button([html.I(className="bi bi-info-circle-fill me-2")], id="info-button"),
-                        href='/Keyperformance/Ebit'
+    widget_ebit_kpi = html.Div( id="kpi_widget",
+                        children=[
+                            html.Div(
+                                id="kpi_widget_text",
+                                children=[
+                                    html.P(id="kpi_widget_header", children="EBIT"),
+                                    html.P(id="kpi_widget_key", children=ebit),
+                                    # html.A(
+                                    #     html.I(className="bi bi-info-circle-fill me-2", id="info-button")
+                                    # )
+                                ],
+                            ),
+                            html.Div(
+                                id="kpi_graph",
+                                children=[
+                                    dcc.Graph(
+                                        figure=fig_ebit,
+                                        style={"width": "20vmax", "height": "10vmax"},
+                                    )
+                                ],
+                            ),
+                        ],
                     )
-                ],
-            ),
-            html.Div(
-                id="kpi_graph",
-                children=[
-                    dcc.Graph(
-                        figure=fig_ebit,
-                        style={"width": "20vmax", "height": "10vmax"},
-                    )
-                ],
-            ),
-        ],
-    )
-    
-    # style the widget
-    # widget_ebit_definition_kpi = html.Div(
+
+                        
+    # html.Div(
     #     id="kpi_widget",
     #     children=[
     #         html.Div(
     #             id="kpi_widget_text",
     #             children=[
     #                 html.P(id="kpi_widget_header", children="Was ist EBIT?"),
-    #                 html.P(dinfo.definitions["EBIT"], id="kpi_widget_text")
+    #                 html.P(definitions["EBIT"], id="kpi_widget_text")
     #                 #html.Button([html.I(className="bi-arrow-left-square-fill")], id="info-button")
     #             ],
     #         ),
     #     ],
     # )
+
 
     # get widget data gross profit
     gross_profit_api_data = api_call("gross_profit", company_dict[value])
@@ -407,7 +407,7 @@ def get_content_kpi(value):
                 children=[
                     html.P(id="kpi_widget_header", children="ESG Risk Score"),
                     html.P(id="kpi_widget_key", children=esg),
-                    html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                    html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info_button"),
                 ],
             ),
             html.Div(

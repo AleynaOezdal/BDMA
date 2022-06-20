@@ -90,14 +90,14 @@ body {
 
 
 
-#navigation_point_one, #navigation_point_two, #navigation_point_three{
+#navigation_point_one, #navigation_point_two, #navigation_point_three, #navigation_point_home{
     background-color: #E5E5E5;
     color: black;
     border-radius: 0;
     text-align: center;
 }
 
-#navigation_point_one.active, #navigation_point_two.active, #navigation_point_three.active{
+#navigation_point_one.active, #navigation_point_two.active, #navigation_point_three.active, #navigation_point_home.active{
     background-color: #67E98B;
 }
 

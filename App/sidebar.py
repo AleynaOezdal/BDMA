@@ -63,9 +63,14 @@ def get_sidebar():
                 ],
             ),
             html.Br(),
-            html.Button("Suchen", id="button_search"),  # button to submit
             dbc.Nav(
                 [
+                    dbc.NavLink(
+                        "Startseite",
+                        href="/Home",
+                        active="exact",
+                        id="navigation_point_home",
+                    ),
                     html.Br(),  # section
                     # route of the navigation points
                     dbc.NavLink(

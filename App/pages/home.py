@@ -3,7 +3,10 @@ from dash import html, dcc
 
 # import .sidebar as sb
 
-dash.register_page(__name__)
+dash.register_page(__name__,
+    path="/Home",
+    title="Home",
+    name="Home",)
 
 layout = html.Div(
     children=[
