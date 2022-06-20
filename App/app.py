@@ -24,7 +24,8 @@ app.layout = html.Div(
 
 @app.callback(
     Output('memory_value', 'value'),
-    Input('dropdown','value')
+    Input('dropdown','value'),
+    prevent_initial_call=True
 )
 
 def get_value(value):

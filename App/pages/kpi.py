@@ -97,9 +97,18 @@ def get_content_kpi(value):
                                 children=[
                                     html.P(id="kpi_widget_header", children="EBIT"),
                                     html.P(id="kpi_widget_key", children=ebit),
-                                    # html.A(
-                                    #     html.I(className="bi bi-info-circle-fill me-2", id="info-button")
-                                    # )
+                                    html.Div(children =[
+                                        dbc.Button(
+                                            html.I(className="bi bi-info-circle-fill me-2"),
+                                            id="info-button",
+                                            className="me-1",
+                                        ),
+                                        dbc.Popover(
+                                            dbc.PopoverBody(definitions["EBIT"]),
+                                            target="info-button",
+                                            trigger="click",
+                                        ),
+                                    ])
                                 ],
                             ),
                             html.Div(
@@ -113,22 +122,6 @@ def get_content_kpi(value):
                             ),
                         ],
                     )
-
-                        
-    # html.Div(
-    #     id="kpi_widget",
-    #     children=[
-    #         html.Div(
-    #             id="kpi_widget_text",
-    #             children=[
-    #                 html.P(id="kpi_widget_header", children="Was ist EBIT?"),
-    #                 html.P(definitions["EBIT"], id="kpi_widget_text")
-    #                 #html.Button([html.I(className="bi-arrow-left-square-fill")], id="info-button")
-    #             ],
-    #         ),
-    #     ],
-    # )
-
 
     # get widget data gross profit
     gross_profit_api_data = api_call("gross_profit", company_dict[value])
@@ -172,7 +165,10 @@ def get_content_kpi(value):
                 children=[
                     html.P(id="kpi_widget_header", children="Profit Margin"),
                     html.P(id="kpi_widget_key", children=gross_profit),
-                    html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                    html.A(
+                        html.I(className="bi bi-info-circle-fill me-2", id="info-button"),
+                        href='/Keyperformance'
+                    )
                 ],
             ),
             html.Div(
@@ -225,7 +221,9 @@ def get_content_kpi(value):
                 children=[
                     html.P(id="kpi_widget_header", children="Net income"),
                     html.P(id="kpi_widget_key", children=income),
-                    html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                    html.A(
+                        html.I(className="bi bi-info-circle-fill me-2", id="info-button")
+                    )
                 ],
             ),
             html.Div(
@@ -290,7 +288,9 @@ def get_content_kpi(value):
                 children=[
                     html.P(id="kpi_widget_header", children="Revenue"),
                     html.P(id="kpi_widget_key", children=revenue),
-                    html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                    html.A(
+                        html.I(className="bi bi-info-circle-fill me-2", id="info-button")
+                    )
                 ],
             ),
             html.Div(
@@ -356,7 +356,9 @@ def get_content_kpi(value):
                         id="kpi_widget_header", children="Total operating expenses"
                     ),
                     html.P(id="kpi_widget_key", children=level),
-                    html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                    html.A(
+                        html.I(className="bi bi-info-circle-fill me-2", id="info-button")
+                    )
                 ],
             ),
             html.Div(
@@ -407,7 +409,9 @@ def get_content_kpi(value):
                 children=[
                     html.P(id="kpi_widget_header", children="ESG Risk Score"),
                     html.P(id="kpi_widget_key", children=esg),
-                    html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info_button"),
+                    html.A(
+                        html.I(className="bi bi-info-circle-fill me-2", id="info-button")
+                    ),
                 ],
             ),
             html.Div(
@@ -506,6 +510,7 @@ layout = html.Div(id="page_content", children=[
 @callback(
     Output("page_content", "children"),
     Input('memory_value','value'),
+    prevent_initial_call=True
     # Input('date_picker_data','data')
 )
 
