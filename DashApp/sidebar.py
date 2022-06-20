@@ -1,10 +1,11 @@
 from webbrowser import get
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
-from datetime import date
+from datetime import datetime
 from company_map import *
 from setup import create_company_dict
 import random
+import dash_mantine_components as dmc
 
 # get all dax companys
 
@@ -40,7 +41,6 @@ sidebar = html.Div(
     id="navigation",
     children=[
         html.Br(),
-        dcc.Store(id= 'memory_value'),
         dcc.Dropdown(
             data_kpi,
             placeholder="DAX-Company auswählen",
@@ -49,7 +49,6 @@ sidebar = html.Div(
         ),
         # absatz
         html.Br(),
-        dcc.Store(id='memory_date'),
         html.Div(
             id="date_picker",
             children=[
@@ -59,6 +58,10 @@ sidebar = html.Div(
                     display_format="DD.MM.YYYY",
                 ),
             ],
+        ),
+        html.Br(),
+        # dbc.Input(id='date-time', type='datetime-local', step='1',  value='%Y-%m-%dT%H:%M'),
+        dmc.TimeInput( format="24", value=datetime.now(), debounce=True, step=1,
         ),
         # html.Br(),
         # html.Button("Suchen", id="button_search"),  # button to submit

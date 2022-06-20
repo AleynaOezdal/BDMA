@@ -66,22 +66,6 @@ app.layout = html.Div(
     ]
 )
 
-# @app.callback(
-#     Output('memory_value', 'data_value'),
-#     Input('dropdown', 'value')
-# )
-
-# def get_value(value):
-#     return value
-
-# @app.callback(
-#     Output('memory_date', 'data_date'),
-#     Input('date_picker', 'date')
-# )
-
-# def get_value(date):
-#     return date
-
 @app.callback(
     Output("page_content", "children"),
     Input("url", "pathname"),
