@@ -49,12 +49,14 @@ sidebar = html.Div(
         ),
         # absatz
         html.Br(),
+        dcc.Store(id='memory_date'),
         html.Div(
             id="date_picker",
             children=[
                 dcc.DatePickerSingle(
+                    id='single_date_picker',
                     placeholder="Datum auswählen",
-                    display_format="YYYY-MM-DD",  # datepicker to select date
+                    display_format="DD.MM.YYYY",
                 ),
             ],
         ),

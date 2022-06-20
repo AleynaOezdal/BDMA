@@ -42,10 +42,14 @@ header = html.Div(
 content = html.Div(id="page_content", children=[])
 
 # overview
-def overview(value):
+def overview(value, date):
     overview_content = html.Div(
         id="content",
-        children=[kpi.get_value_without_kpi(value), html.Div(id="widget", children=[])],
+        children=[
+            kpi.get_value_without_kpi(value), 
+            html.Div(id="widget", children=[
+                html.P(date)
+        ])],
     )
     return overview_content
 
@@ -62,30 +66,39 @@ app.layout = html.Div(
     ]
 )
 
-@app.callback(
-    Output('memory_value', 'data'),
-    Input('dropdown', 'value')
-)
+# @app.callback(
+#     Output('memory_value', 'data_value'),
+#     Input('dropdown', 'value')
+# )
 
-def get_value(value):
-    return value
+# def get_value(value):
+#     return value
+
+# @app.callback(
+#     Output('memory_date', 'data_date'),
+#     Input('date_picker', 'date')
+# )
+
+# def get_value(date):
+#     return date
 
 @app.callback(
     Output("page_content", "children"),
     Input("url", "pathname"),
-    Input('memory_value', 'data')
+    Input('dropdown', 'value'),
+    Input('single_date_picker', 'date')
 )
 
 # side posiblilitis
-def render_page_content(pathname, data):
+def render_page_content(pathname, value, date):
     if pathname == "/":
-        return [overview(data)]
+        return [overview(value, date)]
     elif pathname == "/Keyperformance":  # navigationpointone
-        return [kpi.get_kpi_content_value(data)]
+        return [kpi.get_kpi_content_value(value)]
     elif pathname == "/Investorrelations":  # navigationpointtwo
-        return [Investorrelations.get_stocks_content_value(data)]
+        return [Investorrelations.get_stocks_content_value(value)]
     elif pathname == "/Companyenvironment":  # navigationpointthree
-        return [news.get_news_content(data)]
+        return [news.get_news_content(value)]
     # If the user tries to reach a different page, return a 404 message
     else:
         return dbc.Jumbotron(
