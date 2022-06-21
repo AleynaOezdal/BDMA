@@ -60,11 +60,12 @@ sidebar = html.Div(
             ],
         ),
         html.Br(),
-        # dbc.Input(id='date-time', type='datetime-local', step='1',  value='%Y-%m-%dT%H:%M'),
-        dmc.TimeInput( format="24", value=datetime.now(), debounce=True, step=1,
+        dcc.Dropdown(
+            ['00:00', '01:00'],
+            placeholder="Zeit auswählen",
+            value="None",
+            id="dropdown_time",  # dropdown to select company
         ),
-        # html.Br(),
-        # html.Button("Suchen", id="button_search"),  # button to submit
         dbc.Nav(
             [
                 html.Br(),  # section

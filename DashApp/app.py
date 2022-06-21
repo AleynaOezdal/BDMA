@@ -42,13 +42,14 @@ header = html.Div(
 content = html.Div(id="page_content", children=[])
 
 # overview
-def overview(value, date):
+def overview(value, date, time):
     overview_content = html.Div(
         id="content",
         children=[
             kpi.get_value_without_kpi(value), 
             html.Div(id="widget", children=[
-                html.P(date)
+                html.P(date),
+                html.P(time)
         ])],
     )
     return overview_content
@@ -70,13 +71,14 @@ app.layout = html.Div(
     Output("page_content", "children"),
     Input("url", "pathname"),
     Input('dropdown', 'value'),
-    Input('single_date_picker', 'date')
+    Input('single_date_picker', 'date'),
+    Input('dropdown_time', 'value')
 )
 
 # side posiblilitis
-def render_page_content(pathname, value, date):
+def render_page_content(pathname, value, date, time):
     if pathname == "/":
-        return [overview(value, date)]
+        return [overview(value, date, time)]
     elif pathname == "/Keyperformance":  # navigationpointone
         return [kpi.get_kpi_content_value(value)]
     elif pathname == "/Investorrelations":  # navigationpointtwo
