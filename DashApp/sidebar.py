@@ -3,7 +3,7 @@ from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 from datetime import datetime
 from company_map import *
-from setup import create_company_dict
+from setup import create_company_dict, timezone
 import random
 import dash_mantine_components as dmc
 
@@ -61,9 +61,9 @@ sidebar = html.Div(
         ),
         html.Br(),
         dcc.Dropdown(
-            ['00:00', '01:00'],
+            timezone,
             placeholder="Zeit auswählen",
-            value="None",
+            value=None,
             id="dropdown_time",  # dropdown to select company
         ),
         dbc.Nav(
