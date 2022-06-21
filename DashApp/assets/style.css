@@ -74,21 +74,11 @@ body {
 }
 
 /* Button */
-
-#button_search{
-    background-color: #E5E5E5;
-    color: black;
-    border: 0;
-}
-
-#info-button {
+#info-button,#info-button-2,#info-button-3,#info-button-4,#info-button-4,#info-button-5,#info-button-6 {
     background-color: #F6F6F6;
     color: black;
     border: 0;
 }
-
-
-
 
 #navigation_point_home, #navigation_point_one, #navigation_point_two, #navigation_point_three{
     background-color: #E5E5E5;

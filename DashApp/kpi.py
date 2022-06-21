@@ -133,22 +133,6 @@ def get_kpi_content_value(value):
                         ],
                     )
 
-        # style the widget
-        widget_ebit_definition_kpi = html.Div(
-            id="kpi_widget",
-            children=[
-                html.Div(
-                    id="kpi_widget_text",
-                    children=[
-                        html.P(id="kpi_widget_header", children="Was ist EBIT?"),
-                        #html.P(id="kpi_widget_text", dinfo.definitions["EBIT"])
-                        #html.Button([html.I(className="bi-arrow-left-square-fill")], id="info-button")
-                    ],
-                ),
-
-            ],
-        )
-
         # get widget data gross profit
         gross_profit_api_data = api_call("gross_profit", company_dict[value])
         gross_profit_api_data_df = pd.DataFrame(
@@ -198,7 +182,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Profit Margin"),
                         html.P(id="kpi_widget_key", children=gross_profit),
-                        html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-2",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Profit Margin"]),
+                                target="info-button-2",
+                                trigger="click",
+                            ),
+                        ])                    
                     ],
                 ),
                 html.Div(
@@ -256,7 +251,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Net income"),
                         html.P(id="kpi_widget_key", children=income),
-                        html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-3",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Net Income"]),
+                                target="info-button-3",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
@@ -321,7 +327,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Revenue"),
                         html.P(id="kpi_widget_key", children=revenue),
-                        html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-4",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Revenue"]),
+                                target="info-button-4",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
@@ -387,7 +404,18 @@ def get_kpi_content_value(value):
                             id="kpi_widget_header", children="Total operating expenses"
                         ),
                         html.P(id="kpi_widget_key", children=level),
-                        html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-5",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Total Operating Expenses"]),
+                                target="info-button-5",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
@@ -438,7 +466,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="ESG Risk Score"),
                         html.P(id="kpi_widget_key", children=esg),
-                        html.Button([html.I( className="bi bi-info-circle-fill me-2")], id="info-button")
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-6",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["ESG Risk Score"]),
+                                target="info-button-6",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
