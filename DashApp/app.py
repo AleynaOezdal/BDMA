@@ -84,7 +84,7 @@ def render_page_content(pathname, value, date, time):
     elif pathname == "/Investorrelations":  # navigationpointtwo
         return [Investorrelations.get_stocks_content_value(value)]
     elif pathname == "/Companyenvironment":  # navigationpointthree
-        return [news.get_news_content(value)]
+        return [news.get_news_content(value, date, time)]
     # If the user tries to reach a different page, return a 404 message
     else:
         return dbc.Jumbotron(

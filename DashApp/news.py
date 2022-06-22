@@ -26,8 +26,18 @@ df_3 = pd.DataFrame(data=d_3)
 
 company_dict = create_company_dict()
 
-def api_call(data, value):
+def api_call_value(data, value):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
+    result = req.get(url)
+    return result.json()
+
+def api_call_value_date_time(data, value, date, time):
+    url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}/{date}/{time}"
+    result = req.get(url)
+    return result.json()
+
+def api_call_date_time(data, date, time):
+    url = f"https://bdma-352709.ey.r.appspot.com/{data}/{date}/{time}"
     result = req.get(url)
     return result.json()
 
@@ -57,7 +67,7 @@ def get_value_without_kpi(value):
         )
         return content
 
-def get_news_content(value):
+def get_news_content(value, date, time):
     if value in data_kpi:
         # value for header
         name = value
@@ -70,7 +80,7 @@ def get_news_content(value):
 
         value = value.lower()
 
-        wkns_and_isins = api_call("wkns_and_isins", value)
+        wkns_and_isins = api_call_value("wkns_and_isins", value)
 
         # content-header-kpi
         content_header_news = html.Div(
@@ -85,13 +95,6 @@ def get_news_content(value):
         )
 
         # widget-one-news
-        # company_news = api_call('community_news', value)
-        # company_news_df = pd.DataFrame(company_news)
-        # company_news_df_2 = pd.DataFrame()
-
-        # company_news_df_2[''] = company_news_df['message'][0:6]
-        # company_news_df_2['Datum'] = company_news_df['time'][0:6]
-        # company_news_df_2['Klassifizierung'] = company_news_df['class'][0:6]
 
         widget_one_news = html.Div(
             id="news_widget",
@@ -116,6 +119,9 @@ def get_news_content(value):
             ],
         )
 
+        #worker reviews
+        # worker_reviews = api_call_value_date_time('worker_reviews', value , date, time)
+
         # widget-two-news
         widget_two_news = html.Div(
             id="news_widget",
@@ -128,7 +134,7 @@ def get_news_content(value):
                             html.Div(id ='news_latest_positive', children=[
                                 html.P(children='Latest Positive'),
                                 html.Div(id = 'news_company_review',children = [
-                                    html.P(id= 'news_company_review_text', children='nike und puma es gibt sehr viele schöne…')
+                                    # html.P(id= 'news_company_review_text', children=df_2),
                                 ])
                             ]),
                             html.Div(id ='news_latest_negative',children=[
@@ -143,6 +149,14 @@ def get_news_content(value):
             ],
         )
 
+        #Kunden
+        customer_experience_date_time = api_call_value_date_time('customer_experience', value, date, time)
+
+        df_customer_experience = pd.DataFrame(customer_experience_date_time)
+        customer_experience_dataframe = pd.DataFrame()
+        customer_experience_dataframe[' '] = df_customer_experience['title']
+        customer_experience_dataframe['Klassifizierung'] = df_customer_experience['class']
+
         # widget-three-news
         widget_three_news = html.Div(
             id="news_widget",
@@ -152,12 +166,24 @@ def get_news_content(value):
                     children=[
                         html.H6(id="news_widget_header", children="Kundenrezesionen"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(df_2)
+                            dbc.Table.from_dataframe(customer_experience_dataframe)
                         ]),     
                     ]
                 )
             ],
         )
+
+        #Dax News
+        dax_news_date_time = api_call_date_time('dax_news' , date, time)
+        dax_news = []
+
+        for entry in dax_news_date_time:
+            dax_news.append(entry['news'])
+
+        df_dax_news = pd.DataFrame(dax_news)
+        dax_news_dataframe = pd.DataFrame()
+        dax_news_dataframe[' '] = df_dax_news['headline']
+        dax_news_dataframe['Zeitpunkt'] = df_dax_news['timestamp']
 
         # widget-four-news
         widget_four_news = html.Div(
@@ -168,12 +194,25 @@ def get_news_content(value):
                     children=[
                         html.H6(id="news_widget_header", children="DAX-News"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(df_3)
+                            dbc.Table.from_dataframe(dax_news_dataframe[0:6])
                         ]),     
                     ]
                 )
             ],
         )
+
+        #Global News
+        date_time = api_call_date_time('world_news_by_date' , date, time)
+        date_time = date_time[1:]
+        worker_reviews = []
+
+        for entry in date_time:
+            worker_reviews.append(entry['headline'])
+
+        df_worker_reviews = pd.DataFrame(worker_reviews)
+        worker_reviews_dataframe = pd.DataFrame()
+        worker_reviews_dataframe[' '] = df_worker_reviews['headline']
+        worker_reviews_dataframe['Zeitpunkt'] = df_worker_reviews['timestamp']
 
         # widget-five-news
         widget_five_news = html.Div(
@@ -184,7 +223,7 @@ def get_news_content(value):
                     children=[
                         html.H6(id="news_widget_header", children="Globale News"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(df_3)
+                            dbc.Table.from_dataframe(worker_reviews_dataframe[0:6])
                         ]),     
                     ]
                 )
