@@ -59,7 +59,7 @@ body {
 .DateInput_input, .DateInput_input_1 {
     height: 36px;
     background-color: #F6F6F6;
-    font-size: 18px;
+    font-size: 16px;
     width: max-content;
     box-sizing: border-box;
 }
@@ -82,7 +82,7 @@ body {
 }
 
 .accordion-item {
-    font-size: 0.5em;
+    font-size: 0.75em;
 }
 
 /* Button */

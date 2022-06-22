@@ -48,8 +48,7 @@ def overview(value, date, time):
         children=[
             kpi.get_value_without_kpi(value), 
             html.Div(id="widget", children=[
-                html.P(date),
-                html.P(time)
+
         ])],
     )
     return overview_content
