@@ -528,12 +528,16 @@ def get_kpi_content_value(value):
                                 dbc.Col(
                                     html.Div(
                                         id="branche",
-                                        children=[html.H6("Branche: " + distribution)],
+                                        children=[html.H6("Branche: "), distribution],
                                     )
                                 ),
                                 dbc.Col(
                                     html.Div(
-                                        "Hauptkonkurrent: " + main_competitor_string
+                                        id="competitors",
+                                        children=[
+                                            html.H6("Hauptkonkurrent: "),
+                                            main_competitor_string,
+                                        ],
                                     )
                                 ),
                             ]

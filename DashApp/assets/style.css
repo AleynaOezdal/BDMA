@@ -81,6 +81,10 @@ body {
     padding: 1%;
 }
 
+.accordion-item {
+    font-size: 0.5em;
+}
+
 /* Button */
 #info-button,#info-button-2,#info-button-3,#info-button-4,#info-button-4,#info-button-5,#info-button-6 {
     background-color: #F6F6F6;
