@@ -105,14 +105,6 @@ def get_news_content(value, date, time):
                         html.H6(id="news_widget_header", children="Unternehmensnews"),
                         html.Div(children=[
                             dbc.Table.from_dataframe(df)
-                            # html.Table(
-                            #     # Header
-                            #     [html.Tr([html.Th(col) for col in df.columns]) ] +
-                            #     # Body
-                            #     [html.Tr([
-                            #         html.Td(df.iloc[i][col]) for col in df.columns
-                            #     ]) for i in range(min(len(df), 6))]
-                            # )
                         ]),     
                     ]
                 )
@@ -120,7 +112,23 @@ def get_news_content(value, date, time):
         )
 
         #worker reviews
-        # worker_reviews = api_call_value_date_time('worker_reviews', value , date, time)
+        worker_reviews = api_call_value_date_time('worker_reviews', value, date, time)
+
+        worker_reviews_positive = []
+        worker_reviews_negative = []
+        worker_reviews_suggestions = []
+
+        for entry in worker_reviews:
+            if 'negative_reviews' in entry:
+                worker_reviews_negative.append(entry['negative_reviews'])
+            elif 'positive_reviews' in entry:
+                worker_reviews_positive.append(entry['positive_reviews'])
+            elif 'suggestions' in entry:
+                worker_reviews_suggestions.append(entry['suggestions'])
+
+        df_worker_reviews_negative = pd.DataFrame(worker_reviews_negative)
+        df_worker_reviews_positive = pd.DataFrame(worker_reviews_positive)
+        df_worker_reviews_suggestions = pd.DataFrame(worker_reviews_suggestions)
 
         # widget-two-news
         widget_two_news = html.Div(
@@ -134,19 +142,25 @@ def get_news_content(value, date, time):
                             html.Div(id ='news_latest_positive', children=[
                                 html.P(children='Latest Positive'),
                                 html.Div(id = 'news_company_review',children = [
-                                    # html.P(id= 'news_company_review_text', children=df_2),
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][0]),
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][1]),
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][2]),
                                 ])
                             ]),
                             html.Div(id ='news_latest_negative',children=[
                                 html.P(children='Latest Negative'),
                                 html.Div(id = 'news_company_review', children = [
-                                    html.P(id= 'news_company_review_text', children='Nutzlosester Support aller Zeiten')
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][0]),
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][1]),
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][2])
                                 ])
                             ]),
                             html.Div(id ='new_suggestion',children=[
                                 html.P(children='Suggestion'),
                                 html.Div(id = 'new_suggestion_review', children = [
-                                    html.P(id= 'new_suggestion_review_text', children='Nutzlosester Support aller Zeiten')
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_suggestions['suggestions'][0]),
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_suggestions['suggestions'][1]),
+                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_suggestions['suggestions'][2])
                                 ])
                             ])
                         ]),     
