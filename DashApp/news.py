@@ -142,6 +142,12 @@ def get_news_content(value, date, time):
                                 html.Div(id = 'news_company_review', children = [
                                     html.P(id= 'news_company_review_text', children='Nutzlosester Support aller Zeiten')
                                 ])
+                            ]),
+                            html.Div(id ='new_suggestion',children=[
+                                html.P(children='Suggestion'),
+                                html.Div(id = 'new_suggestion_review', children = [
+                                    html.P(id= 'new_suggestion_review_text', children='Nutzlosester Support aller Zeiten')
+                                ])
                             ])
                         ]),     
                     ]
