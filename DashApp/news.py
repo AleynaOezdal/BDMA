@@ -10,14 +10,9 @@ import requests as req
 
 d = {
     '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
-    'Datum': ['22.05.2022 23:52', '11:50','23:52', '11:50','23:52', '11:50'], 
+    'Datum': ['22.05.2022', '11:50','23:52', '11:50','23:52', '11:50'], 
     'Klassifizierung': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
 df = pd.DataFrame(data=d)
-
-d_2 = {
-    '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'],  
-    'Klassifizierung': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
-df_2 = pd.DataFrame(data=d_2)
 
 d_3 = {
     '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
@@ -67,6 +62,110 @@ def get_value_without_kpi(value):
         )
         return content
 
+def get_thumbs(classification):
+    if classification == 'Negative':
+        content = html.I(className="bi bi-hand-thumbs-down-fill")
+        return content
+    elif classification == 'NEGATIVE':
+        content = html.I(className="bi bi-hand-thumbs-down-fill")
+        return content
+    elif classification == 'Positive':
+        content = html.I(className="bi bi-hand-thumbs-up-fill")
+        return content
+    elif classification == 'POSITIVE':
+        content = html.I(className="bi bi-hand-thumbs-up-fill")
+        return content
+
+def get_table_rows_first(df):
+    table_rows0 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[0][0]),
+                    html.Td(id='table_td', children=df.iloc[0][1]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[0][2])]),
+                ])
+
+    table_rows1 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[1][0]),
+                    html.Td(id='table_td', children=df.iloc[1][1]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[1][2])]),
+                ])
+    
+    table_rows2 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[2][0]),
+                    html.Td(id='table_td', children=df.iloc[2][1]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[2][2])]),
+                ])
+
+    table_rows3 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[3][0]),
+                    html.Td(id='table_td', children=df.iloc[3][1]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[3][2])]),
+                ])
+
+    table_rows4 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[4][0]),
+                    html.Td(id='table_td', children=df.iloc[4][1]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[4][2])]),
+                ])
+
+    table_rows5 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[5][0]),
+                    html.Td(id='table_td', children=df.iloc[5][1]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[5][2])]),
+                ])
+    return [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+
+def get_table_rows_secound(df):
+    table_rows0 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[0][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[0][1])]),
+                ])
+
+    table_rows1 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[1][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[1][1])]),
+                ])
+    
+    table_rows2 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[2][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[2][1])]),
+                ])
+
+    table_rows3 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[3][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[3][1])]),
+                ])
+
+    table_rows4 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[4][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[4][1])]),
+                ])
+
+    table_rows5 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[5][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[5][1])]),
+                ])
+
+    table_rows6 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[6][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[7][1])]),
+                ])
+
+    table_rows7 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[7][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[7][1])]),
+                ])
+    
+    table_rows8 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[8][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[8][1])]),
+                ])
+
+    table_rows9 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=df.iloc[9][0]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[9][1])]),
+                ])
+    return [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5, table_rows6, table_rows7, table_rows8, table_rows9])]
+
 def get_news_content(value, date, time):
     if value in data_kpi:
         # value for header
@@ -94,6 +193,10 @@ def get_news_content(value, date, time):
             ],
         )
 
+        #Table Unternehmensnews
+
+        table_body = get_table_rows_first(df)
+
         # widget-one-news
 
         widget_one_news = html.Div(
@@ -104,7 +207,7 @@ def get_news_content(value, date, time):
                     children=[
                         html.H6(id="news_widget_header", children="Unternehmensnews"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(df)
+                            dbc.Table(table_body)
                         ]),     
                     ]
                 )
@@ -173,6 +276,8 @@ def get_news_content(value, date, time):
         customer_experience_dataframe[' '] = df_customer_experience['title']
         customer_experience_dataframe['Klassifizierung'] = df_customer_experience['class']
 
+        table_body_two = get_table_rows_secound(customer_experience_dataframe)
+
         # widget-three-news
         widget_three_news = html.Div(
             id="news_widget",
@@ -182,7 +287,7 @@ def get_news_content(value, date, time):
                     children=[
                         html.H6(id="news_widget_header", children="Kundenrezesionen"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(customer_experience_dataframe)
+                            dbc.Table(table_body_two)
                         ]),     
                     ]
                 )

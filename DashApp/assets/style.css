@@ -321,11 +321,11 @@ th{
     font-size: small;
 }
 
-td {
+td, #table_td {
     font-size: smaller;  
 }
 
-tr{
+tr, #table_tr{
     border-bottom: 2px;
 }
 
@@ -344,4 +344,14 @@ tr{
 #news_company_review_text{
     padding: 3%;
     background-color: #F6F6F6;
+}
+
+/* Tumbs */
+
+.bi-hand-thumbs-down-fill {
+    color: red;
+}
+
+.bi-hand-thumbs-up-fill {
+    color: green;
 }
