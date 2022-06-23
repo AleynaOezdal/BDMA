@@ -345,3 +345,20 @@ tr{
     padding: 3%;
     background-color: #F6F6F6;
 }
+
+
+/**Home**/
+
+#home_widget {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 40%;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
+    float: right;
+
+}
+

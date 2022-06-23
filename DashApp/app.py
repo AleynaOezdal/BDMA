@@ -41,20 +41,6 @@ header = html.Div(
 # content
 content = html.Div(id="page_content", children=[])
 
-# overview
-def overview(value, date, time):
-    overview_content = html.Div(
-        id="content",
-        children=[
-            kpi.get_value_without_kpi(value), 
-            html.Div(id="widget", children=[
-
-        ])],
-    )
-    return overview_content
-
-#home
-# home_content = html.Div(id="side_version", children=[])
 
 app.layout = html.Div(
     children=[
@@ -77,7 +63,7 @@ app.layout = html.Div(
 # side posiblilitis
 def render_page_content(pathname, value, date, time):
     if pathname == "/":
-        return [overview(value, date, time)]
+        return [home.get_home_content(date, time)]
     elif pathname == "/Keyperformance":  # navigationpointone
         return [kpi.get_kpi_content_value(value)]
     elif pathname == "/Investorrelations":  # navigationpointtwo
