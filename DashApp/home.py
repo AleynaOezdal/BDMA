@@ -30,6 +30,10 @@ def get_home_content(date, time):
             html.H3(
                 id="content_header_first", children=["Willkommen auf unserem Dashboard"]
             ),
+            html.Br(),
+            html.P(
+                id="content_header_first", children=["Der aktuelle DAX mit den wichtigsten/passenden News:"]
+            ),
         ],
     )
 
