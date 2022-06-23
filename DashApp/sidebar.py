@@ -44,7 +44,7 @@ sidebar = html.Div(
         dcc.Dropdown(
             data_kpi,
             placeholder="DAX-Company auswählen",
-            value="None",
+            value="Adidas",
             id="dropdown",  # dropdown to select company
         ),
         # absatz
@@ -54,17 +54,19 @@ sidebar = html.Div(
             children=[
                 dcc.DatePickerSingle(
                     id='single_date_picker',
-                    placeholder="Datum auswählen",
+                    placeholder=datetime.today(),
+                    date = datetime.today(),
                     display_format="DD.MM.YYYY",
+
                 ),
             ],
         ),
         html.Br(),
         dcc.Dropdown(
             timezone,
-            placeholder="Zeit auswählen",
-            value=None,
-            id="dropdown_time",  # dropdown to select company
+            placeholder= datetime.now().strftime("%H:") +"00",
+            value= datetime.now().strftime("%H:") +"00",
+            id="dropdown_time", # dropdown to select company
         ),
         dbc.Nav(
             [
