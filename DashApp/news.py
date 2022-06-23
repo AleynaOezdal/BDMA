@@ -144,7 +144,6 @@ def get_news_content(value, date, time):
                                 html.Div(id = 'news_company_review',children = [
                                     html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][0]),
                                     html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][1]),
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][2]),
                                 ])
                             ]),
                             html.Div(id ='news_latest_negative',children=[
@@ -152,15 +151,12 @@ def get_news_content(value, date, time):
                                 html.Div(id = 'news_company_review', children = [
                                     html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][0]),
                                     html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][1]),
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][2])
                                 ])
                             ]),
-                            html.Div(id ='new_suggestion',children=[
+                            html.Div(id ='news_suggestion',children=[
                                 html.P(children='Suggestion'),
-                                html.Div(id = 'new_suggestion_review', children = [
+                                html.Div(id = 'news_company_review', children = [
                                     html.P(id= 'news_company_review_text', children=df_worker_reviews_suggestions['suggestions'][0]),
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_suggestions['suggestions'][1]),
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_suggestions['suggestions'][2])
                                 ])
                             ])
                         ]),     

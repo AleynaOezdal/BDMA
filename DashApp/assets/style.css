@@ -331,16 +331,17 @@ tr{
 
 /* News Widget Review */
 
-#news_latest_positive , #news_latest_negative {
+#news_latest_positive , #news_latest_negative, #news_suggestion {
     font-size: smaller;
     font-weight: bold;
 }
 
 #news_company_review{
     font-weight: normal;
-    background-color: #F6F6F6;
+    /* background-color: #F6F6F6; */
 }
 
 #news_company_review_text{
     padding: 3%;
+    background-color: #F6F6F6;
 }
