@@ -245,21 +245,36 @@ def get_news_content(value, date, time):
                             html.Div(id ='news_latest_positive', children=[
                                 html.P(children='Latest Positive'),
                                 html.Div(id = 'news_company_review',children = [
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][0]),
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_negative['negative'][1]),
+                                    html.Div(id= 'news_company_review_div', children=[
+                                        html.P(id='news_company_review_text',children=df_worker_reviews_negative['negative'][0]),
+                                        html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_negative['more info'][0])
+                                    ]),
+                                    html.Div(id= 'news_company_review_div', children=[
+                                        html.P(id='news_company_review_text',children=df_worker_reviews_negative['negative'][1]),
+                                        html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_negative['more info'][1])
+                                    ])
                                 ])
                             ]),
                             html.Div(id ='news_latest_negative',children=[
                                 html.P(children='Latest Negative'),
                                 html.Div(id = 'news_company_review', children = [
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][0]),
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_positive['positive'][1]),
+                                    html.Div(id= 'news_company_review_div', children=[
+                                        html.P(id='news_company_review_text',children=df_worker_reviews_positive['positive'][0]),
+                                        html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_positive['more info'][0])
+                                    ]),
+                                    html.Div(id= 'news_company_review_div', children=[
+                                        html.P(id='news_company_review_text',children=df_worker_reviews_positive['positive'][1]),
+                                        html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_positive['more info'][1])
+                                    ])
                                 ])
                             ]),
                             html.Div(id ='news_suggestion',children=[
                                 html.P(children='Suggestion'),
                                 html.Div(id = 'news_company_review', children = [
-                                    html.P(id= 'news_company_review_text', children=df_worker_reviews_suggestions['suggestions'][0]),
+                                    html.Div(id= 'news_company_review_div', children=[
+                                        html.P(id='news_company_review_text',children=df_worker_reviews_suggestions['suggestions'][0]),
+                                        html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_suggestions['more info'][0])
+                                    ])
                                 ])
                             ])
                         ]),     

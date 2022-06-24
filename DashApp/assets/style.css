@@ -338,13 +338,28 @@ tr, #table_tr{
 
 #news_company_review{
     font-weight: normal;
-    /* background-color: #F6F6F6; */
+}
+
+#news_company_review_div{
+    margin-bottom: 2%;
+    padding: 2%;
+    background-color: #F6F6F6;
+    display: inline-block;
 }
 
 #news_company_review_text{
-    padding: 3%;
-    background-color: #F6F6F6;
+    width: 83%;
+    display: inline-block;
+    padding-left: 1%;
 }
+
+#show_more{
+    width: 16%; 
+    display: inline-block;
+    font-size: xx-small;
+    color: black;
+}
+
 
 /* Tumbs */
 
