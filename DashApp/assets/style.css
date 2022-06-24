@@ -382,12 +382,9 @@ tr, #table_tr{
     vertical-align: middle;
     margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
-    float: right;
-
 }
 
 #home_graph {
- width: 35vmax,
- height: 100vmax,
-
- }
+ width: 29vmax;
+ height: 20vmax;
+}
