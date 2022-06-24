@@ -132,21 +132,43 @@ def get_stocks_content_value(value, date, time):
                         dict(count=1, label="1d", step="day", stepmode="backward"),
                         dict(count=7, label="1w", step="day", stepmode="backward"),
                         dict(step="all"),
-                    ]
+                    ],
                 )
             ),
         )
 
-
-        widget_one_stocks = html.Div(
-            id="kpi_widget",
-            style={"width": "35vmax", "height": "20vmax"},
-            children=[
+        widget_one_stocks = html.Div(id='stocks_widget_2', children=[
+            html.Div(
+                id="stocks_widget_text",
+                children=[
+                    html.P(id="stocks_widget_header", children="Performance Index " + name)
+                ], ),
+            html.Div(id='stocks_graph_3', children=[
                 dcc.Graph(
                     figure=candlestick_chart,
                 ),
-            ],
-        )
+            ], )
+
+        ], )
+
+        candlestick_chart.update_layout(
+            margin_l=10,
+            margin_r=0,
+            margin_t=0,
+            margin_b=0,
+            uniformtext_minsize=6,
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio",
+                            "hoverCompareCartesian",
+                            "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d",
+                            "pan3d",
+                            "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup",
+                            "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault",
+                            "resetcameralastsave",
+                            "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d",
+                            "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage",
+                            "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom",
+                            "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo",
+                            "zoomOutMapbox", "zoomin", "zoomout"])
 
         #widget-two-stocks
 
@@ -184,15 +206,40 @@ def get_stocks_content_value(value, date, time):
             )
         )
 
-        widget_two_stocks = html.Div(
-            id="kpi_widget",
-            style={"width": "35vmax", "height": "20vmax"},
-            children=[
+
+
+        widget_two_stocks = html.Div(id='stocks_widget_2', children=[
+            html.Div(
+                id="stocks_widget_text",
+                children=[
+                    html.P(id="stocks_widget_header", children="DAX und " + name)
+                ], ),
+            html.Div(id='stocks_graph_2', children=[
                 dcc.Graph(
                     figure=fig,
                 ),
-            ],
-        )
+            ], )
+
+        ], )
+
+        fig.update_layout(
+            margin_l=10,
+            margin_r=0,
+            margin_t=0,
+            margin_b=0,
+            uniformtext_minsize=6,
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio",
+                            "hoverCompareCartesian",
+                            "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d",
+                            "pan3d",
+                            "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup",
+                            "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault",
+                            "resetcameralastsave",
+                            "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d",
+                            "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage",
+                            "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom",
+                            "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo",
+                            "zoomOutMapbox", "zoomin", "zoomout"])
 
         #widget-three-stocks
         key_characteristics = api_call_value_date_time("key_characteristics", value, date, time)

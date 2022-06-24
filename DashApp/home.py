@@ -77,9 +77,8 @@ def get_home_content(value, date, time):
 
 
 
-    trace2 = go.Scatter(x=normalized_dax.index, y=normalized_dax["High"], opacity=0.7, line=dict(color='blue', width=2),
+    trace2 = go.Scatter(x=normalized_dax.index, y=normalized_dax["High"], opacity=0.7, line=dict(color='red', width=2),
                         name="DAX")
-
 
     fig.add_trace(trace2)
 
@@ -98,6 +97,23 @@ def get_home_content(value, date, time):
                 dict(step="all")
             ])
         )
+    )
+
+    fig.update_layout(
+        margin_l=10,
+        margin_r=0,
+        margin_t=0,
+        margin_b=0,
+        uniformtext_minsize=6,
+        modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian",
+                        "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d",
+                        "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup",
+                        "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave",
+                        "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d",
+                        "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage",
+                        "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom",
+                        "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo",
+                        "zoomOutMapbox", "zoomin", "zoomout"]
     )
 
     #widget Dax-Chart

@@ -289,6 +289,24 @@ body {
     margin: 5%;
 }
 
+#stocks_graph_2 {
+
+    height: 20vmax;
+}
+
+#stocks_graph_3 {
+
+    height: 20vmax;
+    width: 32vmax;
+    margin: 2%;
+}
+
+candlechart_ reiter {
+
+    margin: 2%
+
+}
+
 /*News Widget*/
 
 #widget_news {
@@ -384,14 +402,16 @@ tr, #table_tr{
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    width: 40%;
+    width: 45%;
     display: inline-block;
     vertical-align: middle;
-    margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
+    margin: 1%;
 }
 
+
 #home_graph {
- width: 29vmax;
+ width: 32vmax;
  height: 20vmax;
-}
+
+ }
