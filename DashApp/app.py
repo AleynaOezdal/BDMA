@@ -8,6 +8,11 @@ import kpi
 import news
 import Investorrelations
 from datetime import datetime
+import requests as req
+from PIL import Image
+import os
+from sidebar import data_kpi
+import plotly.graph_objects as go
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
 
@@ -25,7 +30,27 @@ elif int(dt_string) >= 10 and int(dt_string) <= 17:
 elif int(dt_string) >= 18 and int(dt_string) <= 23:
     greeting = "Guten Abend "
 
+
+def api_call(data, city, date, time):
+    url = f"https://bdma-352709.ey.r.appspot.com/{data}/{city}/{date}/{time}"
+    result = req.get(url)
+    return result.json()
+
 # header
+# xy = os.path.abspath("56783002-sun-symbol-.jpg")
+weather = api_call("weather", "frankfurt-am-main", datetime.today(), now.strftime("%H:%M"))
+liste = []
+for d in weather:
+    liste.append(d['temp'])
+dict_in_list = liste[0]
+dict_temp = dict_in_list.get("Temperatur")
+
+def get_weather_emoji(temp):
+    if temp >= "18°":
+        return "\U0001F31E"
+    elif temp <= "17°":
+        return "\U0001F325"
+
 header = html.Div(
     id="Header",
     children=[
@@ -34,6 +59,21 @@ header = html.Div(
         html.Div(
             id="second_header",
             children="Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!",
+        ),
+        html.Div(
+            id="third",
+            children= get_weather_emoji(dict_temp) + "\tFrankfurt am Main, Germany",
+            style={
+                "text-align": "right"
+            },
+        ),
+        html.Div(
+            id="fourth",
+            children= dict_temp + "C",
+            style={
+                "text-align": "right"
+            },
+
         ),
     ],
 )
@@ -67,7 +107,7 @@ def render_page_content(pathname, value, date, time):
     elif pathname == "/Keyperformance":  # navigationpointone
         return [kpi.get_kpi_content_value(value)]
     elif pathname == "/Investorrelations":  # navigationpointtwo
-        return [Investorrelations.get_stocks_content_value(value)]
+        return [Investorrelations.get_stocks_content_value(value, date, time)]
     elif pathname == "/Companyenvironment":  # navigationpointthree
         return [news.get_news_content(value, date, time)]
     # If the user tries to reach a different page, return a 404 message

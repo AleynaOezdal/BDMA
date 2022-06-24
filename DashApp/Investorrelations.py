@@ -7,6 +7,8 @@ from dash import dcc, html
 import plotly.express as px
 import pandas as pd
 import plotly.graph_objects as go
+from ast import literal_eval
+from datetime import datetime, timedelta, date
 
 colors = {
     'background': '#F6F6F6'
@@ -24,6 +26,23 @@ def api_call(data, value):
     result = req.get(url)
     return result.json()
 
+def api_call_value_date_time(data, value, date, time):
+    url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}/{date}/{time}"
+    result = req.get(url)
+    return result.json()
+
+def normalize_data(df):
+    # df on input should contain only one column with the price data (plus dataframe index)
+    min = df.min()
+    max = df.max()
+    x = df
+
+    # time series normalization part
+    # y will be a column in a dataframe
+    y = (x - min) / (max - min) * 100
+
+    return y
+
 # get short numbers with two decimal places
 def short_num(num):
     magnitude = 0
@@ -36,7 +55,7 @@ def short_num(num):
         ["", " Tausend", " MIO.", " MRD.", " BIO.", " Trillionen"][magnitude],
     )
 
-def get_stocks_content_value(value):
+def get_stocks_content_value(value, date, time):
     if value in data_kpi:
         # value for header
         name = value
@@ -65,42 +84,122 @@ def get_stocks_content_value(value):
         )
 
         #widget-one-stocks
-        widget_one_stocks = html.Div(id = 'stocks_widget_2', children=[
-                        html.Div(
-                            id="stocks_widget_text",
-                            children=[
-                                html.P(id="stocks_widget_header", children="Adidas")
-                            ],),
-                            html.Div(id = 'stocks_graph', children= [
-                                dcc.Graph(
-                                id="output-graph",
-                                style={"width": "20vmax", "height": "10vmax"},
-                            )
-                            ],     style={"width": "50%", "margin": "5%"})
 
-                        ],)
+        result_api_call = api_call_value_date_time("stock_price", company_dict[value], date, time)
+        dax_api_call = api_call_value_date_time("stock_price", "^GDAXI", date, time)
+
+        dax_stock = pd.DataFrame()
+        for package in range(len(dax_api_call)):
+            data_as_df = pd.DataFrame.from_dict(
+                literal_eval(dax_api_call[package]["stock_price_onehour"])
+            )
+            dax_stock = pd.concat([dax_stock, data_as_df], axis=0)
+        dax_stock.index = pd.to_datetime(dax_stock.index, unit="ms") + timedelta(hours=2)
+
+        actual_stock = pd.DataFrame()
+        for package in range(len(result_api_call)):
+            data_as_df = pd.DataFrame.from_dict(
+                literal_eval(result_api_call[package]["stock_price_onehour"])
+            )
+            actual_stock = pd.concat([actual_stock, data_as_df], axis=0)
+        actual_stock.index = pd.to_datetime(actual_stock.index, unit="ms") + timedelta(hours=2)
+
+        candlestick_chart = go.Figure(
+            data=[
+                go.Candlestick(
+                    x=actual_stock.index,
+                    open=actual_stock["Open"],
+                    high=actual_stock["High"],
+                    low=actual_stock["Low"],
+                    close=actual_stock["Close"],
+                )
+            ]
+        )
+
+
+        candlestick_chart.update_xaxes(
+            rangeslider_visible=False,
+            rangebreaks=[
+                dict(values=["2022-06-19"]),
+                dict(bounds=[17.30, 9], pattern="hour"),
+            ],
+            rangeselector=dict(
+                buttons=list(
+                    [
+                        dict(count=15, label="15m", step="minute", stepmode="backward"),
+                        dict(count=1, label="1h", step="hour", stepmode="backward"),
+                        dict(count=4, label="4h", step="hour", stepmode="backward"),
+                        dict(count=1, label="1d", step="day", stepmode="backward"),
+                        dict(count=7, label="1w", step="day", stepmode="backward"),
+                        dict(step="all"),
+                    ]
+                )
+            ),
+        )
+
+
+        widget_one_stocks = html.Div(
+            id="kpi_widget",
+            style={"width": "35vmax", "height": "20vmax"},
+            children=[
+                dcc.Graph(
+                    figure=candlestick_chart,
+                ),
+            ],
+        )
 
         #widget-two-stocks
-        widget_two_stocks = html.Div(id = 'stocks_widget_2', children=[
-                        html.Div(
-                            id="stocks_widget_text",
-                            children=[
-                                html.P(id="stocks_widget_header", children="DAX40")
-                            ],),
-                            html.Div(id = 'stocks_graph', children= [
-                                dcc.Graph(
-                                id="output-graph",
-                                style={"width": "20vmax", "height": "10vmax"},
-                            )
-                            ],     style={"width": "50%", "margin": "5%"})
 
-                        ],)
+        fig = go.Figure()
+
+        normalized_stock = normalize_data(actual_stock)
+        normalized_dax = normalize_data(dax_stock)
+
+        trace1 = go.Candlestick(x=normalized_stock.index,
+                                open=normalized_stock['Open'],
+                                high=normalized_stock['High'],
+                                low=normalized_stock['Low'],
+                                close=normalized_stock['Close'], name=str(value), yaxis="y1")
+
+        trace2 = go.Scatter(x=normalized_dax.index, y=normalized_dax["High"], opacity=0.7, line=dict(color='blue', width=2), name="DAX")
+
+        fig.add_trace(trace1)
+
+        fig.add_trace(trace2)
+
+        fig.update_xaxes(
+            rangeslider_visible=False,
+            rangebreaks=[
+                dict(values=["2022-06-19"]),
+                dict(bounds=[17.30, 9], pattern="hour"),
+            ],
+            rangeselector=dict(
+                buttons=list([
+                    dict(count=15, label="15m", step="minute", stepmode="backward"),
+                    dict(count=45, label="45m", step="minute", stepmode="backward"),
+                    dict(count=1, label="HTD", step="hour", stepmode="todate"),
+                    dict(count=3, label="3h", step="hour", stepmode="backward"),
+                    dict(step="all")
+                ])
+            )
+        )
+
+        widget_two_stocks = html.Div(
+            id="kpi_widget",
+            style={"width": "35vmax", "height": "20vmax"},
+            children=[
+                dcc.Graph(
+                    figure=fig,
+                ),
+            ],
+        )
 
         #widget-three-stocks
+        key_characteristics = api_call_value_date_time("key_characteristics", value, date, time)
         d = {
             '': ['Price', 'Change','Open', 'Day Before','Highest', 'Lowest','Marketcap', 'Date'], 
             ' ': ['234,32', '4,5','235,23', '115,23','232,24', '114,12','35,5 MRD.', '30.05.2022']}
-        df = pd.DataFrame(data=d)
+        df = pd.DataFrame([key_characteristics]).T
 
         widget_three_stocks = html.Div(id = 'stocks_widget', children=[
                         html.Div(
