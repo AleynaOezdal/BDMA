@@ -371,6 +371,13 @@ tr, #table_tr{
     color: green;
 }
 
+/* News Link */
+
+#table_td_link{
+    color: black;
+    text-decoration: none;
+}
+
 /**Home**/
 
 #home_widget {
