@@ -9,7 +9,6 @@ import news
 import Investorrelations
 from datetime import datetime
 import requests as req
-from PIL import Image
 import os
 from sidebar import data_kpi
 import plotly.graph_objects as go
