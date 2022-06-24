@@ -102,7 +102,7 @@ app.layout = html.Div(
 # side posiblilitis
 def render_page_content(pathname, value, date, time):
     if pathname == "/":
-        return [home.get_home_content(date, time)]
+        return [home.get_home_content(value, date, time)]
     elif pathname == "/Keyperformance":  # navigationpointone
         return [kpi.get_kpi_content_value(value)]
     elif pathname == "/Investorrelations":  # navigationpointtwo
