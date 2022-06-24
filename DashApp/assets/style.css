@@ -385,3 +385,9 @@ tr, #table_tr{
     float: right;
 
 }
+
+#home_graph {
+ width: 35vmax,
+ height: 100vmax,
+
+ }
