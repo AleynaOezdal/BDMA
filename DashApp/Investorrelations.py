@@ -375,7 +375,7 @@ def get_stocks_content_value(value, date, time):
             html.Div(
                 id="stocks_widget_text",
                 children=[
-                    html.P(id="stocks_widget_header", children="Dividendenzahlungen")
+                    html.P(id="stocks_widget_header", children="Dividendenzahlungen in €")
                 ], ),
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
