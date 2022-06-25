@@ -60,17 +60,8 @@ def get_home_content(value, date, time):
         dax_stock = pd.concat([dax_stock, data_as_df], axis=0)
     dax_stock.index = pd.to_datetime(dax_stock.index, unit="ms") + timedelta(hours=2)
 
-    candlestick_chart = go.Figure(
-        data=[
-            go.Candlestick(
-                x=dax_stock.index,
-                open=dax_stock["Open"],
-                high=dax_stock["High"],
-                low=dax_stock["Low"],
-                close=dax_stock["Close"],
-            )
-        ]
-    )
+    candlestick_chart = go.Figure(go.Scatter(x=dax_stock.index, y=dax_stock["High"], opacity=0.7, line=dict(color='blue', width=2),
+                        name="DAX"))
 
     candlestick_chart.update_xaxes(
         rangeslider_visible=False,

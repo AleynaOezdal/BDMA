@@ -135,17 +135,17 @@ def get_stocks_content_value(value, date, time):
 
         candlestick_chart = go.Figure()
 
+        candlestick_chart.add_trace(go.Scatter(x=actual_stock.index, y=actual_stock["High"], name="Linie", line=dict(color='orange')))
+
+
         candlestick_chart.add_trace(go.Candlestick(
                     x=actual_stock.index,
                     open=actual_stock["Open"],
                     high=actual_stock["High"],
                     low=actual_stock["Low"],
                     close=actual_stock["Close"],
-                    name= "Kerze"
+                    name= "Kerze", visible=False
                 ))
-
-        candlestick_chart.add_trace(go.Scatter(x=actual_stock.index, y=actual_stock["High"], name="Linie", visible=False))
-
 
         candlestick_chart.update_xaxes(
             rangeslider_visible=False,
@@ -174,12 +174,13 @@ def get_stocks_content_value(value, date, time):
                     buttons=list([
                         dict(
                             args=[{"visible": [True, False]}],
-                            label="Kerze",
+                            label="Linie",
                             method="restyle"
                         ),
+
                         dict(
                             args=[{"visible": [False, True]}],
-                            label="Linie",
+                            label="Kerze",
                             method="restyle"
                         ),
                     ]),
@@ -227,11 +228,7 @@ def get_stocks_content_value(value, date, time):
         normalized_stock = normalize_data(actual_stock)
         normalized_dax = normalize_data(dax_stock)
 
-        trace1 = go.Candlestick(x=normalized_stock.index,
-                                open=normalized_stock['Open'],
-                                high=normalized_stock['High'],
-                                low=normalized_stock['Low'],
-                                close=normalized_stock['Close'], name=str(value), yaxis="y1")
+        trace1 = go.Scatter(x=normalized_stock.index, y=normalized_stock["High"], opacity=0.7, line=dict(color='orange', width=2), name=value)
 
         trace2 = go.Scatter(x=normalized_dax.index, y=normalized_dax["High"], opacity=0.7, line=dict(color='blue', width=2), name="DAX")
 
