@@ -44,7 +44,7 @@ def get_home_content(value, date, time):
             ),
             html.Br(),
             html.P(
-                id="content_header_first", children=["Der aktuelle DAX mit den wichtigsten/passenden News:"]
+                id="content_header_second", children=["Der aktuelle DAX mit den wichtigsten News:"]
             ),
         ],
     )
@@ -60,7 +60,7 @@ def get_home_content(value, date, time):
         dax_stock = pd.concat([dax_stock, data_as_df], axis=0)
     dax_stock.index = pd.to_datetime(dax_stock.index, unit="ms") + timedelta(hours=2)
 
-    candlestick_chart = go.Figure(go.Scatter(x=dax_stock.index, y=dax_stock["High"], opacity=0.7, line=dict(color='blue', width=2),
+    candlestick_chart = go.Figure(go.Scatter(x=dax_stock.index, y=dax_stock["High"], opacity=0.7, line=dict(color='#122538', width=2 ),
                         name="DAX"))
 
     candlestick_chart.update_xaxes(
@@ -126,7 +126,7 @@ def get_home_content(value, date, time):
     df_dax_news = pd.DataFrame(dax_news)
     dax_news_dataframe = pd.DataFrame()
     dax_news_dataframe[' '] = df_dax_news['headline']
-    dax_news_dataframe['Zeitpunkt'] = df_dax_news['timestamp']
+    dax_news_dataframe['VÖ-Datum'] = df_dax_news['timestamp']
 
     # widget-four-news
     widget_dax_news = html.Div(

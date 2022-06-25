@@ -341,7 +341,7 @@ def get_stocks_content_value(value, date, time):
         )
         # style of the figure total revenue
         fig_dividend.update_traces(
-            marker_color="#79EB71", textposition="inside", texttemplate="%{text:.3s}"
+            marker_color="#AEDCF5", textposition="inside", texttemplate="%{text:.3s}"
         )
 
         fig_dividend.update_layout(
@@ -395,11 +395,11 @@ def get_stocks_content_value(value, date, time):
         for i in value_new:
             label_without_percentage.append(float(i.replace("%", "").replace(",", "")))
 
+        #colors = ['#E34132', '#701929', '#B00719']
+
         fig_holders = go.Figure(data=[go.Pie(labels=label_new, values=label_without_percentage, hole=.3)])
 
         # style of the figure Major Holders
-        colors = ['#E34132', '#701929', '#B00719']
-
 
 
         fig_holders.update_layout(
@@ -435,7 +435,7 @@ def get_stocks_content_value(value, date, time):
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
                     figure=fig_holders,
-                    style={"width": "20vmax", "height": "20vmax" }, 
+                    style={"width": "20vmax", "height": "20vmax" },
                 ),
             ], )
 

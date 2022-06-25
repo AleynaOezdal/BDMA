@@ -107,6 +107,7 @@ body {
 
 #quote_sidebar {
     text-align: center;
+    font-family: georgia;
 }
 
 #quote_sidebar H6{
@@ -150,6 +151,8 @@ body {
     font-weight: bold;
     display: inline-flex;
     vertical-align: top;
+    font-family: georgia;
+
 }
 
 #content_header_second{
@@ -406,7 +409,7 @@ tr, #table_tr{
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    width: 45%;
+    width: 48%;
     display: inline-block;
     vertical-align: middle;
     box-shadow: 5px 10px 7.5px silver;
@@ -417,6 +420,8 @@ tr, #table_tr{
 #home_graph {
  width: 32vmax;
  height: 20vmax;
+ margin: 2%;
+ background-color: white;
 }
 
 /* Weather */
