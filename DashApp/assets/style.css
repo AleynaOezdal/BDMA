@@ -421,16 +421,32 @@ tr, #table_tr{
 
 #weather{
     float: right;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 #weather_emoji{
-    font-size: 50px;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 400%;
     padding-left: 1%;
-    display: inline-block;
+    /* display: inline-block; */
+    float: left;
+    width: 32%;
 }
 
 #weather_text{
-    display: inline-block;
+    /* display: inline-block; */
     color: black;
-    margin-bottom: 0%;
+    float: left;
+    width: 64%;
+}
+
+#weather_text P {
+    margin-bottom: 0;
 }
