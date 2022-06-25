@@ -46,33 +46,25 @@ dict_temp = dict_in_list.get("Temperatur")
 
 def get_weather_emoji(temp):
     if temp >= "18°":
-        return "\U0001F31E"
+        return html.I(className="bi bi-brightness-high-fill")
     elif temp <= "17°":
-        return "\U0001F325"
+        return html.I(className="bi bi-cloud-fill")
 
 header = html.Div(
     id="Header",
     children=[
+        html.Div(id='weather', children=[
+            html.Div(id='weather_emoji',children=get_weather_emoji(dict_temp)),
+            html.Div(id='weather_text',children=[
+                html.P(children='Frankfurt am Main, Germany'),
+                html.P(children= dict_temp + "C",)
+            ])
+        ]),
         html.H2(children="DAX40 - das Unternehmer Dashboard"),
         html.Div(children=[greeting + "!"]),
         html.Div(
             id="second_header",
             children="Team DAX40 wünscht Ihnen einen erfolgreichen Tag mit richtigen Entscheidungen!",
-        ),
-        html.Div(
-            id="third",
-            children= get_weather_emoji(dict_temp) + "\tFrankfurt am Main, Germany",
-            style={
-                "text-align": "right"
-            },
-        ),
-        html.Div(
-            id="fourth",
-            children= dict_temp + "C",
-            style={
-                "text-align": "right"
-            },
-
         ),
     ],
 )

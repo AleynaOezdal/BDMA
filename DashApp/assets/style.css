@@ -422,13 +422,13 @@ tr, #table_tr{
 }
 
 #weather_emoji{
-    width: 30%;
+    font-size: 50px;
     padding-left: 1%;
-    float: left;
+    display: inline-block;
 }
 
 #weather_text{
-    width: 30%;
+    display: inline-block;
     color: black;
-    float: right;
+    margin-bottom: 0%;
 }
