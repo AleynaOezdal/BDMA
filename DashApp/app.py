@@ -44,17 +44,11 @@ for d in weather:
 dict_in_list = liste[0]
 dict_temp = dict_in_list.get("Temperatur")
 
-def get_weather_emoji(temp):
-    if temp >= "18°":
-        return html.I(className="bi bi-brightness-high-fill")
-    elif temp <= "17°":
-        return html.I(className="bi bi-cloud-fill")
-
 header = html.Div(
     id="Header",
     children=[
         html.Div(id='weather', children=[
-            html.Div(id='weather_emoji',children=get_weather_emoji(dict_temp)),
+            html.Div(id='weather_emoji',children=[html.I(className='bi bi-thermometer-sun')]),
             html.Div(id='weather_text',children=[
                 html.P(children='Frankfurt am Main, Germany'),
                 html.P(children= dict_temp + "C",)
