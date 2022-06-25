@@ -312,7 +312,7 @@ def get_stocks_content_value(value, date, time):
                                 html.P(id="stocks_widget_header", children="Key Characteristics")
                             ],),
                             html.Div(id = 'stocks_graph', children= [
-                                dbc.Table.from_dataframe(check_key_char(df_key, value), striped=True, bordered=True, hover=True)
+                                dbc.Table.from_dataframe(check_key_char(df_key, value), bordered=True, hover=True)
                             ])
 
                         ],)
@@ -380,7 +380,7 @@ def get_stocks_content_value(value, date, time):
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
                     figure=fig_dividend,
-                    style={"width": "20vmax", "height": "20vmax"},
+                    style={"width": "20vmax", "height": "25vmax"},
                 )
             ], )
 
@@ -400,7 +400,7 @@ def get_stocks_content_value(value, date, time):
 
         fig_holders = go.Figure(data=[go.Pie(labels=label_new, values=label_without_percentage, hole=.3)])
 
-        # style of the figure total revenue
+        # style of the figure Major Holders
         colors = ['#E34132', '#701929', '#B00719']
 
 
