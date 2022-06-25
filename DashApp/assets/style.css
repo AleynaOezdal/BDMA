@@ -301,10 +301,8 @@ body {
     margin: 2%;
 }
 
-candlechart_ reiter {
-
+#candlechart_reiter {
     margin: 2%
-
 }
 
 /*News Widget*/
@@ -366,13 +364,13 @@ tr, #table_tr{
 }
 
 #news_company_review_text{
-    width: 83%;
+    width: 74%;
     display: inline-block;
     padding-left: 1%;
 }
 
 #show_more{
-    width: 16%; 
+    width:25%; 
     display: inline-block;
     font-size: xx-small;
     color: black;
@@ -387,6 +385,10 @@ tr, #table_tr{
 
 .bi-hand-thumbs-up-fill {
     color: green;
+}
+
+.bi-brightness-high-fill{
+    color: yellow;
 }
 
 /* News Link */

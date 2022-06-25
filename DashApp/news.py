@@ -77,6 +77,8 @@ def get_thumbs(classification):
         return content
 
 def get_table_rows_first(df):
+    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Zeitpunkt"), html.Th("  ")]))]
+
     table_rows0 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=df.iloc[0][0]),
                     html.Td(id='table_td', children=df.iloc[0][1]),
@@ -112,7 +114,10 @@ def get_table_rows_first(df):
                     html.Td(id='table_td', children=df.iloc[5][1]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[5][2])]),
                 ])
-    return [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+
+    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+
+    return table_header+table_body
 
 def get_table_rows_secound(df):
     table_rows0 = html.Tr(id='table_tr', children=[
@@ -177,6 +182,45 @@ def get_table_rows_secound(df):
     return [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5, table_rows6, table_rows7, table_rows8, table_rows9])]
 
 def get_table_rows_three(df):
+    table_rows0 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[0][0],href=df.iloc[0][2])]),
+                    html.Td(id='table_td', children=[df.iloc[0][1]]),
+                ])
+
+    table_rows1 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[1][0],href=df.iloc[1][2])]),
+                    html.Td(id='table_td', children=df.iloc[1][1]),
+                ])
+    
+    table_rows2 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[2][0],href=df.iloc[2][2])]),
+                    html.Td(id='table_td', children=df.iloc[2][1]),
+                ])
+
+    table_rows3 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[3][0],href=df.iloc[3][2])]),
+                    html.Td(id='table_td', children=df.iloc[3][1]),
+                ])
+
+    table_rows4 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[4][0],href=df.iloc[4][2])]),
+                    html.Td(id='table_td', children=df.iloc[4][1]),
+                ])
+
+    table_rows5 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[5][0],href=df.iloc[5][2])]),
+                    html.Td(id='table_td', children=df.iloc[5][1]),
+                ])
+
+    return [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+
+def get_table_rows_four(df):
     table_rows0 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
                         html.A(id='table_td_link',children=df.iloc[0][0],href=df.iloc[0][2])]),
@@ -399,10 +443,13 @@ def get_news_content(value, date, time):
         for entry in date_time:
             worker_reviews.append(entry['headline'])
 
-        df_worker_reviews = pd.DataFrame(worker_reviews)
-        worker_reviews_dataframe = pd.DataFrame()
-        worker_reviews_dataframe[' '] = df_worker_reviews['headline']
-        worker_reviews_dataframe['Zeitpunkt'] = df_worker_reviews['timestamp']
+        df_world_news = pd.DataFrame(worker_reviews)
+        world_news_dataframe = pd.DataFrame()
+        world_news_dataframe[' '] = df_world_news['headline']
+        world_news_dataframe['Zeitpunkt'] = df_world_news['timestamp']
+        world_news_dataframe['more_info'] = df_world_news['more_info']
+
+        table_body_four = get_table_rows_four(dax_news_dataframe)
 
         # widget-five-news
         widget_five_news = html.Div(
@@ -413,7 +460,7 @@ def get_news_content(value, date, time):
                     children=[
                         html.H6(id="news_widget_header", children="Globale News"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(worker_reviews_dataframe[0:6])
+                            dbc.Table(table_body_four)
                         ]),     
                     ]
                 )
