@@ -23,11 +23,11 @@ dt_string = now.strftime("%H")
 # if-elif to use the right greeting on time
 
 if int(dt_string) >= 0 and int(dt_string) <= 9:
-    greeting = "Guten Morgen "
+    greeting = "Guten Morgen"
 elif int(dt_string) >= 10 and int(dt_string) <= 17:
-    greeting = "Guten Tag "
+    greeting = "Guten Tag"
 elif int(dt_string) >= 18 and int(dt_string) <= 23:
-    greeting = "Guten Abend "
+    greeting = "Guten Abend"
 
 
 def api_call(data, city, date, time):
