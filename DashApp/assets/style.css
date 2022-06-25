@@ -413,5 +413,22 @@ tr, #table_tr{
 #home_graph {
  width: 32vmax;
  height: 20vmax;
+}
 
- }
+/* Weather */
+
+#weather{
+    float: right;
+}
+
+#weather_emoji{
+    width: 30%;
+    padding-left: 1%;
+    float: left;
+}
+
+#weather_text{
+    width: 30%;
+    color: black;
+    float: right;
+}
