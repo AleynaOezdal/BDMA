@@ -24,18 +24,6 @@ def api_call_value_date_time(data, value, date, time):
     result = req.get(url)
     return result.json()
 
-def normalize_data(df):
-    # df on input should contain only one column with the price data (plus dataframe index)
-    min = df.min()
-    max = df.max()
-    x = df
-
-    # time series normalization part
-    # y will be a column in a dataframe
-    y = (x - min) / (max - min) * 100
-
-    return y
-
 def get_home_content(value, date, time):
     # value for header
     name = value
@@ -63,7 +51,6 @@ def get_home_content(value, date, time):
 
     #Dax-Chart
     dax_api_call = api_call_value_date_time("stock_price", "^GDAXI", date, time)
-    fig = go.Figure()
 
     dax_stock = pd.DataFrame()
     for package in range(len(dax_api_call)):
@@ -73,33 +60,39 @@ def get_home_content(value, date, time):
         dax_stock = pd.concat([dax_stock, data_as_df], axis=0)
     dax_stock.index = pd.to_datetime(dax_stock.index, unit="ms") + timedelta(hours=2)
 
-    normalized_dax = normalize_data(dax_stock)
+    candlestick_chart = go.Figure(
+        data=[
+            go.Candlestick(
+                x=dax_stock.index,
+                open=dax_stock["Open"],
+                high=dax_stock["High"],
+                low=dax_stock["Low"],
+                close=dax_stock["Close"],
+            )
+        ]
+    )
 
-
-
-    trace2 = go.Scatter(x=normalized_dax.index, y=normalized_dax["High"], opacity=0.7, line=dict(color='red', width=2),
-                        name="DAX")
-
-    fig.add_trace(trace2)
-
-    fig.update_xaxes(
+    candlestick_chart.update_xaxes(
         rangeslider_visible=False,
         rangebreaks=[
-            dict(values=["2022-06-19"]),
+            dict(values=["2022-06-26", "2022-06-25", "2022-06-19", "2022-06-18"]),
             dict(bounds=[17.30, 9], pattern="hour"),
         ],
         rangeselector=dict(
-            buttons=list([
-                dict(count=15, label="15m", step="minute", stepmode="backward"),
-                dict(count=45, label="45m", step="minute", stepmode="backward"),
-                dict(count=1, label="HTD", step="hour", stepmode="todate"),
-                dict(count=3, label="3h", step="hour", stepmode="backward"),
-                dict(step="all")
-            ])
-        )
+            buttons=list(
+                [
+                    dict(count=15, label="15m", step="minute", stepmode="backward"),
+                    dict(count=1, label="1h", step="hour", stepmode="backward"),
+                    dict(count=4, label="4h", step="hour", stepmode="backward"),
+                    dict(count=1, label="1d", step="day", stepmode="backward"),
+                    dict(count=7, label="1w", step="day", stepmode="backward"),
+                    dict(step="all"),
+                ],
+            )
+        ),
     )
 
-    fig.update_layout(
+    candlestick_chart.update_layout(
         margin_l=10,
         margin_r=0,
         margin_t=0,
@@ -126,7 +119,7 @@ def get_home_content(value, date, time):
             ], ),
         html.Div(id='home_graph', children=[
             dcc.Graph(
-                figure=fig,
+                figure=candlestick_chart,
             ),
         ], )
 

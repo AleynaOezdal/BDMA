@@ -9,6 +9,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from ast import literal_eval
 from datetime import datetime, timedelta, date
+import ast
 
 colors = {
     'background': '#F6F6F6'
@@ -39,7 +40,7 @@ def normalize_data(df):
 
     # time series normalization part
     # y will be a column in a dataframe
-    y = (x - min) / (max - min) * 100
+    y = 2*((x - min) / (max - min)) - 1
 
     return y
 
@@ -54,6 +55,34 @@ def short_num(num):
         num,
         ["", " Tausend", " MIO.", " MRD.", " BIO.", " Trillionen"][magnitude],
     )
+
+def check_key_char(x, value):
+
+    key_characteristics = api_call_value_date_time("key_characteristics", value, datetime.today() - timedelta(days=1), "17:30")
+    df = pd.DataFrame([key_characteristics])
+
+    key_columns = []
+    key_values = []
+
+    for col_name in df.columns:
+        key_columns.append(col_name)
+
+    for col_name2 in df.values:
+        for i in col_name2:
+            key_values.append(i)
+
+    df_key_yesterday = pd.DataFrame(
+        {
+            "": key_columns,
+            " ": key_values,
+        }
+    )
+
+    if x[""].all() == 0:
+        return df_key_yesterday
+    else:
+        return x
+
 
 def get_stocks_content_value(value, date, time):
     if value in data_kpi:
@@ -104,23 +133,24 @@ def get_stocks_content_value(value, date, time):
             actual_stock = pd.concat([actual_stock, data_as_df], axis=0)
         actual_stock.index = pd.to_datetime(actual_stock.index, unit="ms") + timedelta(hours=2)
 
-        candlestick_chart = go.Figure(
-            data=[
-                go.Candlestick(
+        candlestick_chart = go.Figure()
+
+        candlestick_chart.add_trace(go.Candlestick(
                     x=actual_stock.index,
                     open=actual_stock["Open"],
                     high=actual_stock["High"],
                     low=actual_stock["Low"],
                     close=actual_stock["Close"],
-                )
-            ]
-        )
+                    name= "Kerze"
+                ))
+
+        candlestick_chart.add_trace(go.Scatter(x=actual_stock.index, y=actual_stock["High"], name="Linie", visible=False))
 
 
         candlestick_chart.update_xaxes(
             rangeslider_visible=False,
             rangebreaks=[
-                dict(values=["2022-06-19"]),
+                dict(values=["2022-06-26", "2022-06-25", "2022-06-19", "2022-06-18"]),
                 dict(bounds=[17.30, 9], pattern="hour"),
             ],
             rangeselector=dict(
@@ -135,6 +165,26 @@ def get_stocks_content_value(value, date, time):
                     ],
                 )
             ),
+        )
+
+        # Add dropdown
+        candlestick_chart.update_layout(
+            updatemenus=[
+                dict(
+                    buttons=list([
+                        dict(
+                            args=[{"visible": [True, False]}],
+                            label="Kerze",
+                            method="restyle"
+                        ),
+                        dict(
+                            args=[{"visible": [False, True]}],
+                            label="Linie",
+                            method="restyle"
+                        ),
+                    ]),
+                ),
+            ]
         )
 
         widget_one_stocks = html.Div(id='stocks_widget_2', children=[
@@ -192,18 +242,9 @@ def get_stocks_content_value(value, date, time):
         fig.update_xaxes(
             rangeslider_visible=False,
             rangebreaks=[
-                dict(values=["2022-06-19"]),
+                dict(values=["2022-06-26", "2022-06-25", "2022-06-19", "2022-06-18"]),
                 dict(bounds=[17.30, 9], pattern="hour"),
             ],
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=15, label="15m", step="minute", stepmode="backward"),
-                    dict(count=45, label="45m", step="minute", stepmode="backward"),
-                    dict(count=1, label="HTD", step="hour", stepmode="todate"),
-                    dict(count=3, label="3h", step="hour", stepmode="backward"),
-                    dict(step="all")
-                ])
-            )
         )
 
 
@@ -243,10 +284,26 @@ def get_stocks_content_value(value, date, time):
 
         #widget-three-stocks
         key_characteristics = api_call_value_date_time("key_characteristics", value, date, time)
-        d = {
-            '': ['Price', 'Change','Open', 'Day Before','Highest', 'Lowest','Marketcap', 'Date'], 
-            ' ': ['234,32', '4,5','235,23', '115,23','232,24', '114,12','35,5 MRD.', '30.05.2022']}
-        df = pd.DataFrame([key_characteristics]).T
+        df = pd.DataFrame([key_characteristics])
+
+        key_columns = []
+        key_values = []
+
+        for col_name in df.columns:
+            key_columns.append(col_name)
+
+        for col_name2 in df.values:
+            for i in col_name2:
+                key_values.append(i)
+
+        df_key = pd.DataFrame(
+        {
+            "": key_columns,
+            " ": key_values,
+        }
+        )
+
+
 
         widget_three_stocks = html.Div(id = 'stocks_widget', children=[
                         html.Div(
@@ -255,41 +312,42 @@ def get_stocks_content_value(value, date, time):
                                 html.P(id="stocks_widget_header", children="Key Characteristics")
                             ],),
                             html.Div(id = 'stocks_graph', children= [
-                                dbc.Table.from_dataframe(df)
+                                dbc.Table.from_dataframe(check_key_char(df_key, value), striped=True, bordered=True, hover=True)
                             ])
 
                         ],)
 
-        # get widget data Dividends
-        total_revenue_api_data = api_call("total_revenue", company_dict[value])
-        total_revenue_api_data_df = pd.DataFrame(
-            total_revenue_api_data, index=["Total Revenue"]
+        # widget four stocks
+        dividend_api_data = api_call("dividends", company_dict[value])
+
+        dividend_dict = ast.literal_eval(dividend_api_data)
+        dividend_final_dict = {2021: [], 2020: [], 2019: [], 2018: []}
+        dividend_values = list(dividend_dict.values())
+        jahr = 2021
+        for value in range(1, 5):
+            dividend_final_dict[jahr].append(dividend_values[-value])
+            jahr = jahr - 1
+
+        dividend_api_data_df = pd.DataFrame(
+            dividend_final_dict, index=["Dividend"]
         ).T
 
-        if (
-                total_revenue_api_data_df["Total Revenue"][0] != 0
-                and total_revenue_api_data_df["Total Revenue"][0] != "NaN"
-        ):
-            revenue = short_num(total_revenue_api_data_df["Total Revenue"][0])
-        else:
-            revenue = 0
-
-        total_revenue_df = total_revenue_api_data_df.sort_index()
+        dividend_df = dividend_api_data_df.sort_index()
 
         # figure dividends bar chart
-        fig_dax_data_per_day = go.Figure(
+        fig_dividend = go.Figure(
             go.Bar(
-                y=total_revenue_df["Total Revenue"],
-                x=total_revenue_df.index,
-                text=total_revenue_df["Total Revenue"],
+                y=dividend_df["Dividend"],
+                x=dividend_df.index,
+                text=dividend_df["Dividend"],
             )
         )
         # style of the figure total revenue
-        fig_dax_data_per_day.update_traces(
+        fig_dividend.update_traces(
             marker_color="#79EB71", textposition="inside", texttemplate="%{text:.3s}"
         )
 
-        fig_dax_data_per_day.update_layout(
+        fig_dividend.update_layout(
             showlegend=False,
             margin=dict(
                 l=0,
@@ -313,7 +371,6 @@ def get_stocks_content_value(value, date, time):
                             "zoomout"]
         )
 
-        # widget-four-stocks
         widget_four_stocks = html.Div(id='stocks_widget', children=[
             html.Div(
                 id="stocks_widget_text",
@@ -322,7 +379,7 @@ def get_stocks_content_value(value, date, time):
                 ], ),
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
-                    figure=fig_dax_data_per_day,
+                    figure=fig_dividend,
                     style={"width": "20vmax", "height": "20vmax"},
                 )
             ], )
@@ -330,38 +387,25 @@ def get_stocks_content_value(value, date, time):
         ], )
 
 
-
-        #widget-five-stocks
+        # widget-five-stocks
         # get widget data Dividends
-        gross_profit_api_data = api_call("gross_profit", company_dict[value])
-        gross_profit_api_data_df = pd.DataFrame(
-            gross_profit_api_data, index=["Gross Profit"]
-        ).T
-        if (
-                gross_profit_api_data_df["Gross Profit"][0] != 0
-                and gross_profit_api_data_df["Gross Profit"][0] != "NaN"
-        ):
-            gross_profit = short_num(gross_profit_api_data_df["Gross Profit"][0])
-        else:
-            gross_profit = 0
+        major_holders_api_data = api_call("major_holders", "ads") #Warum funktioniert das nicht mit company_dict[value]??
+        label = list(major_holders_api_data.keys())
+        value = list(major_holders_api_data.values())
+        label_without_percentage = []
+        label_new = label[0:3]
+        value_new = value[0:3]
+        for i in value_new:
+            label_without_percentage.append(float(i.replace("%", "").replace(",", "")))
 
-        gross_profit_df = gross_profit_api_data_df.sort_index()
-
-        # figure dividends bar chart
-        labels_fig = ['Insiders', 'Institutionen mit Aktienbeteiligung', 'Streubesitz Institutionen']
-        values_fig=[4500, 2500, 1053, 500]
-
-        fig_dividends = go.Figure(data=[go.Pie(labels=labels_fig, values=values_fig, hole=.3)])
+        fig_holders = go.Figure(data=[go.Pie(labels=label_new, values=label_without_percentage, hole=.3)])
 
         # style of the figure total revenue
         colors = ['#E34132', '#701929', '#B00719']
 
-        fig_dividends.update_traces(hoverinfo='label', textinfo='value', textfont_size=10,
-                  marker=dict(colors=colors),
 
-        )
 
-        fig_dividends.update_layout(
+        fig_holders.update_layout(
             showlegend=True,
             legend_font_family="Arial",
             legend=dict(
@@ -393,7 +437,7 @@ def get_stocks_content_value(value, date, time):
                 ], ),
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
-                    figure=fig_dividends,
+                    figure=fig_holders,
                     style={"width": "20vmax", "height": "20vmax" }, 
                 ),
             ], )
