@@ -83,12 +83,15 @@ def get_home_content(value, date, time):
         ),
     )
 
+    candlestick_chart.update_yaxes(gridcolor='#808080')
+
     candlestick_chart.update_layout(
         margin_l=10,
         margin_r=0,
         margin_t=0,
         margin_b=0,
         uniformtext_minsize=6,
+        plot_bgcolor="#FFFFFF",
         modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian",
                         "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d",
                         "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup",
