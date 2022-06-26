@@ -76,6 +76,8 @@ def get_thumbs(classification):
         content = html.I(className="bi bi-hand-thumbs-up-fill")
         return content
 
+#target="_blank"
+
 def get_table_rows_first(df):
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Zeitpunkt"), html.Th("  ")]))]
 
@@ -120,9 +122,15 @@ def get_table_rows_first(df):
     return table_header+table_body
 
 def get_table_rows_secound(df):
+    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th(id='tumbs_header',children=[
+                        html.I(className='bi bi-hand-thumbs-up-fill'),
+                        html.P(children='/'),
+                        html.I(className='bi bi-hand-thumbs-down-fill')    
+                    ])]))]
+
     table_rows0 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[0][0],href=df.iloc[0][2])]),
+                        html.A(id='table_td_link', children=df.iloc[0][0], href=df.iloc[0][2])]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[0][1])]),
                 ])
 
@@ -179,7 +187,10 @@ def get_table_rows_secound(df):
                         html.A(id='table_td_link',children=df.iloc[9][0],href=df.iloc[9][2])]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[9][1])]),
                 ])
-    return [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5, table_rows6, table_rows7, table_rows8, table_rows9])]
+     
+    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5, table_rows6, table_rows7, table_rows8, table_rows9])]
+
+    return table_header+table_body
 
 def get_table_rows_three(df):
     table_rows0 = html.Tr(id='table_tr', children=[
@@ -436,14 +447,18 @@ def get_news_content(value, date, time):
         )
 
         #Global News
-        date_time = api_call_date_time('world_news_by_date' , date, time)
-        date_time = date_time[1:]
-        worker_reviews = []
+        world_news_date_time = api_call_date_time('world_news_by_date' , date, time)
+        world_news = []
 
-        for entry in date_time:
-            worker_reviews.append(entry['headline'])
+        for entry in world_news_date_time:
+            if 'headline' in entry:
+                world_news.append(entry['headline'])
 
-        df_world_news = pd.DataFrame(worker_reviews)
+        for entry in world_news:
+            if entry == 'NaN':
+                world_news.remove(entry)
+
+        df_world_news = pd.DataFrame(world_news)
         world_news_dataframe = pd.DataFrame()
         world_news_dataframe[' '] = df_world_news['headline']
         world_news_dataframe['Zeitpunkt'] = df_world_news['timestamp']
