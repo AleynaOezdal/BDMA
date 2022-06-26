@@ -17,6 +17,8 @@ body {
 
 #Header {
     padding: 1%;
+    box-shadow: 5px 1px 7.5px silver;
+
 }
 
 #Header h2 {
@@ -342,6 +344,26 @@ th{
     font-size: small;
 }
 
+#tumbs_header{
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+/* #tumbs_header A{
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
+}
+
+#tumbs_header P{
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
+} */
+
 td, #table_td {
     font-size: smaller;  
 }
@@ -442,13 +464,11 @@ tr, #table_tr{
     display: flex;
     font-size: 400%;
     padding-left: 1%;
-    /* display: inline-block; */
     float: left;
     width: 32%;
 }
 
 #weather_text{
-    /* display: inline-block; */
     color: black;
     float: left;
     width: 64%;
