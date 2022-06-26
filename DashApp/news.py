@@ -294,6 +294,71 @@ def get_table_rows_four(df):
 
     return table_header+table_body
 
+def get_table_rows_last(df):
+    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Zeitpunkt"), html.Th(html.Th(id='tumbs_header',children=[
+                        html.I(className='bi bi-hand-thumbs-up-fill'),
+                        html.P(id='tumbs_header_text',children='/'),
+                        html.I(className='bi bi-hand-thumbs-down-fill')    
+                    ]))]))]
+
+    table_rows0 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[0][0][:50]+'...'),
+                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[0][3])
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[0][1][8:10]+'.'+df.iloc[0][1][5:7]+'.'+df.iloc[0][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[0][2])]),
+                ])
+
+    table_rows1 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[1][0][:50]+'...'),
+                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[1][3])
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[1][1][8:10]+'.'+df.iloc[1][1][5:7]+'.'+df.iloc[1][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[1][2])]),
+                ])
+    
+    table_rows2 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[2][0][:50]+'...'),
+                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[2][3])
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[2][1][8:10]+'.'+df.iloc[2][1][5:7]+'.'+df.iloc[2][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[2][2])]),
+                ])
+
+    table_rows3 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[3][0][:50]+'...'),
+                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[3][3])
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[3][1][8:10]+'.'+df.iloc[3][1][5:7]+'.'+df.iloc[3][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[3][2])]),
+                ])
+
+    table_rows4 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[4][0][:50]+'...'),
+                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[4][3])
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[4][1][8:10]+'.'+df.iloc[4][1][5:7]+'.'+df.iloc[4][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[4][2])]),
+                ])
+
+    table_rows5 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[5][0][:50]+'...'),
+                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[5][3])
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[5][1][8:10]+'.'+df.iloc[5][1][5:7]+'.'+df.iloc[5][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[5][2])]),
+                ])
+
+    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+
+    return table_header+table_body
+
 # valuecount = df['Klasse'].value_counts()
 # negativ = valuecount["Negativ"]
 # positiv = valuecount["Positiv"]
@@ -509,6 +574,19 @@ def get_news_content(value, date, time):
             ],
         )
 
+        #Community News
+        community_news_date_time = api_call_value_date_time('community_news' , 'adidas', '2022-06-20', "11:00")
+
+        df_community_news = pd.DataFrame(community_news_date_time)
+
+        community_news_dataframe = pd.DataFrame()
+        community_news_dataframe[' '] = df_community_news['message']
+        community_news_dataframe['Time'] = df_community_news['timestamp']
+        community_news_dataframe['Klassifizierung'] = df_community_news['class']
+        community_news_dataframe['more_info'] = df_community_news['more_info']
+
+        table_body = get_table_rows_last(community_news_dataframe)
+
         # widget-six-news
         widget_six_news = html.Div(
             id="news_widget",
@@ -518,7 +596,7 @@ def get_news_content(value, date, time):
                     children=[
                         html.H6(id="news_widget_header", children="Börsen-Community"),
                         html.Div(children=[
-                            dbc.Table.from_dataframe(df_3)
+                            dbc.Table(table_body)
                         ]),     
                     ]
                 )
