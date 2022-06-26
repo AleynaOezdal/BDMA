@@ -86,8 +86,7 @@ def get_kpi_content_value(value):
         fig_ebit = go.Figure(go.Scatter(y=ebit_df["Ebit"], x=ebit_df.index))
 
         # sytle from the line chart
-        fig_ebit.update_traces(mode="lines", line_color="#EA000D")
-
+        fig_ebit.update_traces(mode="lines", line_color="#122538")
         fig_ebit.update_layout(
             showlegend=False,
             margin_l=0,
@@ -158,8 +157,8 @@ def get_kpi_content_value(value):
             )
         )
         fig_gross_profit.update_traces(
-            marker_color="#19AD50", textposition="inside", texttemplate="%{text:.3s}"
-        )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+            marker_color=" #FF918C", textposition="inside", texttemplate="%{text:.3s}"
+        )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6 #E6E0D3
 
         fig_gross_profit.update_layout(
             showlegend=False,
@@ -303,8 +302,8 @@ def get_kpi_content_value(value):
         )
         # style of the figure total revenue
         fig_total_revenue.update_traces(
-            marker_color="#79EB71", textposition="inside", texttemplate="%{text:.3s}"
-        )
+            marker_color=" #AEDCF5", textposition="inside", texttemplate="%{text:.3s}"
+        ) #FF918C #EDA611 #122538
 
         fig_total_revenue.update_layout(
             showlegend=False,
@@ -442,13 +441,13 @@ def get_kpi_content_value(value):
                 color = "red"
             elif esg <= 40 and esg >= 30:
                 high_average_low = "HIGH"
-                color = "red"
+                color = "#FF918C"
             elif esg <= 30 and esg >= 20:
                 high_average_low = "MEDIUM"
                 color = "orange"
             elif esg <= 20 and esg >= 10:
                 high_average_low = "LOW"
-                color = "green"
+                color = "#122538"
             elif esg <= 10:
                 high_average_low = "NEGLIGIBLE"
                 color = "green"
