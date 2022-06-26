@@ -135,7 +135,7 @@ def get_stocks_content_value(value, date, time):
 
         candlestick_chart = go.Figure()
 
-        candlestick_chart.add_trace(go.Scatter(x=actual_stock.index, y=actual_stock["High"], name="Linie", line=dict(color='orange')))
+        candlestick_chart.add_trace(go.Scatter(x=actual_stock.index, y=actual_stock["High"], name="Linie", line=dict(color='#F0CB96')))
 
 
         candlestick_chart.add_trace(go.Candlestick(
@@ -167,6 +167,8 @@ def get_stocks_content_value(value, date, time):
             ),
         )
 
+        candlestick_chart.update_yaxes(gridcolor='#808080')
+
         # Add dropdown
         candlestick_chart.update_layout(
             updatemenus=[
@@ -188,21 +190,8 @@ def get_stocks_content_value(value, date, time):
             ]
         )
 
-        widget_one_stocks = html.Div(id='stocks_widget_2', children=[
-            html.Div(
-                id="stocks_widget_text",
-                children=[
-                    html.P(id="stocks_widget_header", children="Performance Index " + name)
-                ], ),
-            html.Div(id='stocks_graph_3', children=[
-                dcc.Graph(
-                    figure=candlestick_chart,
-                ),
-            ], )
-
-        ], )
-
         candlestick_chart.update_layout(
+            plot_bgcolor="#FFFFFF",
             margin_l=10,
             margin_r=0,
             margin_t=0,
@@ -221,6 +210,21 @@ def get_stocks_content_value(value, date, time):
                             "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo",
                             "zoomOutMapbox", "zoomin", "zoomout"])
 
+        widget_one_stocks = html.Div(id='stocks_widget_2', children=[
+            html.Div(
+                id="stocks_widget_text",
+                children=[
+                    html.P(id="stocks_widget_header", children="Performance Index " + name)
+                ], ),
+            html.Div(id='stocks_graph_3', children=[
+                dcc.Graph(
+                    figure=candlestick_chart,
+                ),
+            ], )
+
+        ], )
+
+
         #widget-two-stocks
 
         fig = go.Figure()
@@ -228,9 +232,9 @@ def get_stocks_content_value(value, date, time):
         normalized_stock = normalize_data(actual_stock)
         normalized_dax = normalize_data(dax_stock)
 
-        trace1 = go.Scatter(x=normalized_stock.index, y=normalized_stock["High"], opacity=0.7, line=dict(color='orange', width=2), name=value)
+        trace1 = go.Scatter(x=normalized_stock.index, y=normalized_stock["High"], opacity=0.7, line=dict(color='#F0CB96', width=2), name=value)
 
-        trace2 = go.Scatter(x=normalized_dax.index, y=normalized_dax["High"], opacity=0.7, line=dict(color='blue', width=2), name="DAX")
+        trace2 = go.Scatter(x=normalized_dax.index, y=normalized_dax["High"], opacity=0.7, line=dict(color='#122538', width=2), name="DAX")
 
         fig.add_trace(trace1)
 
@@ -244,7 +248,10 @@ def get_stocks_content_value(value, date, time):
             ],
         )
 
+        fig.update_yaxes(gridcolor='#808080')
+
         fig.update_layout(
+            plot_bgcolor="#FFFFFF",
             legend=dict(
                 orientation="h",
                 yanchor="bottom",
@@ -287,26 +294,49 @@ def get_stocks_content_value(value, date, time):
         
         #widget-three-stocks
         key_characteristics = api_call_value_date_time("key_characteristics", value, date, time)
-        df = pd.DataFrame([key_characteristics])
+        df_key_characteristics = pd.DataFrame([key_characteristics])
 
-        key_columns = []
-        key_values = []
+        table_rows0 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Price'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][0]),
+                    ])
 
-        for col_name in df.columns:
-            key_columns.append(col_name)
+        table_rows1 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Change'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][1]),
+                    ])
+        
+        table_rows2 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Open'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][2]),
+                    ])
 
-        for col_name2 in df.values:
-            for i in col_name2:
-                key_values.append(i)
+        table_rows3 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Day before'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][3]),
+                    ])
 
-        df_key = pd.DataFrame(
-        {
-            "": key_columns,
-            " ": key_values,
-        }
-        )
+        table_rows4 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Highest'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][4]),
+                    ])
 
+        table_rows5 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Lowest'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][5]),
+                    ])
+        
+        table_rows6 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Marketcap'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][6]),
+                    ])
 
+        table_rows7 = html.Tr(id='table_tr', children=[
+                        html.Td(id='table_td', children='Date'),
+                        html.Td(id='table_td', children=df_key_characteristics.iloc[0][7]),
+                    ])
+        
+        table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5, table_rows6, table_rows7])]
 
         widget_three_stocks = html.Div(id = 'stocks_widget', children=[
                         html.Div(
@@ -315,10 +345,9 @@ def get_stocks_content_value(value, date, time):
                                 html.P(id="stocks_widget_header", children="Key Characteristics")
                             ],),
                             html.Div(id = 'stocks_graph', children= [
-                                dbc.Table.from_dataframe(check_key_char(df_key, value), bordered=True, hover=True)
+                                dbc.Table(table_body, value)])
                             ])
 
-                        ],)
 
         # widget four stocks
         dividend_api_data = api_call("dividends", company_dict[value])
@@ -448,9 +477,6 @@ def get_stocks_content_value(value, date, time):
             ], )
 
         ], )
-
-
-
 
         content = html.Div(
             id="content_stocks",

@@ -294,6 +294,9 @@ def get_table_rows_four(df):
 
     return table_header+table_body
 
+# valuecount = df['Klasse'].value_counts()
+# negativ = valuecount["Negativ"]
+# positiv = valuecount["Positiv"]
 
 def get_news_content(value, date, time):
     if value in data_kpi:
