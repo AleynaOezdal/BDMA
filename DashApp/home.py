@@ -24,6 +24,50 @@ def api_call_value_date_time(data, value, date, time):
     result = req.get(url)
     return result.json()
 
+def get_table_rows_three(df):
+
+    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th('Datum')]))]
+
+    table_rows0 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[5][0],href=df.iloc[5][2])]),
+                    html.Td(id='table_td', children=[df.iloc[5][1]]),
+                ])
+
+    table_rows1 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[4][0],href=df.iloc[4][2])]),
+                    html.Td(id='table_td', children=df.iloc[4][1]),
+                ])
+    
+    table_rows2 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[3][0],href=df.iloc[3][2])]),
+                    html.Td(id='table_td', children=df.iloc[3][1]),
+                ])
+
+    table_rows3 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[2][0],href=df.iloc[2][2])]),
+                    html.Td(id='table_td', children=df.iloc[2][1]),
+                ])
+
+    table_rows4 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[1][0],href=df.iloc[1][2])]),
+                    html.Td(id='table_td', children=df.iloc[1][1]),
+                ])
+
+    table_rows5 = html.Tr(id='table_tr', children=[
+                    html.Td(id='table_td', children=[
+                        html.A(id='table_td_link',children=df.iloc[0][0],href=df.iloc[0][2])]),
+                    html.Td(id='table_td', children=df.iloc[0][1]),
+                ])
+    
+    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+
+    return table_header+table_body
+
 def get_home_content(value, date, time):
     # value for header
     name = value
@@ -129,7 +173,10 @@ def get_home_content(value, date, time):
     df_dax_news = pd.DataFrame(dax_news)
     dax_news_dataframe = pd.DataFrame()
     dax_news_dataframe[' '] = df_dax_news['headline']
-    dax_news_dataframe['VÖ-Datum'] = df_dax_news['timestamp']
+    dax_news_dataframe['Datum'] = df_dax_news['timestamp']
+    dax_news_dataframe['more_info'] = df_dax_news['more_info']
+
+    table_body_three = get_table_rows_three(dax_news_dataframe)
 
     # widget-four-news
     widget_dax_news = html.Div(
@@ -140,12 +187,11 @@ def get_home_content(value, date, time):
                 children=[
                     html.H6(id="news_widget_header", children="DAX-News"),
                     html.Div(children=[
-                        dbc.Table.from_dataframe(dax_news_dataframe[0:6])
+                        dbc.Table(table_body_three)])
                     ]),
                 ]
             )
-        ],
-    )
+
 
     content_home = html.Div(
         id="content_home",
