@@ -297,7 +297,7 @@ body {
 }
 
 #stocks_graph_2 {
-
+    width: 34vmax;
     height: 20vmax;
 }
 
@@ -351,18 +351,12 @@ th{
     -webkit-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-}
-/* #tumbs_header A{
-    display: -webkit-flex; 
-    display: -ms-flexbox; 
-    display: flex;
+    border-bottom: 0;
 }
 
-#tumbs_header P{
-    display: -webkit-flex; 
-    display: -ms-flexbox; 
-    display: flex;
-} */
+#tumbs_header_text {
+    margin-bottom: 0;
+}
 
 td, #table_td {
     font-size: smaller;  
@@ -419,6 +413,15 @@ tr, #table_tr{
 }
 
 /* News Link */
+
+p#table_td_text{
+    margin-bottom: 0px;
+}
+
+#table_td_link_rezension{
+    color: black;
+    font-size: smaller;
+}
 
 #table_td_link{
     color: black;

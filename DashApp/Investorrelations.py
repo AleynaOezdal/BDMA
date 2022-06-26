@@ -244,23 +244,14 @@ def get_stocks_content_value(value, date, time):
             ],
         )
 
-
-
-        widget_two_stocks = html.Div(id='stocks_widget_2', children=[
-            html.Div(
-                id="stocks_widget_text",
-                children=[
-                    html.P(id="stocks_widget_header", children="DAX und " + name)
-                ], ),
-            html.Div(id='stocks_graph_2', children=[
-                dcc.Graph(
-                    figure=fig,
-                ),
-            ], )
-
-        ], )
-
         fig.update_layout(
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="right",
+                x=1
+            ),
             margin_l=10,
             margin_r=0,
             margin_t=0,
@@ -279,6 +270,21 @@ def get_stocks_content_value(value, date, time):
                             "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo",
                             "zoomOutMapbox", "zoomin", "zoomout"])
 
+        widget_two_stocks = html.Div(id='stocks_widget_2', children=[
+            html.Div(
+                id="stocks_widget_text",
+                children=[
+                    html.P(id="stocks_widget_header", children="DAX und " + name)
+                ], ),
+            html.Div(id='stocks_graph_2', children=[
+                dcc.Graph(
+                    figure=fig,
+                ),
+            ], )
+
+        ], )
+
+        
         #widget-three-stocks
         key_characteristics = api_call_value_date_time("key_characteristics", value, date, time)
         df = pd.DataFrame([key_characteristics])
@@ -395,9 +401,11 @@ def get_stocks_content_value(value, date, time):
         for i in value_new:
             label_without_percentage.append(float(i.replace("%", "").replace(",", "")))
 
-        #colors = ['#E34132', '#701929', '#B00719']
+        colors = ['#E6E0D3', '#FF918C', '#F0CB96']
 
         fig_holders = go.Figure(data=[go.Pie(labels=label_new, values=label_without_percentage, hole=.3)])
+
+        fig_holders.update_traces(hoverinfo='label+percent', marker=dict(colors=colors))
 
         # style of the figure Major Holders
 
