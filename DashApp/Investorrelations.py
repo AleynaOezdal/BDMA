@@ -11,16 +11,7 @@ from ast import literal_eval
 from datetime import datetime, timedelta, date
 import ast
 
-colors = {
-    'background': '#F6F6F6'
-}
-
-font = {
-    'helvetica' : 'Arial, Helvetica, sans-serif'
-}
-
 company_dict = create_company_dict()
-
 
 def api_call(data, value):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
@@ -186,6 +177,12 @@ def get_stocks_content_value(value, date, time):
                             method="restyle"
                         ),
                     ]),
+                ),
+                dict(
+                    yanchor="bottom",
+                    y=2.02,
+                    xanchor="left",
+                    x=2
                 ),
             ]
         )
@@ -356,8 +353,8 @@ def get_stocks_content_value(value, date, time):
         dividend_final_dict = {2021: [], 2020: [], 2019: [], 2018: []}
         dividend_values = list(dividend_dict.values())
         jahr = 2021
-        for value in range(1, 5):
-            dividend_final_dict[jahr].append(dividend_values[-value])
+        for entry in range(1, 5):
+            dividend_final_dict[jahr].append(dividend_values[-entry])
             jahr = jahr - 1
 
         dividend_api_data_df = pd.DataFrame(
@@ -412,21 +409,20 @@ def get_stocks_content_value(value, date, time):
             html.Div(id='stocks_graph', children=[
                 dcc.Graph(
                     figure=fig_dividend,
-                    style={"width": "20vmax", "height": "25vmax"},
+                    style={"width": "20vmax", "height": "20vmax"},
                 )
-            ], )
-
-        ], )
+            ])
+        ])
 
 
         # widget-five-stocks
         # get widget data Dividends
-        major_holders_api_data = api_call("major_holders", "ads") #Warum funktioniert das nicht mit company_dict[value]??
+        major_holders_api_data = api_call("major_holders", company_dict[value])
         label = list(major_holders_api_data.keys())
-        value = list(major_holders_api_data.values())
+        values = list(major_holders_api_data.values())
         label_without_percentage = []
         label_new = label[0:3]
-        value_new = value[0:3]
+        value_new = values[0:3]
         for i in value_new:
             label_without_percentage.append(float(i.replace("%", "").replace(",", "")))
 
