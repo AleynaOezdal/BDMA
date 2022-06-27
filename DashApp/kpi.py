@@ -447,7 +447,7 @@ def get_kpi_content_value(value):
                 color = "orange"
             elif esg <= 20 and esg >= 10:
                 high_average_low = "LOW"
-                color = "#122538"
+                color = "#E08E58"
             elif esg <= 10:
                 high_average_low = "NEGLIGIBLE"
                 color = "green"
