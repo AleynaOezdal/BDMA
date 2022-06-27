@@ -86,15 +86,15 @@ def get_kpi_content_value(value):
         fig_ebit = go.Figure(go.Scatter(y=ebit_df["Ebit"], x=ebit_df.index))
 
         # sytle from the line chart
-        fig_ebit.update_traces(mode="lines", line_color="#122538")
+        fig_ebit.update_traces(mode="lines", line_color="#FF918C")
         fig_ebit.update_layout(
             showlegend=False,
             margin_l=0,
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
@@ -157,7 +157,7 @@ def get_kpi_content_value(value):
             )
         )
         fig_gross_profit.update_traces(
-            marker_color=" #FF918C", textposition="inside", texttemplate="%{text:.3s}"
+            marker_color="#254C73", textposition="inside", texttemplate="%{text:.3s}"
         )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6 #E6E0D3
 
         fig_gross_profit.update_layout(
@@ -166,8 +166,8 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
@@ -236,8 +236,8 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
 
@@ -302,7 +302,7 @@ def get_kpi_content_value(value):
         )
         # style of the figure total revenue
         fig_total_revenue.update_traces(
-            marker_color=" #AEDCF5", textposition="inside", texttemplate="%{text:.3s}"
+            marker_color="#AEDCF5", textposition="inside", texttemplate="%{text:.3s}"
         ) #FF918C #EDA611 #122538
 
         fig_total_revenue.update_layout(
@@ -311,8 +311,8 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
@@ -377,7 +377,7 @@ def get_kpi_content_value(value):
             )
         )
         fig_total_operating_expenses.update_traces(
-            marker_color="#3368AD", textposition="inside", texttemplate="%{text:.3s}"
+            marker_color="#FF9176", textposition="inside", texttemplate="%{text:.3s}"
         )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
 
         fig_total_operating_expenses.update_layout(
@@ -386,8 +386,8 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
