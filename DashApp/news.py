@@ -79,7 +79,7 @@ def get_thumbs(classification):
 #target="_blank"
 
 def get_table_rows_first(df):
-    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Zeitpunkt"), html.Th(html.Th(id='tumbs_header',children=[
+    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Datum"), html.Th(html.Th(id='tumbs_header',children=[
                         html.I(className='bi bi-hand-thumbs-up-fill'),
                         html.P(id='tumbs_header_text',children='/'),
                         html.I(className='bi bi-hand-thumbs-down-fill')    
@@ -295,7 +295,7 @@ def get_table_rows_four(df):
     return table_header+table_body
 
 def get_table_rows_last(df):
-    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Zeitpunkt"), html.Th(html.Th(id='tumbs_header',children=[
+    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Datum"), html.Th(html.Th(id='tumbs_header',children=[
                         html.I(className='bi bi-hand-thumbs-up-fill'),
                         html.P(id='tumbs_header_text',children='/'),
                         html.I(className='bi bi-hand-thumbs-down-fill')    

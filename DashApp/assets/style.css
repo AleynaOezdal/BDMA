@@ -352,6 +352,10 @@ th{
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     border-bottom: 0;
+    font-size: x-small;
+    width: 30px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 #tumbs_header_text {
