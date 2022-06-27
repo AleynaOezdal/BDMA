@@ -10,12 +10,46 @@ from producersetup import (
     community_company,
     community_number,
     yfinance_symbols_dax_companies,
+    all_cities,
 )
 import datetime as dt
 import time
 import pandas as pd
 import yfinance as yf
 
+
+def get_weather(cities: list = all_cities):
+
+    for city in cities:
+
+        try:
+            base_url = f"https://www.wetteronline.de/wetter/{city}"
+            soup = bs(get(base_url), "html.parser")
+            weather = soup.find("div", {"id":"p_city_weather"})
+            weather_temp = {
+                "Ort": weather.find("h1", {"id": "nowcast-card-headline"}).text[7:],
+                "Temperatur": weather.find("div", {"class": "forecast visible"}).find("div", {"class": "big temperature"}).text.replace("  ", "").replace("\n", ""),
+            }
+
+        except Exception as e:
+            weather_temp = "NaN"
+            print(f"FAILED. For {city} the following error occured: {type(e)}")
+
+        # Store company as key and temp as value in a dict and transform it into JSON
+        p.produce(
+            "temp",
+            json.dumps(
+                {
+                    "_id": city,
+                    "temp": weather_temp,
+                    "time": str(dt.datetime.now()),
+                }
+            ),
+            callback=delivery_report,
+        )
+        p.flush()
+
+    return "Done. Produced all temps to Kafka."
 
 def get_actual_stock_price(companies: list = yfinance_symbols_dax_companies):
     for company in companies:
@@ -95,6 +129,40 @@ def get_news(companies: list = all_companies):
 
     return "Done. Produced all News to Kafka."
 
+def get_dax_news():
+    try:
+        base_url = "https://www.finanzen.net/index/dax/marktberichte"
+        soup = bs(get(base_url), "html.parser")
+        found_news = soup.find("div", {"id": "general-news-table"}).find("table", {"class":"table"}).find_all("tr")
+        count = 0
+        for headline in found_news:
+            headline_news = {
+                "headline": headline.find("a").text,
+                "timestamp": headline.find("td", {"class": "col-date"}).text.replace("  ", "").replace("\n", "").replace("\r", "").replace("\t", ""),
+                "more_info": base_url,
+            }
+            count += 1
+            # Generate unique key with company and iterating count
+            # Store headline as value for specific key
+            # Store company as key and headline as value in a dict and transform it into JSON
+            p.produce(
+                "dax_news",
+                json.dumps(
+                    {
+                        "_id": f"dax_news_{count}",
+                        "news": headline_news,
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
+                callback=delivery_report,
+            )
+            p.flush()
+
+    except Exception as e:
+        # Because there a lots of news for DAX, we don't produce a failed news item to Kafka
+        print(f"FAILED. For Dax News the following error occured: {type(e)}")
+
+    return "Done. Produced all Dax News to Kafka."
 
 def get_worker_review(companies: list = kununu_companies):
 
