@@ -296,6 +296,7 @@ body {
     margin: 5%;
 }
 
+
 #stocks_graph_2 {
     width: 34vmax;
     height: 20vmax;
@@ -405,11 +406,11 @@ tr, #table_tr{
 /* Tumbs */
 
 .bi-hand-thumbs-down-fill {
-    color: red;
+    color: #FF918C;
 }
 
 .bi-hand-thumbs-up-fill {
-    color: green;
+    color: #558A5C;
 }
 
 .bi-thermometer-sun{
