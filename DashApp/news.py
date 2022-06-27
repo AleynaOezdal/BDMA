@@ -71,8 +71,6 @@ def get_thumbs(classification):
         content = html.I(className="bi bi-hand-thumbs-up-fill")
         return content
 
-#target="_blank"
-
 def get_table_rows_first(df):
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Datum"), html.Th(html.Th(id='tumbs_header',children=[
                         html.I(className='bi bi-hand-thumbs-up-fill'),
@@ -81,38 +79,56 @@ def get_table_rows_first(df):
                     ]))]))]
 
     table_rows0 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=df.iloc[0][0]),
-                    html.Td(id='table_td', children=df.iloc[0][1]),
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[0][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[0][3],target="_blank")
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[0][1][8:10]+'.'+df.iloc[0][1][5:7]+'.'+df.iloc[0][1][:4]]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[0][2])]),
                 ])
 
     table_rows1 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=df.iloc[1][0]),
-                    html.Td(id='table_td', children=df.iloc[1][1]),
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[1][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[1][3],target="_blank")
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[1][1][8:10]+'.'+df.iloc[1][1][5:7]+'.'+df.iloc[1][1][:4]]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[1][2])]),
                 ])
     
     table_rows2 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=df.iloc[2][0]),
-                    html.Td(id='table_td', children=df.iloc[2][1]),
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[2][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[2][3],target="_blank")
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[2][1][8:10]+'.'+df.iloc[2][1][5:7]+'.'+df.iloc[2][1][:4]]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[2][2])]),
                 ])
 
     table_rows3 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=df.iloc[3][0]),
-                    html.Td(id='table_td', children=df.iloc[3][1]),
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[3][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[3][3],target="_blank")
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[3][1][8:10]+'.'+df.iloc[3][1][5:7]+'.'+df.iloc[3][1][:4]]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[3][2])]),
                 ])
 
     table_rows4 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=df.iloc[4][0]),
-                    html.Td(id='table_td', children=df.iloc[4][1]),
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[4][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[4][3],target="_blank")
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[4][1][8:10]+'.'+df.iloc[4][1][5:7]+'.'+df.iloc[4][1][:4]]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[4][2])]),
                 ])
 
     table_rows5 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=df.iloc[5][0]),
-                    html.Td(id='table_td', children=df.iloc[5][1]),
+                    html.Td(id='table_td', children=[
+                        html.P(id='table_td_text', children=df.iloc[5][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[5][3],target="_blank")
+                    ]),
+                    html.Td(id='table_td', children=[df.iloc[5][1][8:10]+'.'+df.iloc[5][1][5:7]+'.'+df.iloc[5][1][:4]]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[5][2])]),
                 ])
 
@@ -207,37 +223,49 @@ def get_table_rows_three(df):
 
     table_rows0 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[5][0],href=df.iloc[5][2],target="_blank")]),
+                        html.P(id='table_td_text', children=df.iloc[5][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[5][2],target="_blank")
+                    ]),
                     html.Td(id='table_td', children=[df.iloc[5][1]]),
                 ])
 
     table_rows1 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[4][0],href=df.iloc[4][2],target="_blank")]),
+                        html.P(id='table_td_text', children=df.iloc[4][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[4][2],target="_blank")
+                    ]),
                     html.Td(id='table_td', children=df.iloc[4][1]),
                 ])
     
     table_rows2 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[3][0],href=df.iloc[3][2],target="_blank")]),
+                        html.P(id='table_td_text', children=df.iloc[3][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[3][2],target="_blank")
+                    ]),
                     html.Td(id='table_td', children=df.iloc[3][1]),
                 ])
 
     table_rows3 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[2][0],href=df.iloc[2][2],target="_blank")]),
+                        html.P(id='table_td_text', children=df.iloc[2][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[2][2],target="_blank")
+                    ]),
                     html.Td(id='table_td', children=df.iloc[2][1]),
                 ])
 
     table_rows4 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[1][0],href=df.iloc[1][2],target="_blank")]),
+                        html.P(id='table_td_text', children=df.iloc[1][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[1][2],target="_blank")
+                    ]),
                     html.Td(id='table_td', children=df.iloc[1][1]),
                 ])
 
     table_rows5 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[0][0],href=df.iloc[0][2],target="_blank")]),
+                        html.P(id='table_td_text', children=df.iloc[0][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[0][2],target="_blank")
+                    ]),
                     html.Td(id='table_td', children=df.iloc[0][1]),
                 ])
     
@@ -251,7 +279,8 @@ def get_table_rows_four(df):
 
     table_rows0 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[5][0],href=df.iloc[5][2],target="_blank")]),
+                        html.A(id='table_td_link',children=df.iloc[5][0],href=df.iloc[5][2],target="_blank")
+                    ]),
                     html.Td(id='table_td', children=[df.iloc[5][1]]),
                 ])
 
@@ -387,7 +416,17 @@ def get_news_content(value, date, time):
 
         #Table Unternehmensnews
 
-        table_body = get_table_rows_first(df)
+        company_news_date_time = api_call_value_date_time('company_news_classified' , value, date, time)
+
+        df_company_news = pd.DataFrame(company_news_date_time)
+
+        company_news_dataframe = pd.DataFrame()
+        company_news_dataframe[' '] = df_company_news['headline']
+        company_news_dataframe['Time'] = df_company_news['timestamp']
+        company_news_dataframe['Klassifizierung'] = df_company_news['class']
+        company_news_dataframe['more_info'] = df_company_news['more_info']
+
+        table_body = get_table_rows_first(company_news_dataframe)
 
         # widget-one-news
 
@@ -551,7 +590,7 @@ def get_news_content(value, date, time):
         world_news_dataframe['Zeitpunkt'] = df_world_news['timestamp']
         world_news_dataframe['more_info'] = df_world_news['more_info']
 
-        table_body_four = get_table_rows_four(dax_news_dataframe)
+        table_body_four = get_table_rows_three(world_news_dataframe)
 
         # widget-five-news
         widget_five_news = html.Div(
@@ -570,7 +609,7 @@ def get_news_content(value, date, time):
         )
 
         #Community News
-        community_news_date_time = api_call_value_date_time('community_news' , 'adidas', '2022-06-20', "11:00")
+        community_news_date_time = api_call_value_date_time('community_news' , value, date, time)
 
         df_community_news = pd.DataFrame(community_news_date_time)
 
