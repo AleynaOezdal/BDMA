@@ -424,6 +424,12 @@ p#table_td_text{
     margin-bottom: 0px;
 }
 
+p#table_td_text_tumbs{
+    margin-bottom: 0px;
+    font-size: small;
+    margin-left: 2%;
+}
+
 #table_td_link_rezension{
     color: black;
     font-size: smaller;

@@ -1,10 +1,12 @@
 from dash import dcc, html
+from numpy import negative
 import pandas as pd
 from sidebar import data_kpi
 from setup import create_company_dict
 import dash_bootstrap_components as dbc
 from company_map import *
 import requests as req
+import arrow
 
 company_dict = create_company_dict()
 
@@ -97,7 +99,7 @@ def get_table_rows_first(df):
                     html.Td(id='table_td', children=[df.iloc[5][1][8:10]+'.'+df.iloc[5][1][5:7]+'.'+df.iloc[5][1][:4]]),
                     html.Td(id='table_td', children=[get_thumbs(df.iloc[5][2])]),
                 ])
-
+    
     table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
 
     return table_header+table_body
@@ -380,8 +382,7 @@ def get_news_content(value, date, time):
             ],
         )
 
-        #Table Unternehmensnews
-
+        #Unternehmensnews
         company_news_date_time = api_call_value_date_time('company_news_classified' , value, date, time)
 
         df_company_news = pd.DataFrame(company_news_date_time)
@@ -391,6 +392,12 @@ def get_news_content(value, date, time):
         company_news_dataframe['Time'] = df_company_news['timestamp']
         company_news_dataframe['Klassifizierung'] = df_company_news['class']
         company_news_dataframe['more_info'] = df_company_news['more_info']
+
+        df_company_news_24 = pd.DataFrame(api_call_value_date_time('company_news_classified_24h' , value, date, time))
+
+        valuecount = df_company_news_24['class'].value_counts()
+        negative = (valuecount['NEGATIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+        positive = (valuecount['POSITIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
 
         table_body = get_table_rows_first(company_news_dataframe)
 
@@ -405,6 +412,20 @@ def get_news_content(value, date, time):
                         html.H6(id="news_widget_header", children="Unternehmensnews"),
                         html.Div(children=[
                             dbc.Table(table_body)
+                        ]),
+                        html.P(id='table_td_text_tumbs', children=[
+                            'Anteil ',
+                            html.I(className='bi bi-hand-thumbs-up-fill'),
+                            ' News letzte 24h: ',
+                            round(positive, 2),
+                            '%'
+                        ]),
+                        html.P(id='table_td_text_tumbs', children=[
+                            'Anteil ',
+                            html.I(className='bi bi-hand-thumbs-down-fill'),
+                            ' News letzte 24h: ',
+                            round(negative, 2),
+                            '%'
                         ]),
                     ]
                 )
@@ -443,11 +464,11 @@ def get_news_content(value, date, time):
                                 html.P(children='Latest Positive'),
                                 html.Div(id = 'news_company_review',children = [
                                     html.Div(id= 'news_company_review_div', children=[
-                                        html.P(id='news_company_review_text',children=df_worker_reviews_negative['negative'][0]),
+                                        html.P(id='news_company_review_text',children=[df_worker_reviews_negative['negative'][0][:80]+'...']),
                                         html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_negative['more info'][0],target="_blank")
                                     ]),
                                     html.Div(id= 'news_company_review_div', children=[
-                                        html.P(id='news_company_review_text',children=df_worker_reviews_negative['negative'][1]),
+                                        html.P(id='news_company_review_text',children=[df_worker_reviews_negative['negative'][1][:80]+'...']),
                                         html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_negative['more info'][1],target="_blank")
                                     ])
                                 ])
@@ -456,11 +477,11 @@ def get_news_content(value, date, time):
                                 html.P(children='Latest Negative'),
                                 html.Div(id = 'news_company_review', children = [
                                     html.Div(id= 'news_company_review_div', children=[
-                                        html.P(id='news_company_review_text',children=df_worker_reviews_positive['positive'][0]),
+                                        html.P(id='news_company_review_text',children=[df_worker_reviews_positive['positive'][0][:80]+'...']),
                                         html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_positive['more info'][0],target="_blank")
                                     ]),
                                     html.Div(id= 'news_company_review_div', children=[
-                                        html.P(id='news_company_review_text',children=df_worker_reviews_positive['positive'][1]),
+                                        html.P(id='news_company_review_text',children=[df_worker_reviews_positive['positive'][1][:80]+'...']),
                                         html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_positive['more info'][1],target="_blank")
                                     ])
                                 ])
@@ -469,7 +490,7 @@ def get_news_content(value, date, time):
                                 html.P(children='Suggestion'),
                                 html.Div(id = 'news_company_review', children = [
                                     html.Div(id= 'news_company_review_div', children=[
-                                        html.P(id='news_company_review_text',children=df_worker_reviews_suggestions['suggestions'][0]),
+                                        html.P(id='news_company_review_text',children=[df_worker_reviews_suggestions['suggestions'][0][:80]+'...']),
                                         html.A(id='show_more', children='Mehr anzeigen', href=df_worker_reviews_suggestions['more info'][0],target="_blank")
                                     ])
                                 ])
@@ -489,6 +510,12 @@ def get_news_content(value, date, time):
         customer_experience_dataframe['Klassifizierung'] = df_customer_experience['class']
         customer_experience_dataframe['more info'] = df_customer_experience['more_info']
 
+        df_customer_experience_24 = pd.DataFrame(api_call_value_date_time('customer_experience_24h' , value, date, time))
+
+        valuecount = df_customer_experience_24['class'].value_counts()
+        negative = (valuecount['NEGATIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+        positive = (valuecount['POSITIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+
         table_body_two = get_table_rows_secound(customer_experience_dataframe)
 
         # widget-three-news
@@ -501,7 +528,21 @@ def get_news_content(value, date, time):
                         html.H6(id="news_widget_header", children="Kundenrezesionen"),
                         html.Div(children=[
                             dbc.Table(table_body_two)
-                        ]),     
+                        ]),
+                        html.P(id='table_td_text_tumbs', children=[
+                            'Anteil ',
+                            html.I(className='bi bi-hand-thumbs-up-fill'),
+                            ' News letzte 24h: ',
+                            round(positive, 2),
+                            '%'
+                        ]),
+                        html.P(id='table_td_text_tumbs', children=[
+                            'Anteil ',
+                            html.I(className='bi bi-hand-thumbs-down-fill'),
+                            ' News letzte 24h: ',
+                            round(negative, 2),
+                            '%'
+                        ]),    
                     ]
                 )
             ],
@@ -517,8 +558,12 @@ def get_news_content(value, date, time):
         df_dax_news = pd.DataFrame(dax_news)
         dax_news_dataframe = pd.DataFrame()
         dax_news_dataframe[' '] = df_dax_news['headline']
-        dax_news_dataframe['Zeitpunkt'] = df_dax_news['timestamp']
+        dax_news_dataframe['Datum'] = df_dax_news['timestamp']
         dax_news_dataframe['more_info'] = df_dax_news['more_info']
+
+        for index, row in dax_news_dataframe.iterrows():
+            if 'Uhr' in row['Datum']:
+                row['Datum'] = arrow.now().format('DD.MM.YY')
 
         table_body_three = get_table_rows_three(dax_news_dataframe)
 
@@ -553,8 +598,12 @@ def get_news_content(value, date, time):
         df_world_news = pd.DataFrame(world_news)
         world_news_dataframe = pd.DataFrame()
         world_news_dataframe[' '] = df_world_news['headline']
-        world_news_dataframe['Zeitpunkt'] = df_world_news['timestamp']
+        world_news_dataframe['Datum'] = df_world_news['timestamp']
         world_news_dataframe['more_info'] = df_world_news['more_info']
+
+        for index, row in world_news_dataframe.iterrows():
+            if 'Uhr' in row['Datum']:
+                row['Datum'] = arrow.now().format('DD.MM.YY')
 
         table_body_four = get_table_rows_three(world_news_dataframe)
 
@@ -585,6 +634,12 @@ def get_news_content(value, date, time):
         community_news_dataframe['Klassifizierung'] = df_community_news['class']
         community_news_dataframe['more_info'] = df_community_news['more_info']
 
+        df_community_news_24 = pd.DataFrame(api_call_value_date_time('community_news_24h' , value, date, time))
+
+        valuecount = df_community_news_24['class'].value_counts()
+        negative = (valuecount['NEGATIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+        positive = (valuecount['POSITIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+
         table_body = get_table_rows_last(community_news_dataframe)
 
         # widget-six-news
@@ -597,6 +652,20 @@ def get_news_content(value, date, time):
                         html.H6(id="news_widget_header", children="Börsen-Community"),
                         html.Div(children=[
                             dbc.Table(table_body)
+                        ]),
+                        html.P(id='table_td_text_tumbs', children=[
+                            'Anteil ',
+                            html.I(className='bi bi-hand-thumbs-up-fill'),
+                            ' News letzte 24h: ',
+                            round(positive, 2),
+                            '%'
+                        ]),
+                        html.P(id='table_td_text_tumbs', children=[
+                            'Anteil ',
+                            html.I(className='bi bi-hand-thumbs-down-fill'),
+                            ' News letzte 24h: ',
+                            round(negative, 2),
+                            '%'
                         ]),     
                     ]
                 )
