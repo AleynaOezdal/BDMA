@@ -5,12 +5,14 @@ For doing so, we conducted several tasks such as Web Scraping, Data Processing, 
 
 ### Have an overview on our tech stack:
 
+<p align="left">
 <img src="https://www.vectorlogo.zone/logos/google_cloud/google_cloud-ar21.svg" alt="mysql" width="100" height="50"/> 
 <img src="https://www.vectorlogo.zone/logos/apache_kafka/apache_kafka-ar21.svg" alt="mysql" width="100" height="50"/> 
 <img src="https://www.vectorlogo.zone/logos/apache_spark/apache_spark-ar21.svg" alt="mysql" width="100" height="50"/> 
 <img src="https://www.vectorlogo.zone/logos/plot_ly/plot_ly-ar21.svg" alt="mysql" width="100" height="50"/> 
 <img src="https://www.vectorlogo.zone/logos/mongodb/mongodb-ar21.svg" alt="mysql" width="100" height="50"/> 
 <img src="https://www.vectorlogo.zone/logos/docker/docker-ar21.svg" alt="mysql" width="100" height="50"/> 
+</p>
 
 ---
 :building_construction: /src: Here you will find our backend infrastructure, including our scripts for web crawling, event streaming and data processing
