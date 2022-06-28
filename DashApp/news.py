@@ -14,6 +14,7 @@ company_dict = create_company_dict()
 company_dict_kununu = create_company_dict_kununu()
 company_dict_community = create_company_dict_community()
 
+# api Calls je nach nötiger Abfrage
 def api_call_value(data, value):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
     result = req.get(url)
@@ -29,6 +30,7 @@ def api_call_date_time(data, date, time):
     result = req.get(url)
     return result.json()
 
+#Funktion für Daumen-Hoch und Daumen-Runter
 def get_thumbs(classification):
     if classification == 'Negative':
         content = html.I(className="bi bi-hand-thumbs-down-fill")
@@ -43,6 +45,7 @@ def get_thumbs(classification):
         content = html.I(className="bi bi-hand-thumbs-up-fill")
         return content
 
+#Tabelle für Unternehmensnews
 def get_table_rows_first(df):
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Datum"), html.Th(html.Th(id='tumbs_header',children=[
                         html.I(className='bi bi-hand-thumbs-up-fill'),
@@ -67,6 +70,7 @@ def get_table_rows_first(df):
 
     return table_header+table_body
 
+#Tabelle für Kundenrezensionen
 def get_table_rows_secound(df):
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th(id='tumbs_header',children=[
                         html.I(className='bi bi-hand-thumbs-up-fill'),
@@ -88,6 +92,7 @@ def get_table_rows_secound(df):
             
     return table_header+table_body
 
+#Tabelle für Dax-News und Global-News
 def get_table_rows_three(df):
 
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th('Datum')]))]
@@ -108,6 +113,7 @@ def get_table_rows_three(df):
 
     return table_header+table_body
 
+#Tabelle für Börsen-Community
 def get_table_rows_last(df):
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Datum"), html.Th(html.Th(id='tumbs_header',children=[
                         html.I(className='bi bi-hand-thumbs-up-fill'),
@@ -132,12 +138,13 @@ def get_table_rows_last(df):
 
     return table_header+table_body
 
+#Funktion für Content
 def get_news_content(value, date, time):
     if value in data_kpi:
-        # value for header
+        # value für Header
         name = value
 
-        # small letter for dict
+        # kleinbuchstaben für api Calls
         if " " in value:
             value = value.replace(" ", "_")
         if "." in value:
@@ -147,7 +154,7 @@ def get_news_content(value, date, time):
 
         wkns_and_isins = api_call_value("wkns_and_isins", value)
 
-        # content-header-kpi
+        # Content Header News
         content_header_news = html.Div(
             id="content_header_news",
             children=[
@@ -171,6 +178,8 @@ def get_news_content(value, date, time):
         company_news_dataframe['more_info'] = df_company_news['more_info']
 
         company_news_dataframe = company_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+        company_news_dataframe = company_news_dataframe.sort_values(by=['Time'])
+        
 
         df_company_news_24 = pd.DataFrame(api_call_value_date_time('company_news_classified_24h' , value, date, time))
 
@@ -191,7 +200,6 @@ def get_news_content(value, date, time):
         table_body = get_table_rows_first(company_news_dataframe)
 
         # widget-one-news
-
         widget_one_news = html.Div(
             id="news_widget",
             children=[
@@ -221,7 +229,7 @@ def get_news_content(value, date, time):
             ],
         )
 
-        #worker reviews
+        #Mitarbeiter-Bewertungen
         worker_reviews = api_call_value_date_time('worker_reviews', company_dict_kununu[value], date, time)
 
         worker_reviews_positive = []
@@ -290,7 +298,7 @@ def get_news_content(value, date, time):
             ],
         )
 
-        #Kunden
+        #Kundenrezensionen
         customer_experience_date_time = api_call_value_date_time('customer_experience', value, date, time)
 
         df_customer_experience = pd.DataFrame(customer_experience_date_time)
@@ -303,7 +311,7 @@ def get_news_content(value, date, time):
                                             id="news_widget_content",
                                             children=[
                                                 html.H6(id="news_widget_header", children="Kundenrezensionen"),
-                                                html.P(id='table_td_text', children=['Für '+name+' gibt es keine Kundenrezensionen bei unserem Review-Provider. Schauen Sie gerne bei anderen Unternhemen vorbei.']),
+                                                html.P(id='table_td_text', children=['Für '+name+' gibt es keine Kundenrezensionen bei unserem Review-Provider. Schauen Sie gerne bei anderen Unternehmen vorbei.']),
                                             ]
                                         )
                                     ],
@@ -364,7 +372,7 @@ def get_news_content(value, date, time):
                 ],
             )
 
-        #Dax News
+        #Dax-News
         dax_news_date_time = api_call_date_time('dax_news' , date, time)
         dax_news = []
 
@@ -378,6 +386,7 @@ def get_news_content(value, date, time):
         dax_news_dataframe['more_info'] = df_dax_news['more_info']
 
         dax_news_dataframe = dax_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+        dax_news_dataframe = dax_news_dataframe.sort_values(by=['Datum'])
 
         for index, row in dax_news_dataframe.iterrows():
             if 'Uhr' in row['Datum']:
@@ -401,7 +410,7 @@ def get_news_content(value, date, time):
             ],
         )
 
-        #Global News
+        #Global-News
         world_news_date_time = api_call_date_time('world_news_by_date' , date, time)
         world_news = []
 
@@ -420,6 +429,7 @@ def get_news_content(value, date, time):
         world_news_dataframe['more_info'] = df_world_news['more_info']
 
         world_news_dataframe = world_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+        world_news_dataframe = world_news_dataframe.sort_values(by=['Datum'])
 
         for index, row in world_news_dataframe.iterrows():
             if 'Uhr' in row['Datum']:
@@ -443,7 +453,7 @@ def get_news_content(value, date, time):
             ],
         )
 
-        #Community News
+        #Börsen-Community
         community_news_date_time = api_call_value_date_time('community_news' , company_dict_community[value], date, time)
 
         df_community_news = pd.DataFrame(community_news_date_time)
@@ -455,6 +465,7 @@ def get_news_content(value, date, time):
         community_news_dataframe['more_info'] = df_community_news['more_info']
 
         community_news_dataframe = community_news_dataframe.drop_duplicates(subset=[' '], keep="last")
+        community_news_dataframe = community_news_dataframe.sort_values(by=['Time'])
 
         df_community_news_24 = pd.DataFrame(api_call_value_date_time('community_news_24h' , value, date, time))
 
@@ -504,6 +515,7 @@ def get_news_content(value, date, time):
             ],
         )
 
+        #Layout der Seite erstellen
         content_news =html.Div(
                 id="content_news",
                 children=[
