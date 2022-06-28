@@ -35,6 +35,7 @@ all_companies = [
     "allianz",
     "basf",
     "bayer",
+    "beiersdorf",
     "bmw",
     "brenntag",
     "continental",
@@ -78,6 +79,7 @@ companies_url = [
     "allianz",
     "basf",
     "bayer",
+    "beiersdorf",
     "bmw",
     "brenntag",
     "continental",
@@ -123,6 +125,7 @@ yfinance_symbols_dax_companies = [
     "alv",
     "bas",
     "bayn",
+    "bei",
     "bmw",
     "bnr",
     "con",
@@ -166,6 +169,7 @@ kununu_companies = [
     "allianzdeutschland",
     "basf-se",
     "bayer",
+    "beiersdorf",
     "bmwgroup",
     "brenntag",
     "continental-gruppe",
@@ -209,6 +213,7 @@ community_company = [
     "allianz",
     "basf",
     "bayer",
+    "beiersdorf",
     "bmw",
     "brenntag",
     "continental",
@@ -252,6 +257,7 @@ community_number = [
     "715",
     "364",
     "1084",
+    "358",
     "394",
     "6442",
     "130",
@@ -289,6 +295,12 @@ community_number = [
     "2692",
 ]
 
+all_cities = [
+    "frankfurt-am-main",
+    "esslingen",
+    # ...
+]
+
 test_symbols = ["ads", "air", "alv"]
 
 
@@ -311,7 +323,7 @@ def get(url, yahoo_finance=False):
     if res.status_code == 200:
         return res.text.strip()
     else:
-        raise BaseException
+        raise Exception
 
 
 def create_company_dict(

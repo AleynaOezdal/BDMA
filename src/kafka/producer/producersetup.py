@@ -1,4 +1,26 @@
+import os
+from confluent_kafka import Producer
+import yfinance as yf
 import requests
+
+
+def send_msg(topic, value):
+    p = Producer(
+        {
+            "bootstrap.servers": "pkc-75m1o.europe-west3.gcp.confluent.cloud:9092",
+            "security.protocol": "SASL_SSL",
+            "sasl.mechanisms": "PLAIN",
+            "sasl.username": "MYN4NRK4X2IPGWN5",
+            "sasl.password": "zjiiPk7J/6daoizRA7XBwg0Dpnpu7V3e05Cbvwj0GeustkQEWDZkGcCJ3dQG1E+i",
+        }
+    )
+
+    p.produce(topic, value, callback=delivery_report)
+    # result.get(timeout=60)
+    p.poll(10000)
+    p.flush()
+    # Wait for any outstanding messages to be delivered and delivery report
+    # callbacks to be triggered.
 
 
 def delivery_report(err, msg):
@@ -18,6 +40,7 @@ all_companies = [
     "allianz",
     "basf",
     "bayer",
+    "beiersdorf",
     "bmw",
     "brenntag",
     "continental",
@@ -61,6 +84,7 @@ companies_url = [
     "allianz",
     "basf",
     "bayer",
+    "beiersdorf",
     "bmw",
     "brenntag",
     "continental",
@@ -106,6 +130,7 @@ yfinance_symbols_dax_companies = [
     "alv",
     "bas",
     "bayn",
+    "bei",
     "bmw",
     "bnr",
     "con",
@@ -149,6 +174,7 @@ kununu_companies = [
     "allianzdeutschland",
     "basf-se",
     "bayer",
+    "beiersdorf",
     "bmwgroup",
     "brenntag",
     "continental-gruppe",
@@ -192,6 +218,7 @@ community_company = [
     "allianz",
     "basf",
     "bayer",
+    "beiersdorf",
     "bmw",
     "brenntag",
     "continental",
@@ -235,6 +262,7 @@ community_number = [
     "715",
     "364",
     "1084",
+    "358",
     "394",
     "6442",
     "130",
@@ -272,11 +300,15 @@ community_number = [
     "2692",
 ]
 
+all_cities = ["frankfurt-am-main", "berlin", "muenchen"]
+
 test_symbols = ["ads", "air", "alv"]
 
 
-timezone= ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00',
-             '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+def initialize_yf_tickers(companies: list):
+    # Initialize yahooFinance Ticker for multiple companies and return it
+    ticker = yf.Tickers(" ".join(companies))
+    return ticker
 
 
 # Crawling web page with given URL
@@ -302,27 +334,3 @@ def create_company_dict(
     for index in range(len(company_names)):
         company_dict[company_names[index]] = symbols[index]
     return company_dict
-
-def create_company_dict_kununu(
-    company_names: list = all_companies, symbols: list = kununu_companies
-):
-    company_dict = {}
-    for index in range(len(company_names)):
-        company_dict[company_names[index]] = symbols[index]
-    return company_dict
-
-def create_company_dict_community(
-    company_names: list = all_companies, symbols: list = community_company
-):
-    company_dict = {}
-    for index in range(len(company_names)):
-        company_dict[company_names[index]] = symbols[index]
-    return company_dict
-
-if __name__ == "__main__":
-    print(len(yfinance_symbols_dax_companies))
-    print(len(all_companies))
-    print(len(companies_url))
-    print(len(community_number))
-    print(len(community_company))
-    print(len(community_company) == len(community_number))

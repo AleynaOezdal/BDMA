@@ -14,6 +14,8 @@ from sidebar import data_kpi
 import plotly.graph_objects as go
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP])
+server = app.server
+
 
 # datetime object containing current date and time
 now = datetime.now()
@@ -106,4 +108,4 @@ def render_page_content(pathname, value, date, time):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host="0.0.0.0", port=8080)
