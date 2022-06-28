@@ -15,11 +15,11 @@ For doing so, we conducted several tasks such as Web Scraping, Data Processing, 
 </p>
 
 ---
-:building_construction: /src: Here you will find our backend infrastructure, including our scripts for web crawling, event streaming and data processing
+:building_construction: ```/src:``` Here you will find our backend infrastructure, including our scripts for web crawling, event streaming and data processing
 
-:desktop_computer: /DashApp: In this directory, you will find our frontend code. We used Plotly Dash for visualizing our data.
+:desktop_computer: ```/DashApp:``` In this directory, you will find our frontend code. We used Plotly Dash for visualizing our data.
 
-:left_right_arrow: /DashApp/server: In ```main.py```, you will find our API configuration for connecting our frontend services with our database to extract the latest data
+:left_right_arrow: ```/DashApp/server:``` In ```main.py```, you will find our API configuration for connecting our frontend services with our database to extract the latest data
 
 ___
 
