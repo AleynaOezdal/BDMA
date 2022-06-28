@@ -6,14 +6,6 @@ import dash_bootstrap_components as dbc
 from company_map import *
 import requests as req
 
-#example DataFrame
-
-d = {
-    '': ['Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster','Ziel ist die WM Vorbereitung Oktober/November. Da werden einige auch die Aktie/Trikots kaufen.', 'Real hat die CL GEWONNEN. Adidas Ausrüster'], 
-    'Datum': ['22.05.2022', '11:50','23:52', '11:50','23:52', '11:50'], 
-    'Klassifizierung': ['Negative', 'Positive','Negative', 'Positive','Negative', 'Positive']}
-df = pd.DataFrame(data=d)
-
 company_dict = create_company_dict()
 
 def api_call_value(data, value):
@@ -30,32 +22,6 @@ def api_call_date_time(data, date, time):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{date}/{time}"
     result = req.get(url)
     return result.json()
-
-# get short numbers with two decimal places
-def short_num(num):
-    magnitude = 0
-    while abs(num) >= 1000:
-        magnitude += 1
-        num /= 1000.0
-    # add more suffixes if you need them
-    return "%.2f%s" % (
-        num,
-        ["", " Tausend", " MIO.", " MRD.", " BIO.", " Trillionen"][magnitude],
-    )
-
-
-# value to select a company and navigationpoint
-def get_value_without_kpi(value):
-    if value == "None":
-        content = html.H3(
-            id="content-header", children=["Wählen Sie ein Unternehmen aus"]
-        )
-        return content
-    else:
-        content = html.H3(
-            id="content-header", children=["Wählen Sie ein Navigationspunkt aus"]
-        )
-        return content
 
 def get_thumbs(classification):
     if classification == 'Negative':
