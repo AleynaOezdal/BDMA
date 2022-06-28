@@ -11,8 +11,11 @@ from ast import literal_eval
 from datetime import datetime, timedelta, date
 import ast
 
+#Diagramme: Candle Chart für die Performace, Dax, Major Holder, Key Characteristics und Dividendenzahlungen
+
 company_dict = create_company_dict()
 
+# api Calls je nach nötiger Abfrage
 def api_call(data, value):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
     result = req.get(url)
@@ -47,6 +50,7 @@ def short_num(num):
         ["", " Tausend", " MIO.", " MRD.", " BIO.", " Trillionen"][magnitude],
     )
 
+#Daten abfrage, falls keine Aktuellen Daten vorhanden sind
 def check_key_char(x, value):
 
     key_characteristics = api_call_value_date_time("key_characteristics", value, datetime.today() - timedelta(days=1), "17:30")
@@ -62,7 +66,7 @@ def check_key_char(x, value):
         for i in col_name2:
             key_values.append(i)
 
-    df_key_yesterday = pd.DataFrame(
+    df_key_yesterday = pd.DataFrame( #falls kein aktueller Wert vorhanden, werden die Daten vom verherigen Tag genutzt
         {
             "": key_columns,
             " ": key_values,
@@ -74,7 +78,7 @@ def check_key_char(x, value):
     else:
         return x
 
-
+#Namen der Firmen und WKNS-Wert werden angepasst
 def get_stocks_content_value(value, date, time):
     if value in data_kpi:
         # value for header
@@ -103,7 +107,7 @@ def get_stocks_content_value(value, date, time):
             ],
         )
 
-        #widget-one-stocks
+        #widget-one-stocks Performance
 
         result_api_call = api_call_value_date_time("stock_price", company_dict[value], date, time)
         dax_api_call = api_call_value_date_time("stock_price", "^GDAXI", date, time)
@@ -124,6 +128,7 @@ def get_stocks_content_value(value, date, time):
             actual_stock = pd.concat([actual_stock, data_as_df], axis=0)
         actual_stock.index = pd.to_datetime(actual_stock.index, unit="ms") + timedelta(hours=2)
 
+        #Candle Chart 
         candlestick_chart = go.Figure()
 
 

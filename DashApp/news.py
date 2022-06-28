@@ -1,3 +1,4 @@
+from re import I
 from dash import dcc, html
 from numpy import negative
 import pandas as pd
@@ -7,6 +8,7 @@ import dash_bootstrap_components as dbc
 from company_map import *
 import requests as req
 import arrow
+import re
 
 company_dict = create_company_dict()
 company_dict_kununu = create_company_dict_kununu()
@@ -47,62 +49,21 @@ def get_table_rows_first(df):
                         html.P(id='tumbs_header_text',children='/'),
                         html.I(className='bi bi-hand-thumbs-down-fill')    
                     ]))]))]
-
-    table_rows0 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[0][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[0][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[0][1][8:10]+'.'+df.iloc[0][1][5:7]+'.'+df.iloc[0][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[0][2])]),
-                ])
-
-    table_rows1 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[1][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[1][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[1][1][8:10]+'.'+df.iloc[1][1][5:7]+'.'+df.iloc[1][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[1][2])]),
-                ])
     
-    table_rows2 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[2][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[2][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[2][1][8:10]+'.'+df.iloc[2][1][5:7]+'.'+df.iloc[2][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[2][2])]),
-                ])
+    row_list = []
 
-    table_rows3 = html.Tr(id='table_tr', children=[
+    for i in range(min(len(df), 6)):
+        table_rows = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[3][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[3][3],target="_blank")
+                        html.P(id='table_td_text', children=re.sub("(.{28})", "\\1\n", df.iloc[i][0], 0, re.DOTALL)),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[i][3],target="_blank")
                     ]),
-                    html.Td(id='table_td', children=[df.iloc[3][1][8:10]+'.'+df.iloc[3][1][5:7]+'.'+df.iloc[3][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[3][2])]),
+                    html.Td(id='table_td', children=[df.iloc[i][1][8:10]+'.'+df.iloc[i][1][5:7]+'.'+df.iloc[i][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[i][2])]),
                 ])
+        row_list.append(table_rows)
 
-    table_rows4 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[4][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[4][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[4][1][8:10]+'.'+df.iloc[4][1][5:7]+'.'+df.iloc[4][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[4][2])]),
-                ])
-
-    table_rows5 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[5][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[5][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[5][1][8:10]+'.'+df.iloc[5][1][5:7]+'.'+df.iloc[5][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[5][2])]),
-                ])
-    
-    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+    table_body = [html.Tbody(row_list)]
 
     return table_header+table_body
 
@@ -112,134 +73,38 @@ def get_table_rows_secound(df):
                         html.P(id='tumbs_header_text',children='/'),
                         html.I(className='bi bi-hand-thumbs-down-fill')    
                     ])]))]
+    row_list = []
 
-    table_rows0 = html.Tr(id='table_tr', children=[
+    for i in range(min(len(df), 10)):
+        table_rows = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[0][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[0][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[0][1])]),
+                        html.P(id='table_td_text',children=re.sub("(.{28})", "\\1\n", df.iloc[i][0], 0, re.DOTALL)),
+                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[i][2],target="_blank")]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[i][1])]),
                 ])
+        row_list.append(table_rows)
 
-    table_rows1 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[1][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[1][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[1][1])]),
-                ])
-    
-    table_rows2 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[2][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[2][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[2][1])]),
-                ])
-
-    table_rows3 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[3][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[3][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[3][1])]),
-                ])
-
-    table_rows4 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[4][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[4][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[4][1])]),
-                ])
-
-    table_rows5 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[5][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[5][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[5][1])]),
-                ])
-
-    table_rows6 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[6][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[6][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[6][1])]),
-                ])
-
-    table_rows7 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[7][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[7][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[7][1])]),
-                ])
-    
-    table_rows8 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[8][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[8][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[8][1])]),
-                ])
-
-    table_rows9 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text',children=df.iloc[9][0]),
-                        html.A(id='table_td_link_rezension',children='Ganze Rezension lesen',href=df.iloc[9][2],target="_blank")]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[9][1])]),
-                ])
-     
-    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5, table_rows6, table_rows7, table_rows8, table_rows9])]
-
+    table_body = [html.Tbody(row_list)]
+            
     return table_header+table_body
 
 def get_table_rows_three(df):
 
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th('Datum')]))]
-
-    table_rows0 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[5][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[5][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[5][1]]),
-                ])
-
-    table_rows1 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[4][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[4][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[4][1]),
-                ])
     
-    table_rows2 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[3][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[3][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[3][1]),
-                ])
+    row_list = []
 
-    table_rows3 = html.Tr(id='table_tr', children=[
+    for i in range(min(len(df), 6)):
+        table_rows = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[2][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[2][2],target="_blank")
+                        html.P(id='table_td_text', children=re.sub("(.{28})", "\\1\n", df.iloc[i][0], 0, re.DOTALL)),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[i][2],target="_blank")
                     ]),
-                    html.Td(id='table_td', children=df.iloc[2][1]),
+                    html.Td(id='table_td', children=[df.iloc[i][1]]),
                 ])
+        row_list.append(table_rows)
 
-    table_rows4 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[1][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[1][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[1][1]),
-                ])
-
-    table_rows5 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[0][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[0][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[0][1]),
-                ])
-    
-    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+    table_body = [html.Tbody(row_list)]
 
     return table_header+table_body
 
@@ -250,67 +115,22 @@ def get_table_rows_last(df):
                         html.I(className='bi bi-hand-thumbs-down-fill')    
                     ]))]))]
 
-    table_rows0 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[0][0][:50]+'...'),
-                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[0][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[0][1][8:10]+'.'+df.iloc[0][1][5:7]+'.'+df.iloc[0][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[0][2])]),
-                ])
+    row_list = []
 
-    table_rows1 = html.Tr(id='table_tr', children=[
+    for i in range(min(len(df), 6)):
+        table_rows = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[1][0][:50]+'...'),
-                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[1][3],target="_blank")
+                        html.P(id='table_td_text', children=re.sub("(.{28})", "\\1\n", df.iloc[i][0][:80], 0, re.DOTALL)+'...'),
+                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[i][3],target="_blank")
                     ]),
-                    html.Td(id='table_td', children=[df.iloc[1][1][8:10]+'.'+df.iloc[1][1][5:7]+'.'+df.iloc[1][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[1][2])]),
+                    html.Td(id='table_td', children=[df.iloc[i][1][8:10]+'.'+df.iloc[i][1][5:7]+'.'+df.iloc[i][1][:4]]),
+                    html.Td(id='table_td', children=[get_thumbs(df.iloc[i][2])]),
                 ])
-    
-    table_rows2 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[2][0][:50]+'...'),
-                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[2][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[2][1][8:10]+'.'+df.iloc[2][1][5:7]+'.'+df.iloc[2][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[2][2])]),
-                ])
+        row_list.append(table_rows)
 
-    table_rows3 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[3][0][:50]+'...'),
-                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[3][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[3][1][8:10]+'.'+df.iloc[3][1][5:7]+'.'+df.iloc[3][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[3][2])]),
-                ])
-
-    table_rows4 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[4][0][:50]+'...'),
-                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[4][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[4][1][8:10]+'.'+df.iloc[4][1][5:7]+'.'+df.iloc[4][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[4][2])]),
-                ])
-
-    table_rows5 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[5][0][:50]+'...'),
-                        html.A(id='table_td_link_rezension',children='Ganzen Beitrag lesen',href=df.iloc[5][3],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[5][1][8:10]+'.'+df.iloc[5][1][5:7]+'.'+df.iloc[5][1][:4]]),
-                    html.Td(id='table_td', children=[get_thumbs(df.iloc[5][2])]),
-                ])
-
-    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+    table_body = [html.Tbody(row_list)]
 
     return table_header+table_body
-
-# valuecount = df['Klasse'].value_counts()
-# negativ = valuecount["Negativ"]
-# positiv = valuecount["Positiv"]
 
 def get_news_content(value, date, time):
     if value in data_kpi:
@@ -365,8 +185,8 @@ def get_news_content(value, date, time):
         else:
             negative = 0 
 
-        negative = (negative/(negative+positive)*100)
-        positive = (positive/(negative+positive)*100)
+        negative_finale = (negative/(negative+positive))*100
+        positive_finale = (positive/(negative+positive))*100
 
         table_body = get_table_rows_first(company_news_dataframe)
 
@@ -386,14 +206,14 @@ def get_news_content(value, date, time):
                             'Anteil ',
                             html.I(className='bi bi-hand-thumbs-up-fill'),
                             ' News letzte 24h: ',
-                            round(positive, 2),
+                            round(positive_finale, 2),
                             '%'
                         ]),
                         html.P(id='table_td_text_tumbs', children=[
                             'Anteil ',
                             html.I(className='bi bi-hand-thumbs-down-fill'),
                             ' News letzte 24h: ',
-                            round(negative, 2),
+                            round(negative_finale, 2),
                             '%'
                         ]),
                     ]
@@ -474,60 +294,75 @@ def get_news_content(value, date, time):
         customer_experience_date_time = api_call_value_date_time('customer_experience', value, date, time)
 
         df_customer_experience = pd.DataFrame(customer_experience_date_time)
-        customer_experience_dataframe = pd.DataFrame()
-        customer_experience_dataframe[' '] = df_customer_experience['title']
-        customer_experience_dataframe['Klassifizierung'] = df_customer_experience['class']
-        customer_experience_dataframe['more info'] = df_customer_experience['more_info']
 
-        customer_experience_dataframe = customer_experience_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+        if 'title' not in df_customer_experience:
+            widget_three_news = html.Div(
+                                    id="news_widget",
+                                    children=[
+                                        html.Div(
+                                            id="news_widget_content",
+                                            children=[
+                                                html.H6(id="news_widget_header", children="Kundenrezensionen"),
+                                                html.P(id='table_td_text', children=['Für '+name+' gibt es keine Kundenrezensionen bei unserem Review-Provider. Schauen Sie gerne bei anderen Unternhemen vorbei.']),
+                                            ]
+                                        )
+                                    ],
+                                )
+        else: # 'title' in df_customer_experience:
+            customer_experience_dataframe = pd.DataFrame()
+            customer_experience_dataframe[' '] = df_customer_experience['title']
+            customer_experience_dataframe['Klassifizierung'] = df_customer_experience['class']
+            customer_experience_dataframe['more info'] = df_customer_experience['more_info']
 
-        df_customer_experience_24 = pd.DataFrame(api_call_value_date_time('customer_experience_24h' , value, date, time))
+            customer_experience_dataframe = customer_experience_dataframe.drop_duplicates(subset=[' '], keep= 'last')
 
-        valuecount = df_customer_experience_24['class'].value_counts()
-        if "POSITIVE" in valuecount:
-            positive = valuecount['POSITIVE']
-        else:
-            positive = 0 
+            df_customer_experience_24 = pd.DataFrame(api_call_value_date_time('customer_experience_24h' , value, date, time))
 
-        if "NEGATIVE" in valuecount:
-            negative = valuecount['NEGATIVE']
-        else:
-            negative = 0 
+            valuecount = df_customer_experience_24['class'].value_counts()
+            if "POSITIVE" in valuecount:
+                positive = valuecount['POSITIVE']
+            else:
+                positive = 0 
 
-        negative = (negative/(negative+positive)*100)
-        positive = (positive/(negative+positive)*100)
+            if "NEGATIVE" in valuecount:
+                negative = valuecount['NEGATIVE']
+            else:
+                negative = 0 
 
-        table_body_two = get_table_rows_secound(customer_experience_dataframe)
+            negative_finale = (negative/(negative+positive))*100
+            positive_finale = (positive/(negative+positive))*100
 
-        # widget-three-news
-        widget_three_news = html.Div(
-            id="news_widget",
-            children=[
-                html.Div(
-                    id="news_widget_content",
-                    children=[
-                        html.H6(id="news_widget_header", children="Kundenrezesionen"),
-                        html.Div(children=[
-                            dbc.Table(table_body_two)
-                        ]),
-                        html.P(id='table_td_text_tumbs', children=[
-                            'Anteil ',
-                            html.I(className='bi bi-hand-thumbs-up-fill'),
-                            ' News letzte 24h: ',
-                            round(positive, 2),
-                            '%'
-                        ]),
-                        html.P(id='table_td_text_tumbs', children=[
-                            'Anteil ',
-                            html.I(className='bi bi-hand-thumbs-down-fill'),
-                            ' News letzte 24h: ',
-                            round(negative, 2),
-                            '%'
-                        ]),    
-                    ]
-                )
-            ],
-        )
+            table_body_two = get_table_rows_secound(customer_experience_dataframe)
+
+            # widget-three-news
+            widget_three_news = html.Div(
+                id="news_widget",
+                children=[
+                    html.Div(
+                        id="news_widget_content",
+                        children=[
+                            html.H6(id="news_widget_header", children="Kundenrezensionen"),
+                            html.Div(children=[
+                                dbc.Table(table_body_two)
+                            ]),
+                            html.P(id='table_td_text_tumbs', children=[
+                                'Anteil ',
+                                html.I(className='bi bi-hand-thumbs-up-fill'),
+                                ' News letzte 24h: ',
+                                round(positive_finale, 2),
+                                '%'
+                            ]),
+                            html.P(id='table_td_text_tumbs', children=[
+                                'Anteil ',
+                                html.I(className='bi bi-hand-thumbs-down-fill'),
+                                ' News letzte 24h: ',
+                                round(negative_finale, 2),
+                                '%'
+                            ]),    
+                        ]
+                    )
+                ],
+            )
 
         #Dax News
         dax_news_date_time = api_call_date_time('dax_news' , date, time)
@@ -634,8 +469,8 @@ def get_news_content(value, date, time):
         else:
             negative = 0 
 
-        negative = (negative/(negative+positive)*100)
-        positive = (positive/(negative+positive)*100)
+        negative_finale = (negative/(negative+positive))*100
+        positive_finale = (positive/(negative+positive))*100
 
         table_body = get_table_rows_last(community_news_dataframe)
 
@@ -654,14 +489,14 @@ def get_news_content(value, date, time):
                             'Anteil ',
                             html.I(className='bi bi-hand-thumbs-up-fill'),
                             ' News letzte 24h: ',
-                            round(positive, 2),
+                            round(positive_finale, 2),
                             '%'
                         ]),
                         html.P(id='table_td_text_tumbs', children=[
                             'Anteil ',
                             html.I(className='bi bi-hand-thumbs-down-fill'),
                             ' News letzte 24h: ',
-                            round(negative, 2),
+                            round(negative_finale, 2),
                             '%'
                         ]),     
                     ]
