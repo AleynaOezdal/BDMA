@@ -190,11 +190,13 @@ def get_stocks_content_value(value, date, time):
             ]
         )
 
+        candlestick_chart['layout']['updatemenus'][0]['pad']=dict(r= -80, t= -70)
+
         candlestick_chart.update_layout(
             plot_bgcolor="#FFFFFF",
             margin_l=10,
             margin_r=0,
-            margin_t=0,
+            margin_t=80,
             margin_b=0,
             uniformtext_minsize=6,
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio",
