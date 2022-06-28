@@ -275,6 +275,10 @@ community_number = [
 test_symbols = ["ads", "air", "alv"]
 
 
+timezone= ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00',
+             '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+
+
 # Crawling web page with given URL
 # param :yahoo_finance: To crawl data from yahooFinance, we have to send a User-Agent Header, otherwise YF will block the request
 def get(url, yahoo_finance=False):
@@ -299,6 +303,21 @@ def create_company_dict(
         company_dict[company_names[index]] = symbols[index]
     return company_dict
 
+def create_company_dict_kununu(
+    company_names: list = all_companies, symbols: list = kununu_companies
+):
+    company_dict = {}
+    for index in range(len(company_names)):
+        company_dict[company_names[index]] = symbols[index]
+    return company_dict
+
+def create_company_dict_community(
+    company_names: list = all_companies, symbols: list = community_company
+):
+    company_dict = {}
+    for index in range(len(company_names)):
+        company_dict[company_names[index]] = symbols[index]
+    return company_dict
 
 if __name__ == "__main__":
     print(len(yfinance_symbols_dax_companies))

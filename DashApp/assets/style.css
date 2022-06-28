@@ -9,18 +9,21 @@
 -News Widget
  */
 
-
 body {
+    /* Header */
+    /* font-family: Georgia, 'Times New Roman', Times, serif; */
     font-family: Arial, Helvetica, sans-serif;
 }
 
 #Header {
     padding: 1%;
+    box-shadow: 5px 1px 7.5px silver;
+
 }
 
 #Header h2 {
     font-weight: bold;
-    font-family: arial;
+    font-family: georgia;
 }
 
 #second_header {
@@ -55,12 +58,12 @@ body {
     display: inline-block;
 }
 
- /* DatePicker */
+/* DatePicker */
 
 .DateInput_input, .DateInput_input_1 {
     height: 36px;
     background-color: #F6F6F6;
-    font-size: 18px;
+    font-size: 16px;
     width: max-content;
     box-sizing: border-box;
 }
@@ -74,27 +77,39 @@ body {
     border-bottom: 1px solid;
 }
 
-/* Button */
+/* Accordings */
 
-#button_search{
-    background-color: #E5E5E5;
+.accordion-button:not(.collapsed) {
+    background-color: white;
+    color: black;
+    padding: 1%;
+}
+
+.accordion-item {
+    font-size: 0.75em;
+}
+
+/* Button */
+#info-button,#info-button-2,#info-button-3,#info-button-4,#info-button-4,#info-button-5,#info-button-6 {
+    background-color: #FFFFFF;
     color: black;
     border: 0;
 }
 
-#navigation_point_one, #navigation_point_two, #navigation_point_three{
+#navigation_point_home, #navigation_point_one, #navigation_point_two, #navigation_point_three{
     background-color: #E5E5E5;
     color: black;
     border-radius: 0;
     text-align: center;
 }
 
-#navigation_point_one.active, #navigation_point_two.active, #navigation_point_three.active{
-    background-color: #67E98B;
+#navigation_point_home.active, #navigation_point_one.active, #navigation_point_two.active, #navigation_point_three.active{
+    background-color: #AEDCF5;
 }
 
 #quote_sidebar {
     text-align: center;
+    font-family: georgia;
 }
 
 #quote_sidebar H6{
@@ -119,7 +134,7 @@ body {
     vertical-align: middle;
 }
 
-#content {
+#content, #content_news {
     width: 100%;
     vertical-align: middle;
     height: 100%;
@@ -130,25 +145,27 @@ body {
     margin: 1%;
 }
 
-#content_header_kpi{
+#content_header_kpi, #content_header_stocks, #content_header_news{
     margin: 1%;
 }
 
 #content_header_first{
     font-weight: bold;
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
+    font-family: georgia;
+
 }
 
 #content_header_second{
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
     padding-left: .5%;
 }
 
 #content_header_third{
     font-style: italic;
-    display: inline-block;
+    display: inline-flex;
     vertical-align: top;
     padding-left: .5%;
 }
@@ -165,18 +182,18 @@ body {
 }
 
 #kpi_widget {
-    display: -webkit-flex; 
+    display: -webkit-flex;
     display: -ms-flexbox; 
     display: flex;
     width: 48%;
     height: auto;
-    background-color: #F6F6F6;
+    background-color: #FFFFFF;
     margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
     padding: 0%;
 }
 
-#kpi_widget_text{
+#kpi_widget_text {
     width: 40%;
     padding: 5%;
     display: inline-block;
@@ -185,6 +202,7 @@ body {
 #kpi_widget_header{
     font-size: 80%;
 }
+
 
 #kpi_widget_key {
     font-size: 150%;
@@ -218,7 +236,7 @@ body {
 
 /* KPI graph */
 
-#kpi_graph{
+#kpi_graph {
     width: 40%;
     display: inline-block;
     margin: 5%;
@@ -236,33 +254,241 @@ body {
     width: 100%;
 }
 
-/*News Widget*/
+/* Stocks Widget */
 
-#news_widget {
+#stocks_widget{
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
+    width: 31%;
+    height: auto;
+    display: inline-block;
+    margin: 1%;
+    box-shadow: 5px 10px 7.5px silver;
+    padding: 0%;
+    vertical-align: middle;
+}
+
+#stocks_widget_2 {
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
     width: 48%;
     display: inline-block;
     vertical-align: middle;
-    background-color: #F6F6F6;
+    margin: 1%;
+    padding: 0%;
+    box-shadow: 5px 10px 7.5px silver;
+}
+
+#stocks_widget_text{
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+#stocks_widget_header{
+    font-size: 100%;
+}
+
+/* Stocks graph */
+
+#stocks_graph{
+    margin: 5%;
+}
+
+
+#stocks_graph_2 {
+    width: 34vmax;
+    height: 20vmax;
+}
+
+#stocks_graph_3 {
+
+    height: 20vmax;
+    width: 32vmax;
+    margin: 2%;
+}
+
+#candlechart_reiter {
+    margin: 2%
+}
+
+/*News Widget*/
+
+#widget_news {
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+#news_widget {
+    display: -webkit-flex; 
+    display: -ms-flexbox; 
+    display: flex;
+    width: 31%;
+    display: inline-block;
+    vertical-align: middle;
     margin: 1%;
     box-shadow: 5px 10px 7.5px silver;
 }
 
-
-#news_widget_text{
-    width: 40%;
+#news_widget_content{
     margin: 5%;
+}
+
+/* News Widget Table */
+
+th{
+    font-size: small;
+}
+
+#tumbs_header{
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    border-bottom: 0;
+    font-size: x-small;
+    width: 30px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#tumbs_header_text {
+    margin-bottom: 0;
+}
+
+td, #table_td {
+    font-size: smaller;  
+}
+
+tr, #table_tr{
+    border-bottom: 2px;
+}
+
+/* News Widget Review */
+
+#news_latest_positive , #news_latest_negative, #news_suggestion {
+    font-size: smaller;
+    font-weight: bold;
+}
+
+#news_company_review{
+    font-weight: normal;
+}
+
+#news_company_review_div{
+    margin-bottom: 2%;
+    padding: 2%;
+    background-color: #F6F6F6;
     display: inline-block;
 }
 
-#news_widget_header{
-    font-size: 80%;
+#news_company_review_text{
+    width: 74%;
+    display: inline-block;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+#show_more{
+    width:25%; 
+    display: inline-block;
+    font-size: xx-small;
+    color: black;
 }
 
 
-#news_widget_pos{
-    color: lightgreen;
-    font-size: 80%;
+/* Tumbs */
+
+.bi-hand-thumbs-down-fill {
+    color: #FF918C;
+}
+
+.bi-hand-thumbs-up-fill {
+    color: #558A5C;
+}
+
+.bi-thermometer-sun{
+    color: #F0CB96;
+}
+
+/* News Link */
+
+p#table_td_text{
+    margin-bottom: 0px;
+}
+
+p#table_td_text_tumbs{
+    margin-bottom: 0px;
+    font-size: small;
+    margin-left: 2%;
+}
+
+#table_td_link_rezension{
+    color: black;
+    font-size: smaller;
+}
+
+#table_td_link{
+    color: black;
+    text-decoration: none;
+}
+
+/**Home**/
+
+#home_widget {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 48%;
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow: 5px 10px 7.5px silver;
+    margin: 1%;
 }
 
 
+#home_graph {
+ width: 32vmax;
+ height: 25vmax;
+ margin: 2%;
+ background-color: white;
+}
 
+/* Weather */
+
+#weather{
+    float: right;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+#weather_emoji{
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 400%;
+    padding-left: 1%;
+    float: left;
+    width: 32%;
+}
+
+#weather_text{
+    color: black;
+    float: left;
+    width: 64%;
+}
+
+#weather_text P {
+    margin-bottom: 0;
+}

@@ -7,9 +7,11 @@ from setup import create_company_dict
 import dash_bootstrap_components as dbc
 from company_map import *
 import requests as req
+import definitionen_infobutton as dinfo
 
 company_dict = create_company_dict()
 
+#config = {'displayModeBar': False}
 
 def api_call(data, value):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
@@ -28,6 +30,7 @@ def short_num(num):
         num,
         ["", " Tausend", " MIO.", " MRD.", " BIO.", " Trillionen"][magnitude],
     )
+
 
 
 # value to select a company and navigationpoint
@@ -63,13 +66,9 @@ def get_kpi_content_value(value):
         content_header_kpi = html.Div(
             id="content_header_kpi",
             children=[
-                html.H3(
-                    id="content_header_first", children=["Key Performance Indicators "]
-                ),
+                html.H3(id="content_header_first", children=["Key Performance Indicators "]),
                 html.H3(id="content_header_second", children=["for"]),
-                html.H3(
-                    id="content_header_third", children=[name + " " + wkns_and_isins]
-                ),
+                html.H3(id="content_header_third", children=[name + " " + wkns_and_isins]),
             ],
         )
 
@@ -87,41 +86,51 @@ def get_kpi_content_value(value):
         fig_ebit = go.Figure(go.Scatter(y=ebit_df["Ebit"], x=ebit_df.index))
 
         # sytle from the line chart
-        fig_ebit.update_traces(mode="lines", line_color="#EA000D")
-
+        fig_ebit.update_traces(mode="lines", line_color="#FF918C")
         fig_ebit.update_layout(
             showlegend=False,
             margin_l=0,
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
         # style the widget and grapgh
-        widget_ebit_kpi = html.Div(
-            id="kpi_widget",
-            children=[
-                html.Div(
-                    id="kpi_widget_text",
-                    children=[
-                        html.P(id="kpi_widget_header", children="EBIT"),
-                        html.P(id="kpi_widget_key", children=ebit),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
-                    ],
-                ),
-                html.Div(
-                    id="kpi_graph",
-                    children=[
-                        dcc.Graph(
-                            figure=fig_ebit,
-                            style={"width": "20vmax", "height": "10vmax"},
-                        )
-                    ],
-                ),
-            ],
-        )
+        widget_ebit_kpi = html.Div( id="kpi_widget",
+                        children=[
+                            html.Div(
+                                id="kpi_widget_text",
+                                children=[
+                                    html.P(id="kpi_widget_header", children="EBIT"),
+                                    html.P(id="kpi_widget_key", children=ebit),
+                                    html.Div(children =[
+                                        dbc.Button(
+                                            html.I(className="bi bi-info-circle-fill me-2"),
+                                            id="info-button",
+                                            className="me-1",
+                                        ),
+                                        dbc.Popover(
+                                            dbc.PopoverBody(dinfo.definitions["EBIT"]),
+                                            target="info-button",
+                                            trigger="click",
+                                        ),
+                                    ])
+                                ],
+                            ),
+                            html.Div(
+                                id="kpi_graph",
+                                children=[
+                                    dcc.Graph(
+                                        figure=fig_ebit,
+                                        style={"width": "20vmax", "height": "10vmax"},
+                                    )
+                                ],
+                            ),
+                        ],
+                    )
 
         # get widget data gross profit
         gross_profit_api_data = api_call("gross_profit", company_dict[value])
@@ -148,8 +157,8 @@ def get_kpi_content_value(value):
             )
         )
         fig_gross_profit.update_traces(
-            marker_color="#19AD50", textposition="inside", texttemplate="%{text:.3s}"
-        )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
+            marker_color="#254C73", textposition="inside", texttemplate="%{text:.3s}"
+        )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6 #E6E0D3
 
         fig_gross_profit.update_layout(
             showlegend=False,
@@ -157,9 +166,10 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
 
         # div to complete the widget and graph
@@ -171,7 +181,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Profit Margin"),
                         html.P(id="kpi_widget_key", children=gross_profit),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-2",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Profit Margin"]),
+                                target="info-button-2",
+                                trigger="click",
+                            ),
+                        ])                    
                     ],
                 ),
                 html.Div(
@@ -215,8 +236,9 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
 
         # div to complete and style the widget and graph
@@ -228,7 +250,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Net income"),
                         html.P(id="kpi_widget_key", children=income),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-3",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Net Income"]),
+                                target="info-button-3",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
@@ -269,8 +302,8 @@ def get_kpi_content_value(value):
         )
         # style of the figure total revenue
         fig_total_revenue.update_traces(
-            marker_color="#79EB71", textposition="inside", texttemplate="%{text:.3s}"
-        )
+            marker_color="#AEDCF5", textposition="inside", texttemplate="%{text:.3s}"
+        ) #FF918C #EDA611 #122538
 
         fig_total_revenue.update_layout(
             showlegend=False,
@@ -278,9 +311,10 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
 
         # div to complete/style the widget and graph
@@ -292,7 +326,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="Revenue"),
                         html.P(id="kpi_widget_key", children=revenue),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-4",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Revenue"]),
+                                target="info-button-4",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
@@ -332,7 +377,7 @@ def get_kpi_content_value(value):
             )
         )
         fig_total_operating_expenses.update_traces(
-            marker_color="#3368AD", textposition="inside", texttemplate="%{text:.3s}"
+            marker_color="#FF9176", textposition="inside", texttemplate="%{text:.3s}"
         )  # , marker_line_color='#67E98B', marker_line_width=1.5, opacity=0.6)
 
         fig_total_operating_expenses.update_layout(
@@ -341,9 +386,10 @@ def get_kpi_content_value(value):
             margin_r=0,
             margin_t=0,
             margin_b=0,
-            paper_bgcolor="#F6F6F6",
-            plot_bgcolor="#F6F6F6",
+            paper_bgcolor="#FFFFFF",
+            plot_bgcolor="#FFFFFF",
             uniformtext_minsize=6,
+            modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio", "hoverCompareCartesian", "hovercompare", "lasso", "lasso2d", "orbitRotation", "orbitrotation", "pan", "pan2d", "pan3d", "reset", "resetCameraDefault3d", "resetCameraLastSave3d", "resetGeo", "resetSankeyGroup", "resetScale2d", "resetViewMapbox", "resetViews", "resetcameradefault", "resetcameralastsave", "resetsankeygroup", "resetscale", "resetview", "resetviews", "select", "select2d", "sendDataToCloud", "senddatatocloud", "tableRotation", "tablerotation", "toImage", "toggleHover", "toggleSpikelines", "togglehover", "togglespikelines", "toimage", "zoom", "zoom2d", "zoom3d", "zoomIn2d", "zoomInGeo", "zoomInMapbox", "zoomOut2d", "zoomOutGeo", "zoomOutMapbox", "zoomin", "zoomout"]
         )
 
         # widget-six-kpi
@@ -357,7 +403,18 @@ def get_kpi_content_value(value):
                             id="kpi_widget_header", children="Total operating expenses"
                         ),
                         html.P(id="kpi_widget_key", children=level),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-5",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["Total Operating Expenses"]),
+                                target="info-button-5",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
@@ -384,13 +441,13 @@ def get_kpi_content_value(value):
                 color = "red"
             elif esg <= 40 and esg >= 30:
                 high_average_low = "HIGH"
-                color = "red"
+                color = "#FF918C"
             elif esg <= 30 and esg >= 20:
                 high_average_low = "MEDIUM"
                 color = "orange"
             elif esg <= 20 and esg >= 10:
                 high_average_low = "LOW"
-                color = "green"
+                color = "#558A5C"
             elif esg <= 10:
                 high_average_low = "NEGLIGIBLE"
                 color = "green"
@@ -408,7 +465,18 @@ def get_kpi_content_value(value):
                     children=[
                         html.P(id="kpi_widget_header", children="ESG Risk Score"),
                         html.P(id="kpi_widget_key", children=esg),
-                        # html.P(id='kpi_widget_pos', children=['▲'])
+                        html.Div(children =[
+                            dbc.Button(
+                                html.I(className="bi bi-info-circle-fill me-2"),
+                                id="info-button-6",
+                                className="me-1",
+                            ),
+                            dbc.Popover(
+                                dbc.PopoverBody(dinfo.definitions["ESG Risk Score"]),
+                                target="info-button-6",
+                                trigger="click",
+                            ),
+                        ])
                     ],
                 ),
                 html.Div(
@@ -459,12 +527,16 @@ def get_kpi_content_value(value):
                                 dbc.Col(
                                     html.Div(
                                         id="branche",
-                                        children=[html.H6("Branche: " + distribution)],
+                                        children=[html.H6("Branche: "), distribution],
                                     )
                                 ),
                                 dbc.Col(
                                     html.Div(
-                                        "Hauptkonkurrent: " + main_competitor_string
+                                        id="competitors",
+                                        children=[
+                                            html.H6("Hauptkonkurrent: "),
+                                            main_competitor_string,
+                                        ],
                                     )
                                 ),
                             ]
