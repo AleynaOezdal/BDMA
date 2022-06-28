@@ -6,10 +6,10 @@ import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 from setup import create_company_dict
 from ast import literal_eval
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
+import arrow
 
 #Dax News und Candle Chart zum Dax der Startseite
-
 
 company_dict = create_company_dict()
 
@@ -28,56 +28,20 @@ def api_call_value_date_time(data, value, date, time):
 def get_table_rows_three(df):
 
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th('Datum')]))]
-
-    table_rows0 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[5][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[5][2],target="_blank") #verlinkung zur Seite
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[5][1]]),
-                ])
-
-    table_rows1 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[4][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[4][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[4][1]),
-                ])
     
-    table_rows2 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[3][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[3][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[3][1]),
-                ])
+    row_list = []
 
-    table_rows3 = html.Tr(id='table_tr', children=[
+    for i in range(min(len(df), 6)):
+        table_rows = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[2][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[2][2],target="_blank")
+                        html.P(id='table_td_text', children=df.iloc[i][0]),
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[i][2],target="_blank")
                     ]),
-                    html.Td(id='table_td', children=df.iloc[2][1]),
+                    html.Td(id='table_td', children=[df.iloc[i][1]]),
                 ])
+        row_list.append(table_rows)
 
-    table_rows4 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[1][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[1][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[1][1]),
-                ])
-
-    table_rows5 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.P(id='table_td_text', children=df.iloc[0][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[0][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=df.iloc[0][1]),
-                ])
-    
-    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
+    table_body = [html.Tbody(row_list)]
 
     return table_header+table_body
 
@@ -184,7 +148,7 @@ def get_home_content(value, date, time):
     ], )
 
     # Dax News
-    dax_news_date_time = api_call_date_time('dax_news', date, time)
+    dax_news_date_time = api_call_date_time('dax_news' , date, time)
     dax_news = []
 
     for entry in dax_news_date_time:
@@ -195,6 +159,13 @@ def get_home_content(value, date, time):
     dax_news_dataframe[' '] = df_dax_news['headline']
     dax_news_dataframe['Datum'] = df_dax_news['timestamp']
     dax_news_dataframe['more_info'] = df_dax_news['more_info']
+
+    dax_news_dataframe = dax_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+    dax_news_dataframe = dax_news_dataframe.sort_values(by=['Datum'])
+
+    for index, row in dax_news_dataframe.iterrows():
+        if 'Uhr' in row['Datum']:
+            row['Datum'] = arrow.now().format('DD.MM.YY')
 
     table_body_three = get_table_rows_three(dax_news_dataframe)
 

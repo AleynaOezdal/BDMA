@@ -50,7 +50,7 @@ dict_company_names = {
     "henkel_vz": "Henkel vz.",
     "mtu": "MTU",
     "munich_re": "Munich RE",
-    "qiagen": "OIAGEN",
+    "qiagen": "QIAGEN",
     "rwe": "RWE",
     "sap": "SAP",
     "sartorius_vz": "Sartorius vz.",
