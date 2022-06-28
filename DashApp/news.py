@@ -350,6 +350,8 @@ def get_news_content(value, date, time):
         company_news_dataframe['Klassifizierung'] = df_company_news['class']
         company_news_dataframe['more_info'] = df_company_news['more_info']
 
+        company_news_dataframe = company_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+
         df_company_news_24 = pd.DataFrame(api_call_value_date_time('company_news_classified_24h' , value, date, time))
 
         valuecount = df_company_news_24['class'].value_counts()
@@ -477,6 +479,8 @@ def get_news_content(value, date, time):
         customer_experience_dataframe['Klassifizierung'] = df_customer_experience['class']
         customer_experience_dataframe['more info'] = df_customer_experience['more_info']
 
+        customer_experience_dataframe = customer_experience_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+
         df_customer_experience_24 = pd.DataFrame(api_call_value_date_time('customer_experience_24h' , value, date, time))
 
         valuecount = df_customer_experience_24['class'].value_counts()
@@ -538,6 +542,8 @@ def get_news_content(value, date, time):
         dax_news_dataframe['Datum'] = df_dax_news['timestamp']
         dax_news_dataframe['more_info'] = df_dax_news['more_info']
 
+        dax_news_dataframe = dax_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+
         for index, row in dax_news_dataframe.iterrows():
             if 'Uhr' in row['Datum']:
                 row['Datum'] = arrow.now().format('DD.MM.YY')
@@ -578,6 +584,8 @@ def get_news_content(value, date, time):
         world_news_dataframe['Datum'] = df_world_news['timestamp']
         world_news_dataframe['more_info'] = df_world_news['more_info']
 
+        world_news_dataframe = world_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
+
         for index, row in world_news_dataframe.iterrows():
             if 'Uhr' in row['Datum']:
                 row['Datum'] = arrow.now().format('DD.MM.YY')
@@ -610,6 +618,8 @@ def get_news_content(value, date, time):
         community_news_dataframe['Time'] = df_community_news['timestamp']
         community_news_dataframe['Klassifizierung'] = df_community_news['class']
         community_news_dataframe['more_info'] = df_community_news['more_info']
+
+        community_news_dataframe = community_news_dataframe.drop_duplicates(subset=[' '], keep="last")
 
         df_community_news_24 = pd.DataFrame(api_call_value_date_time('community_news_24h' , value, date, time))
 
