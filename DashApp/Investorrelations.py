@@ -135,7 +135,10 @@ def get_stocks_content_value(value, date, time):
                     high=actual_stock["High"],
                     low=actual_stock["Low"],
                     close=actual_stock["Close"],
-                    name= "Kerze", visible=False
+                    increasing_line_color='#122538',
+                    decreasing_line_color='#F0CB96',
+                    name= "Kerze", visible=False,
+
                 ))
 
         candlestick_chart.update_xaxes(
