@@ -55,7 +55,7 @@ sidebar = html.Div(
                 dcc.DatePickerSingle(
                     id='single_date_picker',
                     placeholder=datetime.today(),
-                    date = datetime.today(),
+                    date = datetime.today().strftime("%Y-%m-%d"),
                     display_format="DD.MM.YYYY",
 
                 ),
