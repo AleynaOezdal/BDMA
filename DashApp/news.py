@@ -353,8 +353,18 @@ def get_news_content(value, date, time):
         df_company_news_24 = pd.DataFrame(api_call_value_date_time('company_news_classified_24h' , value, date, time))
 
         valuecount = df_company_news_24['class'].value_counts()
-        negative = (valuecount['NEGATIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
-        positive = (valuecount['POSITIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+        if "POSITIVE" in valuecount:
+            positive = valuecount['POSITIVE']
+        else:
+            positive = 0 
+
+        if "NEGATIVE" in valuecount:
+            negative = valuecount['NEGATIVE']
+        else:
+            negative = 0 
+
+        negative = (negative/(negative+positive)*100)
+        positive = (positive/(negative+positive)*100)
 
         table_body = get_table_rows_first(company_news_dataframe)
 
@@ -470,8 +480,18 @@ def get_news_content(value, date, time):
         df_customer_experience_24 = pd.DataFrame(api_call_value_date_time('customer_experience_24h' , value, date, time))
 
         valuecount = df_customer_experience_24['class'].value_counts()
-        negative = (valuecount['NEGATIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
-        positive = (valuecount['POSITIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+        if "POSITIVE" in valuecount:
+            positive = valuecount['POSITIVE']
+        else:
+            positive = 0 
+
+        if "NEGATIVE" in valuecount:
+            negative = valuecount['NEGATIVE']
+        else:
+            negative = 0 
+
+        negative = (negative/(negative+positive)*100)
+        positive = (positive/(negative+positive)*100)
 
         table_body_two = get_table_rows_secound(customer_experience_dataframe)
 
@@ -594,8 +614,18 @@ def get_news_content(value, date, time):
         df_community_news_24 = pd.DataFrame(api_call_value_date_time('community_news_24h' , value, date, time))
 
         valuecount = df_community_news_24['class'].value_counts()
-        negative = (valuecount['NEGATIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
-        positive = (valuecount['POSITIVE']/(valuecount['NEGATIVE']+valuecount['POSITIVE'])*100)
+        if "POSITIVE" in valuecount:
+            positive = valuecount['POSITIVE']
+        else:
+            positive = 0 
+
+        if "NEGATIVE" in valuecount:
+            negative = valuecount['NEGATIVE']
+        else:
+            negative = 0 
+
+        negative = (negative/(negative+positive)*100)
+        positive = (positive/(negative+positive)*100)
 
         table_body = get_table_rows_last(community_news_dataframe)
 
