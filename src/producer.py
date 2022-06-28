@@ -14,9 +14,15 @@ from producersetup import (
 )
 import datetime as dt
 import time
+from dateutil.relativedelta import relativedelta
 import pandas as pd
 import yfinance as yf
 
+"""
+IMPORTANT NOTE:
+This is our local producer file. This file has been used to produce our data to Kafka for TASK 1 (until the end of May 2022).
+For the latest producer files used in GCP Cloud Functions for TASK 2, please refer to the corresponding directory.
+"""
 
 def get_weather(cities: list = all_cities):
 
@@ -51,38 +57,147 @@ def get_weather(cities: list = all_cities):
 
     return "Done. Produced all temps to Kafka."
 
+
 def get_actual_stock_price(companies: list = yfinance_symbols_dax_companies):
     for company in companies:
         try:
             suffix = ".DE"
+            if company == "^GDAXI":
+                suffix = ""
             record_value = yf.download(
                 f"{company.upper()+suffix}",
-                period="1d",
-                interval="2m",
+                start=dt.datetime.now() - relativedelta(hours=1),
+                end=dt.datetime.now(),
+                interval="1m",
                 group_by="ticker",
             ).to_json()
 
-        except Exception as e:
-            record_value = "NaN"
-            print(f"FAILED. For {company} the following error occured: {type(e)}")
+            # Store company as key and stock history as value in a dict and transform it into JSON
+            # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
+            # Steps: res = json.loads(value), then result = pd.json_normalize(res)
+            p.produce(
+                "stock_price_onehour",
+                json.dumps(
+                    {
+                        "company": company,
+                        "stock_price_onehour": record_value,
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
+                callback=delivery_report,
+            )
+            p.flush()
 
-        # Store company as key and stock history as value in a dict and transform it into JSON
-        # Note: record_value is a DataFrame to json. In the frontend, we'll need to transform it back into a DF.
-        # Steps: res = json.loads(value), then result = pd.json_normalize(res)
-        p.produce(
-            "actual_stock_price",
-            json.dumps(
+        except Exception as e:
+            # Send NaN-Value to stock_data_one_hour topic
+            message = json.dumps(
                 {
-                    "_id": company,
-                    "actual_stock_price": record_value,
+                    "company": company,
+                    "stock_price_onehour": "NaN",
                     "time": str(dt.datetime.now()),
                 }
-            ),
-            callback=delivery_report,
-        )
-        p.flush()
+            )
+            p.produce("stock_price_onehour", message, callback=delivery_report)
+            p.flush()
+
+            # Send Error-Object to error topic (DLQ)
+            error_message = json.dumps(
+                {
+                    "scraper": "stock_price_onehour",
+                    "company": company,
+                    "timestamp": str(dt.datetime.now()),
+                    "error": repr(e),
+                    "error_type": str(type(e)),
+                }
+            )
+            p.produce("error", error_message, callback=delivery_report)
+            p.flush()
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
 
     return "Done. Produced all stock data to Kafka."
+
+
+def get_key_characteristics(companies: list = all_companies):
+
+    for company in companies:
+        comp_stock_prices = dict()
+        try:
+            base_url = f"https://www.finanzen.net/aktien/{company}-aktie"
+            soup = bs(get(base_url), "html.parser")
+
+            stock_price = {
+                "price": soup.find("div", {"class": "row quotebox"})
+                .find_all("div")[0]
+                .text,
+                "change": soup.find("div", {"class": "row quotebox"})
+                .find_all("div")[2]
+                .text,
+                "open": soup.find("div", {"class": "box table-quotes"})
+                .find_all("td")[5]
+                .text.split()[0],
+                "day_before": soup.find("div", {"class": "box table-quotes"})
+                .find_all("td")[5]
+                .text.split()[2],
+                "highest": soup.find("div", {"class": "box table-quotes"})
+                .find_all("td")[11]
+                .text.split()[0],
+                "lowest": soup.find("div", {"class": "box table-quotes"})
+                .find_all("td")[11]
+                .text.split()[2],
+                "marketcap": soup.find("div", {"class": "box table-quotes"})
+                .find_all("td")[9]
+                .text,
+                "time": soup.find("div", {"class": "box table-quotes"})
+                .find_all("td")[3]
+                .text.split()[1],
+                "date": soup.find("div", {"class": "box table-quotes"})
+                .find_all("td")[3]
+                .text.split()[0],
+            }
+
+            comp_stock_prices[f"{company}"] = stock_price
+
+            # Store company as key and stock price as value in a dict and transform it into JSON
+            p.produce(
+                "key_characteristics",
+                json.dumps(
+                    {
+                        "company": company,
+                        "key_characteristics": comp_stock_prices,
+                        "time": str(dt.datetime.now()),
+                    }
+                ),
+                callback=delivery_report,
+            )
+            p.flush()
+
+        except Exception as e:
+            # Send NaN-Value to ESG topic
+            message = json.dumps(
+                {
+                    "company": company,
+                    "key_characteristics": "NaN",
+                    "time": str(dt.datetime.now()),
+                }
+            )
+            p.produce("key_characteristics", message, callback=delivery_report)
+            p.flush()
+
+            # Send Error-Object to error topic (DLQ)
+            error_message = json.dumps(
+                {
+                    "scraper": "key_characteristics",
+                    "company": company,
+                    "timestamp": str(dt.datetime.now()),
+                    "error": repr(e),
+                    "error_type": str(type(e)),
+                }
+            )
+            p.produce("error", error_message, callback=delivery_report)
+            p.flush()
+            print(f"FAILED. For {company} the following error occured: {type(e)}")
+
+    return "Done. Produced all Stock Prices to Kafka."
 
 
 def get_news(companies: list = all_companies):
@@ -457,7 +572,7 @@ if __name__ == "__main__":
     # WARN: Only start if kafka cluster is set up!
 
     # get_actual_stock_price()
-
+    """
     print("Now: News for all DAX Companies ...")
     get_news()
     print("Done. Waiting for 5 seconds.")
@@ -481,5 +596,7 @@ if __name__ == "__main__":
 
     print("Now: Customer Experiences from Trustpilot for all DAX Companies ...")
     get_customer_experience()
-    print("Completed.")
+    print("Completed.")"""
     # pass
+
+    get_stock_price_last_hour()

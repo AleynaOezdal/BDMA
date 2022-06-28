@@ -3,12 +3,19 @@ from dash import dcc, html
 import plotly.graph_objects as go
 import pandas as pd
 from sidebar import data_kpi
-from retrieve_mongo_db import *
-from producersetup import create_company_dict
+from setup import create_company_dict
 import dash_bootstrap_components as dbc
-from dict import *
+from company_map import *
+import requests as req
 
 company_dict = create_company_dict()
+
+
+def api_call(data, value):
+    url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
+    result = req.get(url)
+    return result.json()
+
 
 # get short numbers with two decimal places
 def short_num(num):
@@ -22,7 +29,8 @@ def short_num(num):
         ["", " Tausend", " MIO.", " MRD.", " BIO.", " Trillionen"][magnitude],
     )
 
-#value to select a company and navigationpoint
+
+# value to select a company and navigationpoint
 def get_value_without_kpi(value):
     if value == "None":
         content = html.H3(
@@ -49,7 +57,7 @@ def get_kpi_content_value(value):
 
         value = value.lower()
 
-        wkns_and_isins = get_wkns_and_isins(value)
+        wkns_and_isins = api_call("wkns_and_isins", value)
 
         # content-header-kpi
         content_header_kpi = html.Div(
@@ -66,20 +74,19 @@ def get_kpi_content_value(value):
         )
 
         # get wiget data ebit
-        if (
-            get_ebit(company_dict[value])["Ebit"][0] != 0
-            and get_ebit(company_dict[value])["Ebit"][0] != "NaN"
-        ):
-            ebit = short_num(get_ebit(company_dict[value])["Ebit"][0])
+        ebit_data = api_call("ebit", company_dict[value])
+        ebit_api_data_df = pd.DataFrame(ebit_data, index=["Ebit"]).T
+        if ebit_api_data_df["Ebit"][0] != 0 and ebit_api_data_df["Ebit"][0] != "NaN":
+            ebit = short_num(ebit_api_data_df["Ebit"][0])
         else:
             ebit = 0
 
-        #df to sort the index for the line chart
-        ebit_df = get_ebit(company_dict[value]).sort_index()
+        # df to sort the index for the line chart
+        ebit_df = ebit_api_data_df.sort_index()
 
         fig_ebit = go.Figure(go.Scatter(y=ebit_df["Ebit"], x=ebit_df.index))
 
-        #sytle from the line chart
+        # sytle from the line chart
         fig_ebit.update_traces(mode="lines", line_color="#EA000D")
 
         fig_ebit.update_layout(
@@ -92,7 +99,7 @@ def get_kpi_content_value(value):
             plot_bgcolor="#F6F6F6",
             uniformtext_minsize=6,
         )
-        #style the widget and grapgh
+        # style the widget and grapgh
         widget_ebit_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -117,19 +124,21 @@ def get_kpi_content_value(value):
         )
 
         # get widget data gross profit
+        gross_profit_api_data = api_call("gross_profit", company_dict[value])
+        gross_profit_api_data_df = pd.DataFrame(
+            gross_profit_api_data, index=["Gross Profit"]
+        ).T
         if (
-            get_gross_profit(company_dict[value])["Gross Profit"][0] != 0
-            and get_gross_profit(company_dict[value])["Gross Profit"][0] != "NaN"
+            gross_profit_api_data_df["Gross Profit"][0] != 0
+            and gross_profit_api_data_df["Gross Profit"][0] != "NaN"
         ):
-            gross_profit = short_num(
-                get_gross_profit(company_dict[value])["Gross Profit"][0]
-            )
+            gross_profit = short_num(gross_profit_api_data_df["Gross Profit"][0])
         else:
             gross_profit = 0
 
-        gross_profit_df = get_gross_profit(company_dict[value])
+        gross_profit_df = gross_profit_api_data_df.sort_index()
 
-        #figure bar chart gross profit
+        # figure bar chart gross profit
         fig_gross_profit = go.Figure(
             go.Bar(
                 x=gross_profit_df["Gross Profit"],
@@ -153,7 +162,7 @@ def get_kpi_content_value(value):
             uniformtext_minsize=6,
         )
 
-        #div to complete the widget and graph
+        # div to complete the widget and graph
         widget_gross_profit_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -178,17 +187,22 @@ def get_kpi_content_value(value):
         )
 
         # get wiget data net income
+        net_income_api_data = api_call("net_income", company_dict[value])
+        net_income_api_data_df = pd.DataFrame(
+            net_income_api_data, index=["Net Income"]
+        ).T
         if (
-            get_net_income(company_dict[value])["Net Income"][0] != 0
-            and get_net_income(company_dict[value])["Net Income"][0] != "NaN"
+            net_income_api_data_df["Net Income"][0] != 0
+            and net_income_api_data_df["Net Income"][0] != "NaN"
         ):
-            income = short_num(get_net_income(company_dict[value])["Net Income"][0])
+            income = short_num(net_income_api_data_df["Net Income"][0])
         else:
             income = 0
 
-        #df to sort the index for the line chart
-        net_income_df = get_net_income(company_dict[value]).sort_index()
-        #figure
+        # df to sort the index for the line chart
+        net_income_df = net_income_api_data_df.sort_index()
+
+        # figure
         fig_net_income = go.Figure(
             go.Scatter(y=net_income_df["Net Income"], x=net_income_df.index)
         )
@@ -205,7 +219,7 @@ def get_kpi_content_value(value):
             plot_bgcolor="#F6F6F6",
         )
 
-        #div to complete and style the widget and graph
+        # div to complete and style the widget and graph
         widget_net_income_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -230,19 +244,22 @@ def get_kpi_content_value(value):
         )
 
         # get widget data total revenue
+        total_revenue_api_data = api_call("total_revenue", company_dict[value])
+        total_revenue_api_data_df = pd.DataFrame(
+            total_revenue_api_data, index=["Total Revenue"]
+        ).T
+
         if (
-            get_total_revenue(company_dict[value])["Total Revenue"][0] != 0
-            and get_total_revenue(company_dict[value])["Total Revenue"][0] != "NaN"
+            total_revenue_api_data_df["Total Revenue"][0] != 0
+            and total_revenue_api_data_df["Total Revenue"][0] != "NaN"
         ):
-            revenue = short_num(
-                get_total_revenue(company_dict[value])["Total Revenue"][0]
-            )
+            revenue = short_num(total_revenue_api_data_df["Total Revenue"][0])
         else:
             revenue = 0
 
-        total_revenue_df = get_total_revenue(company_dict[value])
+        total_revenue_df = total_revenue_api_data_df.sort_index()
 
-        #figure total revenue bar chart
+        # figure total revenue bar chart
         fig_total_revenue = go.Figure(
             go.Bar(
                 y=total_revenue_df["Total Revenue"],
@@ -250,7 +267,7 @@ def get_kpi_content_value(value):
                 text=total_revenue_df["Total Revenue"],
             )
         )
-        #style of the figure total revenue
+        # style of the figure total revenue
         fig_total_revenue.update_traces(
             marker_color="#79EB71", textposition="inside", texttemplate="%{text:.3s}"
         )
@@ -266,7 +283,7 @@ def get_kpi_content_value(value):
             uniformtext_minsize=6,
         )
 
-        #div to complete/style the widget and graph
+        # div to complete/style the widget and graph
         widget_total_revenue_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -291,25 +308,20 @@ def get_kpi_content_value(value):
         )
 
         # get wiget data total operating expenses
+        oper_exp_api_data = api_call("total_operating_expenses", company_dict[value])
+        oper_exp_api_data_df = pd.DataFrame(
+            oper_exp_api_data, index=["Total Operating Expenses"]
+        ).T
+
         if (
-            get_total_operating_expenses(company_dict[value])[
-                "Total Operating Expenses"
-            ][0]
-            != 0
-            and get_total_operating_expenses(company_dict[value])[
-                "Total Operating Expenses"
-            ][0]
-            != "NaN"
+            oper_exp_api_data_df["Total Operating Expenses"][0] != 0
+            and oper_exp_api_data_df["Total Operating Expenses"][0] != "NaN"
         ):
-            level = short_num(
-                get_total_operating_expenses(company_dict[value])[
-                    "Total Operating Expenses"
-                ][0]
-            )
+            level = short_num(oper_exp_api_data_df["Total Operating Expenses"][0])
         else:
             level = 0
 
-        total_operating_expenses_df = get_total_operating_expenses(company_dict[value])
+        total_operating_expenses_df = oper_exp_api_data_df.sort_index()
 
         fig_total_operating_expenses = go.Figure(
             go.Bar(
@@ -361,13 +373,14 @@ def get_kpi_content_value(value):
         )
 
         # get wiget data esg risk score
-        if (
-            get_esg_score(company_dict[value]) != 0
-            and get_esg_score(company_dict[value]) != "NaN"
-        ):
-            esg = get_esg_score(company_dict[value])
+        esg_api_data = api_call("esg_score", company_dict[value])
+
+        if esg_api_data != 0 and esg_api_data != "NaN":
+            esg = esg_api_data
             if esg >= 40:
-                high_average_low = "SERVER"     #different levels and colors for the esg score
+                high_average_low = (
+                    "SERVER"  # different levels and colors for the esg score
+                )
                 color = "red"
             elif esg <= 40 and esg >= 30:
                 high_average_low = "HIGH"
@@ -381,12 +394,12 @@ def get_kpi_content_value(value):
             elif esg <= 10:
                 high_average_low = "NEGLIGIBLE"
                 color = "green"
-        else:                               # if no data available
+        else:  # if no data available
             esg = 0
             high_average_low = "NONE"
             color = "green"
 
-        #div to complete/style the widget and graph
+        # div to complete/style the widget and graph
         widget_esg_kpi = html.Div(
             id="kpi_widget",
             children=[
@@ -411,10 +424,10 @@ def get_kpi_content_value(value):
             ],
         )
         # description of the companies
-        description = get_description(value)
+        description = api_call("description", value)
         value_long = dict_company_names_long[value]
-        distribution = get_distribution(value_long)
-        main_competitor = get_main_competitor(value_long)
+        distribution = api_call("industry_distribution", value_long)
+        main_competitor = api_call("main_competitors", value_long)
         main_competitor_string = ""
 
         for entry in main_competitor:
@@ -426,7 +439,7 @@ def get_kpi_content_value(value):
                 else:
                     main_competitor_string = main_competitor_string + ", " + entry
 
-        #text and structure of the descripton dropwdown
+        # text and structure of the descripton dropwdown
         accordion = html.Div(
             dbc.Accordion(
                 [
@@ -463,7 +476,7 @@ def get_kpi_content_value(value):
                 start_collapsed=True,
             ),
         )
-        #content from the descripton
+        # content from the descripton
 
         content = html.Div(
             id="content",

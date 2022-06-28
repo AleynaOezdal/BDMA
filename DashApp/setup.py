@@ -1,21 +1,4 @@
-import os
-from dotenv import load_dotenv
-from confluent_kafka import Producer
-import yfinance as yf
 import requests
-
-
-load_dotenv()
-
-# p = Producer(
-#     {
-#         "bootstrap.servers": os.getenv("BOOTSTRAP.SERVERS"),
-#         "security.protocol": os.getenv("SECURITY.PROTOCOL"),
-#         "sasl.mechanisms": os.getenv("SASL.MECHANISMS"),
-#         "sasl.username": os.getenv("SASL.USERNAME"),
-#         "sasl.password": os.getenv("SASL.PASSWORD"),
-#     }
-# )
 
 
 def delivery_report(err, msg):
@@ -292,12 +275,6 @@ community_number = [
 test_symbols = ["ads", "air", "alv"]
 
 
-def initialize_yf_tickers(companies: list):
-    # Initialize yahooFinance Ticker for multiple companies and return it
-    ticker = yf.Tickers(" ".join(companies))
-    return ticker
-
-
 # Crawling web page with given URL
 # param :yahoo_finance: To crawl data from yahooFinance, we have to send a User-Agent Header, otherwise YF will block the request
 def get(url, yahoo_finance=False):
@@ -327,3 +304,6 @@ if __name__ == "__main__":
     print(len(yfinance_symbols_dax_companies))
     print(len(all_companies))
     print(len(companies_url))
+    print(len(community_number))
+    print(len(community_company))
+    print(len(community_company) == len(community_number))

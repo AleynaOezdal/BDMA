@@ -2,8 +2,8 @@ from webbrowser import get
 from dash import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 from datetime import date
-from producersetup import create_company_dict
-from dict import *
+from company_map import *
+from setup import create_company_dict
 
 # get all dax companys
 
@@ -25,7 +25,10 @@ sidebar = html.Div(
     children=[
         html.Br(),
         dcc.Dropdown(
-            data_kpi, placeholder="DAX-Company auswählen", value="None", id="dropdown" #dropdown to select company
+            data_kpi,
+            placeholder="DAX-Company auswählen",
+            value="None",
+            id="dropdown",  # dropdown to select company
         ),
         # absatz
         html.Br(),
@@ -33,23 +36,24 @@ sidebar = html.Div(
             id="date_picker",
             children=[
                 dcc.DatePickerSingle(
-                    placeholder="Datum auswählen", display_format="DD MM YY" #datepicker to select date
+                    placeholder="Datum auswählen",
+                    display_format="DD MM YY",  # datepicker to select date
                 ),
             ],
         ),
         html.Br(),
-        html.Button("Suchen", id="button_search"), #button to submit
+        html.Button("Suchen", id="button_search"),  # button to submit
         dbc.Nav(
             [
-                html.Br(), #section
-                #route of the navigation points
+                html.Br(),  # section
+                # route of the navigation points
                 dbc.NavLink(
                     "Key Performance",
                     href="/Keyperformance",
                     active="exact",
                     id="navigation_point_one",
                 ),
-                html.Br(), #section
+                html.Br(),  # section
                 dbc.NavLink(
                     "Investor Relations",
                     href="/Investorrelations",
@@ -72,7 +76,7 @@ sidebar = html.Div(
         html.Div(
             id="quote_sidebar",
             children=[
-                html.H6("Motivation des Tages:"), #quote
+                html.H6("Motivation des Tages:"),  # quote
                 html.P('"Jeder Tag beginnt mit neuen Chancen!"'),
             ],
         ),

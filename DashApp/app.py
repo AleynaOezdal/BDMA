@@ -8,14 +8,16 @@ import news
 import Investorrelations
 from datetime import datetime
 
+
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 # datetime object containing current date and time
 now = datetime.now()
 
 dt_string = now.strftime("%H")
 
-#if-elif to use the right greeting on time
+# if-elif to use the right greeting on time
 
 if int(dt_string) >= 0 and int(dt_string) <= 9:
     greeting = "Guten Morgen "
@@ -72,9 +74,9 @@ def render_page_content(pathname, n_clicks, value):
     else:
         if pathname == "/":
             return [overview(value)]
-        elif pathname == "/Keyperformance": #navigationpointone
+        elif pathname == "/Keyperformance":  # navigationpointone
             return [kpi.get_kpi_content_value(value)]
-        elif pathname == "/Investorrelations": #navigationpointtwo
+        elif pathname == "/Investorrelations":  # navigationpointtwo
             return [
                 html.Div(
                     id="content_news",
@@ -91,7 +93,7 @@ def render_page_content(pathname, n_clicks, value):
                     ],
                 )
             ]
-        elif pathname == "/Companyenvironment": #navigationpointthree
+        elif pathname == "/Companyenvironment":  # navigationpointthree
             return [
                 html.Div(
                     id="content_news",
@@ -128,4 +130,4 @@ def render_page_content(pathname, n_clicks, value):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host="0.0.0.0", port=8080)
