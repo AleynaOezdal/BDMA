@@ -126,8 +126,6 @@ def get_stocks_content_value(value, date, time):
 
         candlestick_chart = go.Figure()
 
-        candlestick_chart.add_trace(go.Scatter(x=actual_stock.index, y=actual_stock["High"], name="Linie", line=dict(color='#F0CB96')))
-
 
         candlestick_chart.add_trace(go.Candlestick(
                     x=actual_stock.index,
@@ -135,9 +133,9 @@ def get_stocks_content_value(value, date, time):
                     high=actual_stock["High"],
                     low=actual_stock["Low"],
                     close=actual_stock["Close"],
-                    increasing_line_color='#122538',
+                    increasing_line_color='#E6E0D3',
                     decreasing_line_color='#F0CB96',
-                    name= "Kerze", visible=False,
+                    name= "Kerze", visible=True,
 
                 ))
 
@@ -163,40 +161,12 @@ def get_stocks_content_value(value, date, time):
 
         candlestick_chart.update_yaxes(gridcolor='#808080')
 
-        # Add dropdown
-        candlestick_chart.update_layout(
-            updatemenus=[
-                dict(
-                    buttons=list([
-                        dict(
-                            args=[{"visible": [True, False]}],
-                            label="Linie",
-                            method="restyle"
-                        ),
-
-                        dict(
-                            args=[{"visible": [False, True]}],
-                            label="Kerze",
-                            method="restyle"
-                        ),
-                    ]),
-                ),
-                dict(
-                    yanchor="bottom",
-                    y=2.02,
-                    xanchor="left",
-                    x=2
-                ),
-            ]
-        )
-
-        candlestick_chart['layout']['updatemenus'][0]['pad']=dict(r= -80, t= -70)
 
         candlestick_chart.update_layout(
             plot_bgcolor="#FFFFFF",
             margin_l=10,
             margin_r=0,
-            margin_t=80,
+            margin_t=0,
             margin_b=0,
             uniformtext_minsize=6,
             modebar_remove=["autoScale2d", "autoscale", "editInChartStudio", "editinchartstudio",
