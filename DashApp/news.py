@@ -2,13 +2,15 @@ from dash import dcc, html
 from numpy import negative
 import pandas as pd
 from sidebar import data_kpi
-from setup import create_company_dict
+from setup import create_company_dict, create_company_dict_kununu, create_company_dict_community
 import dash_bootstrap_components as dbc
 from company_map import *
 import requests as req
 import arrow
 
 company_dict = create_company_dict()
+company_dict_kununu = create_company_dict_kununu()
+company_dict_community = create_company_dict_community()
 
 def api_call_value(data, value):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{value}"
@@ -241,51 +243,6 @@ def get_table_rows_three(df):
 
     return table_header+table_body
 
-def get_table_rows_four(df):
-
-    table_header = [html.Thead(html.Tr([html.Th(" "), html.Th('Datum')]))]
-
-    table_rows0 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[5][0],href=df.iloc[5][2],target="_blank")
-                    ]),
-                    html.Td(id='table_td', children=[df.iloc[5][1]]),
-                ])
-
-    table_rows1 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[4][0],href=df.iloc[4][2],target="_blank")]),
-                    html.Td(id='table_td', children=df.iloc[4][1]),
-                ])
-    
-    table_rows2 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[3][0],href=df.iloc[3][2],target="_blank")]),
-                    html.Td(id='table_td', children=df.iloc[3][1]),
-                ])
-
-    table_rows3 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[2][0],href=df.iloc[2][2],target="_blank")]),
-                    html.Td(id='table_td', children=df.iloc[2][1]),
-                ])
-
-    table_rows4 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[1][0],href=df.iloc[1][2],target="_blank")]),
-                    html.Td(id='table_td', children=df.iloc[1][1]),
-                ])
-
-    table_rows5 = html.Tr(id='table_tr', children=[
-                    html.Td(id='table_td', children=[
-                        html.A(id='table_td_link',children=df.iloc[0][0],href=df.iloc[0][2],target="_blank")]),
-                    html.Td(id='table_td', children=df.iloc[0][1]),
-                ])
-    
-    table_body = [html.Tbody([table_rows0, table_rows1, table_rows2, table_rows3, table_rows4, table_rows5])]
-
-    return table_header+table_body
-
 def get_table_rows_last(df):
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th("Datum"), html.Th(html.Th(id='tumbs_header',children=[
                         html.I(className='bi bi-hand-thumbs-up-fill'),
@@ -433,7 +390,7 @@ def get_news_content(value, date, time):
         )
 
         #worker reviews
-        worker_reviews = api_call_value_date_time('worker_reviews', value, date, time)
+        worker_reviews = api_call_value_date_time('worker_reviews', company_dict_kununu[value], date, time)
 
         worker_reviews_positive = []
         worker_reviews_negative = []
@@ -624,7 +581,7 @@ def get_news_content(value, date, time):
         )
 
         #Community News
-        community_news_date_time = api_call_value_date_time('community_news' , value, date, time)
+        community_news_date_time = api_call_value_date_time('community_news' , company_dict_community[value], date, time)
 
         df_community_news = pd.DataFrame(community_news_date_time)
 

@@ -308,6 +308,21 @@ def create_company_dict(
         company_dict[company_names[index]] = symbols[index]
     return company_dict
 
+def create_company_dict_kununu(
+    company_names: list = all_companies, symbols: list = kununu_companies
+):
+    company_dict = {}
+    for index in range(len(company_names)):
+        company_dict[company_names[index]] = symbols[index]
+    return company_dict
+
+def create_company_dict_community(
+    company_names: list = all_companies, symbols: list = community_company
+):
+    company_dict = {}
+    for index in range(len(company_names)):
+        company_dict[company_names[index]] = symbols[index]
+    return company_dict
 
 if __name__ == "__main__":
     print(len(yfinance_symbols_dax_companies))
