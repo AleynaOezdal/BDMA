@@ -8,12 +8,12 @@ from setup import create_company_dict
 from ast import literal_eval
 from datetime import datetime, timedelta, date
 
-
+#Dax News und Candle Chart zum Dax der Startseite
 
 
 company_dict = create_company_dict()
 
-
+# api Calls je nach nötiger Abfrage
 def api_call_date_time(data, date, time):
     url = f"https://bdma-352709.ey.r.appspot.com/{data}/{date}/{time}"
     result = req.get(url)
@@ -24,6 +24,7 @@ def api_call_value_date_time(data, value, date, time):
     result = req.get(url)
     return result.json()
 
+#Table für die News
 def get_table_rows_three(df):
 
     table_header = [html.Thead(html.Tr([html.Th(" "), html.Th('Datum')]))]
@@ -31,7 +32,7 @@ def get_table_rows_three(df):
     table_rows0 = html.Tr(id='table_tr', children=[
                     html.Td(id='table_td', children=[
                         html.P(id='table_td_text', children=df.iloc[5][0]),
-                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[5][2],target="_blank")
+                        html.A(id='table_td_link_rezension',children='Ganzen Artikel lesen',href=df.iloc[5][2],target="_blank") #verlinkung zur Seite
                     ]),
                     html.Td(id='table_td', children=[df.iloc[5][1]]),
                 ])
@@ -80,6 +81,8 @@ def get_table_rows_three(df):
 
     return table_header+table_body
 
+#Namen der Unternehmen werden angepasst
+
 def get_home_content(value, date, time):
     # value for header
     name = value
@@ -92,11 +95,12 @@ def get_home_content(value, date, time):
 
     value = value.lower()
 
+#Überschrift
     content_header_home = html.Div(
         id="content_header_kpi",
         children=[
             html.H3(
-                id="content_header_first", children=["Willkommen auf unserem Dashboard"]
+                id="content_header_first", children=["Wählen Sie das gewünschte Unternehmen aus und legen Sie los!"]
             ),
             html.Br(),
             html.P(
@@ -105,9 +109,10 @@ def get_home_content(value, date, time):
         ],
     )
 
-    #Dax-Chart
+    #Dax-Candle-Chart
     dax_api_call = api_call_value_date_time("stock_price", "^GDAXI", date, time)
 
+    #Daten werden bezogen
     dax_stock = pd.DataFrame()
     for package in range(len(dax_api_call)):
         data_as_df = pd.DataFrame.from_dict(
@@ -116,9 +121,11 @@ def get_home_content(value, date, time):
         dax_stock = pd.concat([dax_stock, data_as_df], axis=0)
     dax_stock.index = pd.to_datetime(dax_stock.index, unit="ms") + timedelta(hours=2)
 
+    #Candle Chart
     candlestick_chart = go.Figure(go.Scatter(x=dax_stock.index, y=dax_stock["High"], opacity=0.7, line=dict(color='#122538', width=2 ),
                         name="DAX"))
 
+    #Update der Ranges
     candlestick_chart.update_xaxes(
         rangeslider_visible=False,
         rangebreaks=[
@@ -141,6 +148,7 @@ def get_home_content(value, date, time):
 
     candlestick_chart.update_yaxes(gridcolor='#808080')
 
+    #Update des Candle-Charts
     candlestick_chart.update_layout(
         margin_l=10,
         margin_r=0,
