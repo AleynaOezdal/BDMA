@@ -41,10 +41,6 @@ db_dividends = client["KPIs"]["dividends"]
 db_history_stock_price = client["Investor-Relations"]["history_stock_price"]
 db_key_characteristics = client["Investor-Relations"]["key_characteristics"]
 db_stock_price_lasthour = client["Investor-Relations"]["stock_price_lasthour"]
-# db_key_characteristics tbd
-# db_company_stock_data tbd
-# db_dax_stock_data tbd
-# + API
 
 db_world_news = client["Company-Environment"]["world_news"]
 db_company_news = client["Company-Environment"]["company_news_gcp"]
