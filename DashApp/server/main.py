@@ -2,7 +2,7 @@ import pandas as pd
 import pymongo
 import os
 
-from dotenv import load_dotenv # Not neccessary for GCP AE
+from dotenv import load_dotenv  # Not neccessary for GCP AE
 import certifi
 import pprint as pp
 from flask import Flask
@@ -18,10 +18,10 @@ app = Flask(__name__)
 api = Api(app)
 
 
-load_dotenv() # Not neccessary for GCP AE
+load_dotenv()  # Not neccessary for GCP AE
 
 client = pymongo.MongoClient(
-    f"mongodb+srv://allguys:M2Ju99giul6Hwlg2@{os.getenv("MONGODB.URI")}/?retryWrites=true&w=majority",
+    f"mongodb+srv://{os.getenv("MONGODB.USERNAME")}:{os.getenv("MONGODB.PASSWORD")}@{os.getenv("MONGODB.URI")}/?retryWrites=true&w=majority",
     tlsCAFile=certifi.where(),
 )
 
@@ -47,10 +47,10 @@ db_stock_price_lasthour = client["Investor-Relations"]["stock_price_lasthour"]
 # + API
 
 db_world_news = client["Company-Environment"]["world_news"]
-db_company_news = client["Company-Environment"]["company_news"]
+db_company_news = client["Company-Environment"]["company_news_gcp"]
 db_worker_reviews = client["Company-Environment"]["worker_reviews"]
-db_customer_experience = client["Company-Environment"]["customer_experience"]
-db_community_news = client["Company-Environment"]["community_news"]
+db_customer_experience = client["Company-Environment"]["customer_exp_gcp"]
+db_community_news = client["Company-Environment"]["community_news_gcp"]
 db_weather = client["Company-Environment"]["weather"]
 db_international_dax_news = client["Company-Environment"]["international_dax_news"]
 db_dax_news = client["Company-Environment"]["dax_news"]
@@ -136,48 +136,20 @@ class Dividends(Resource):
         return db_dividends.find_one({"company": symbol})["dividends"]
 
 
-"""class DAXStockDataLowerBorder(Resource):
-    def get(self, YYYY_MM_DD: str):
-        courses = db_history_stock_price.find({"stock_price": {"$gt": YYYY_MM_DD}})
-        return [stock_day for stock_day in courses]"""
-
-
 class KeyCharacteristics(Resource):
     def get(self, company, date, time):
         cursor = (
             db_key_characteristics.find(
                 {
                     "company": company,
-                    "time": {"$gte": date + " " + time},
+                    "time": {"$lte": date + " " + time + ":59"},
                 }
             )
             .limit(1)
-            .sort([("$natural", 1)])
+            .sort([("$natural", -1)])
         )
         for item in cursor:
             return item["key_characteristics"][f"{company}"]
-
-
-"""class StockPrice(Resource):
-    def get(self, symbol):
-        return db_stock_price_lasthour.find_one({"company": symbol})[
-            "stock_price_onehour"
-        ]
-"""
-
-
-"""class StockPrice(Resource):
-    def get(self, symbol):
-        time_for_last_hour = datetime.now() - timedelta(hours=1)
-        time_for_last_hour = time_for_last_hour.strftime("%Y-%m-%d %H:%M:%S")
-        query = db_stock_price_lasthour.find(
-            {"time": {"$gt": time_for_last_hour}, "company": symbol}
-        )
-        result = list()
-        for data in query:
-            del data["_id"]
-            result.append(data)
-        return result"""
 
 
 class HistoryStockPrice(Resource):
@@ -203,8 +175,8 @@ class StockPriceOverPeriod(Resource):
 class AllWorldNewsByDate(Resource):
     def get(self, date, time):
         cursor = (
-            db_world_news.find({"time": {"$lte": date + " " + time}})
-            .limit(12)
+            db_world_news.find({"time": {"$lte": date + " " + time + ":59"}})
+            .limit(25)
             .sort([("$natural", -1)])
         )
         result = list()
@@ -215,22 +187,50 @@ class AllWorldNewsByDate(Resource):
 
 
 class CompanyNews(Resource):
-    def get(self, company):
-        cursor = db_company_news.find({"company": company})
-        headlines_for_company = []
+    def get(self, company, date, time):
+        cursor = (
+            db_company_news.find(
+                {"company": company, "timestamp": {"$lte": date + " " + time + ":59"}}
+            )
+            .limit(25)
+            .sort([("$natural", -1)])
+        )
+        result = []
         for obj in cursor:
-            del obj["company"]
-            headlines_for_company.append(obj)
-        return headlines_for_company
+            del obj["_id"]
+            result.append(obj)
+        return result
+
+
+class CompanyNews24h(Resource):
+    def get(self, company, date, time):
+        today_strtime = date + " " + time + ":59"
+        today_date = datetime.strptime(today_strtime, "%Y-%m-%d %H:%M:%S")
+        yesterday_date = today_date - timedelta(days=1.0, minutes=1.0)
+        yesterday_strtime = datetime.strftime(yesterday_date, "%Y-%m-%d %H:%M:%S")
+        cursor = db_company_news.find(
+            {
+                "company": company,
+                "$and": [
+                    {"timestamp": {"$lte": today_strtime}},
+                    {"timestamp": {"$gte": yesterday_strtime}},
+                ],
+            }
+        ).sort([("$natural", -1)])
+        result = []
+        for obj in cursor:
+            del obj["_id"]
+            result.append(obj)
+        return result
 
 
 class Reviews(Resource):
     def get(self, company, date, time):
         cursor = (
             db_worker_reviews.find(
-                {"company": company, "time": {"$lte": date + " " + time}}
+                {"company": company, "time": {"$lte": date + " " + time + ":59"}}
             )
-            .limit(12)
+            .limit(25)
             .sort([("$natural", -1)])
         )
         result = []
@@ -244,9 +244,9 @@ class CustomerExperience(Resource):
     def get(self, company, date, time):
         cursor = (
             db_customer_experience.find(
-                {"company": company, "timestamp": {"$lte": date + " " + time}}
+                {"company": company, "timestamp": {"$lte": date + " " + time + ":59"}}
             )
-            .limit(12)
+            .limit(25)
             .sort([("$natural", -1)])
         )
         result = []
@@ -256,27 +256,87 @@ class CustomerExperience(Resource):
         return result
 
 
+class CustomerExperience24h(Resource):
+    def get(self, company, date, time):
+        today_strtime = date + " " + time + ":59"
+        today_date = datetime.strptime(today_strtime, "%Y-%m-%d %H:%M:%S")
+        yesterday_date = today_date - timedelta(days=1.0, minutes=1.0)
+        yesterday_strtime = datetime.strftime(yesterday_date, "%Y-%m-%d %H:%M:%S")
+        cursor = db_customer_experience.find(
+            {
+                "company": company,
+                "$and": [
+                    {"timestamp": {"$lte": today_strtime}},
+                    {"timestamp": {"$gte": yesterday_strtime}},
+                ],
+            }
+        ).sort([("$natural", -1)])
+        result = []
+        for obj in cursor:
+            del obj["_id"]
+            result.append(obj)
+        return result
+
+
 class CommunityNewsForCompany(Resource):
-    def get(self, company):
-        cursor = db_community_news.find({"company": company})
+    def get(self, company, date, time):
+        cursor = (
+            db_community_news.find(
+                {"company": company, "timestamp": {"$lte": date + " " + time + ":59"}}
+            )
+            .limit(25)
+            .sort([("$natural", -1)])
+        )
         community_posts = []
         for obj in cursor:
-            del obj["company"]
+            del obj["_id"]
             community_posts.append(obj)
         return community_posts
 
 
+class CommunityNewsForCompany24h(Resource):
+    def get(self, company, date, time):
+        today_strtime = date + " " + time + ":59"
+        today_date = datetime.strptime(today_strtime, "%Y-%m-%d %H:%M:%S")
+        yesterday_date = today_date - timedelta(days=1.0, minutes=1.0)
+        yesterday_strtime = datetime.strftime(yesterday_date, "%Y-%m-%d %H:%M:%S")
+        cursor = db_community_news.find(
+            {
+                "company": company,
+                "$and": [
+                    {"timestamp": {"$lte": today_strtime}},
+                    {"timestamp": {"$gte": yesterday_strtime}},
+                ],
+            }
+        ).sort([("$natural", -1)])
+        result = []
+        for obj in cursor:
+            del obj["_id"]
+            result.append(obj)
+        return result
+
+
 class Weather(Resource):
-    def get(self, city):
-        cursor = db_weather.find_one({"city": city})["temp"]
-        return cursor
+    def get(self, city, date, time):
+        cursor = (
+            db_weather.find({"city": city, "time": {"$lte": date + " " + time + ":59"}})
+            .limit(1)
+            .sort([("$natural", -1)])
+        )
+        result = []
+        for obj in cursor:
+            del obj["_id"]
+            result.append(obj)
+        return result
 
 
 class InternationalDaxNews(Resource):
     def get(self, date, time):
         cursor = (
-            db_international_dax_news.find({"time": {"$lte": date + " " + time}})
-            .limit(12)
+            db_international_dax_news.find(
+                {"time": {"$lte": date + " " + time + ":59"}}
+            )
+            .limit(25)
             .sort([("$natural", -1)])
         )
         result = []
@@ -289,8 +349,8 @@ class InternationalDaxNews(Resource):
 class DAXNews(Resource):
     def get(self, date, time):
         cursor = (
-            db_dax_news.find({"time": {"$lte": date + " " + time}})
-            .limit(12)
+            db_dax_news.find({"time": {"$lte": date + " " + time + ":59"}})
+            .limit(25)
             .sort([("$natural", -1)])
         )
         result = []
@@ -316,7 +376,7 @@ api.add_resource(MainCompetitors, "/main_competitors/<company>")
 
 
 # Dashboard: Investor Relations
-# Status:  to be tested
+# Status: No problems, all working
 api.add_resource(MajorHolders, "/major_holders/<symbol>")
 api.add_resource(Dividends, "/dividends/<symbol>")
 api.add_resource(KeyCharacteristics, "/key_characteristics/<company>/<date>/<time>")
@@ -325,13 +385,20 @@ api.add_resource(StockPriceOverPeriod, "/stock_price/<symbol>/<date>/<time>")
 
 
 # Dashboard: Company Environment
-# Status: to be tested
+# Status: No problems, all working
 api.add_resource(AllWorldNewsByDate, "/world_news_by_date/<date>/<time>")
-api.add_resource(CompanyNews, "/company_news_classified/<company>")  # tbd
+api.add_resource(CompanyNews, "/company_news_classified/<company>/<date>/<time>")
+api.add_resource(CompanyNews24h, "/company_news_classified_24h/<company>/<date>/<time>")
 api.add_resource(Reviews, "/worker_reviews/<company>/<date>/<time>")
 api.add_resource(CustomerExperience, "/customer_experience/<company>/<date>/<time>")
-api.add_resource(CommunityNewsForCompany, "/community_news/<company>")  # tbd
-api.add_resource(Weather, "/weather/<symbol>")
+api.add_resource(
+    CustomerExperience24h, "/customer_experience_24h/<company>/<date>/<time>"
+)
+api.add_resource(CommunityNewsForCompany, "/community_news/<company>/<date>/<time>")
+api.add_resource(
+    CommunityNewsForCompany24h, "/community_news_24h/<company>/<date>/<time>"
+)
+api.add_resource(Weather, "/weather/<city>/<date>/<time>")
 api.add_resource(InternationalDaxNews, "/international_dax_news/<date>/<time>")
 api.add_resource(DAXNews, "/dax_news/<date>/<time>")
 
