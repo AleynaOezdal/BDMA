@@ -26,6 +26,7 @@ def get_customer_experience(companies: list = companies_url):
     dotcom_companies = [
         "airbus",
         "basf",
+        "bayer",
         "beiersdorf",
         "brenntag",
         "deutsche-boerse",

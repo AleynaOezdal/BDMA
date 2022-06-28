@@ -5,11 +5,11 @@
 
 This is the directory for our local producer used for Task 1. They weren't used for Task 2 themselves, but rather served as a template for our cloud functions. 
 
-#### :robot: cloud_functions/producer
+#### :robot: kafka/producer
 
-These are our producer running via Google Cloud Functions. Their structure is different to the local ones, which is due to slightly different requirements from GCP.
+These are our producer running via Google Cloud Functions. Their structure is different to the local ones, which is due to slightly different requirements from GCP. We are producing our messages to a Kafka Cluster, managed by Confluent and running on GCP.
 
-#### :bullettrain_front: cloud_functions/kafka_consumers
+#### :bullettrain_front: kafka/consumer
 
 We used Confluent Kafka for Event Streaming. These consumers read messages for corresponding Kafka topics and write them into our mongoDB client.
 
