@@ -388,9 +388,9 @@ def get_news_content(value, date, time):
         dax_news_dataframe = dax_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
         dax_news_dataframe = dax_news_dataframe.sort_values(by=['Datum'])
 
-        for index, row in dax_news_dataframe.iterrows():
-            if 'Uhr' in row['Datum']:
-                row['Datum'] = arrow.now().format('DD.MM.YY')
+        # for index, row in dax_news_dataframe.iterrows():
+        #     if 'Uhr' in row['Datum']:
+        #         row['Datum'] = arrow.now().format('DD.MM.YY')
 
         table_body_three = get_table_rows_three(dax_news_dataframe)
 
@@ -431,9 +431,9 @@ def get_news_content(value, date, time):
         world_news_dataframe = world_news_dataframe.drop_duplicates(subset=[' '], keep= 'last')
         world_news_dataframe = world_news_dataframe.sort_values(by=['Datum'])
 
-        for index, row in world_news_dataframe.iterrows():
-            if 'Uhr' in row['Datum']:
-                row['Datum'] = arrow.now().format('DD.MM.YY')
+        # for index, row in world_news_dataframe.iterrows():
+        #     if 'Uhr' in row['Datum']:
+        #         row['Datum'] = arrow.now().format('DD.MM.YY')
 
         table_body_four = get_table_rows_three(world_news_dataframe)
 
